@@ -1,0 +1,63 @@
+handles.maskStimulus.fps = 30;
+handles.maskStimulus.repeatBackground = false;
+
+handles.maskStimulus.mask.type = 'background';%('White noise' 'Img' 'Solid color')
+
+handles.maskStimulus.mask.wn.blocks = 80;
+handles.maskStimulus.mask.wn.pxY = 5;
+handles.maskStimulus.mask.wn.pxX = 5;
+handles.maskStimulus.mask.wn.type = 'BW';
+handles.maskStimulus.mask.wn.saveImages = 3;
+handles.maskStimulus.mask.wn.intensity = [ 255 255 255 ];
+handles.maskStimulus.mask.wn.seed = rng;
+handles.maskStimulus.mask.wn.possibleSeed = 0;
+handles.maskStimulus.mask.wn.seedFile ='...';
+handles.maskStimulus.mask.wn.graph(:,:,3) = zeros(1,1,3);
+axes(handles.MSwhitenoiseIntensityGraph);
+imshow( handles.maskStimulus.mask.wn.graph);
+
+handles.maskStimulus.mask.img.name = '...';% la iamgen debe ser del tamaño de protocolo.
+
+handles.maskStimulus.mask.solidColor.r = 0;
+handles.maskStimulus.mask.solidColor.g = 0;
+handles.maskStimulus.mask.solidColor.b = 0;
+handles.maskStimulus.mask.solidColor.graph = zeros(1,1,3);
+axes(handles.MSSolidColorGraph);
+imshow(handles.maskStimulus.mask.solidColor.graph);
+
+################################################################################
+################################################################################
+
+handles.maskStimulus.protocol.type = ''; % 'Flicker' 'Images' 'otherwise'
+
+handles.maskStimulus.protocol.flicker.isImg = false;
+handles.maskStimulus.protocol.flicker.name = '...';
+handles.maskStimulus.protocol.flicker.repetitions = 0;
+handles.maskStimulus.protocol.flicker.dutyCicle = 0;
+handles.maskStimulus.protocol.flicker.periodo = 0;
+handles.maskStimulus.protocol.flicker.imgTime = 0;
+handles.maskStimulus.protocol.flicker.backgroundTime = 0;
+handles.maskStimulus.protocol.flicker.bg.r = 0;
+handles.maskStimulus.protocol.flicker.bg.g = 0;
+handles.maskStimulus.protocol.flicker.bg.b = 0;
+handles.maskStimulus.protocol.flicker.bg.graph = zeros(1,1,3);
+axes(handles.MSflickerGraph);
+imshow(handles.maskStimulus.protocol.flicker.bg.graph);
+
+% handles.maskStimulus.protocol.img => handles.img
+handles.maskStimulus.protocol.img.repetitions = 0;
+
+handles.maskStimulus.protocol.solidColor.r = 0;
+handles.maskStimulus.protocol.solidColor.g = 0;
+handles.maskStimulus.protocol.solidColor.b = 0;
+handles.maskStimulus.protocol.solidColor.nframes = 0;
+handles.maskStimulus.protocol.solidColor.graph = zeros(1,1,3);
+axes(handles.MSsolidcolorProtocolGraph);
+imshow(handles.maskStimulus.protocol.flicker.bg.graph);
+imshow(handles.maskStimulus.protocol.solidColor.graph);
+
+handles.maskStimulus.repetitions = 0;
+handles.maskStimulus.time = handles.img.files...
+    * 1/handles.maskStimulus.fps * (handles.maskStimulus.repetitions+1);
+set(handles.maskStimulusTime,'String',datestr(datenum(0,0,0,0,0,...
+    handles.maskStimulus.time),'HH:MM:SS.FFF'));

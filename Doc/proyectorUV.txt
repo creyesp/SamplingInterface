@@ -1,0 +1,97 @@
+proyecotr  UV
+
+Este proyector permite enviar imagenes a una frecuencia mayor a 60 hz, para ello 
+hace una comprecion de las imagenes haciendo un corrimiento de bit, dejando los mas
+significativos y juntando imagenes en una sola que es enviada a 60 hz desde el pc
+pero el proyector se encarga de descomprimir las images. De esta forma si se hace un 
+corrimiento de 4 bit (sobre los 8 de la img) podemos poner en una sola imagen 2 imagenes
+con sus 4 bit mas significativos y presentar a 120 hz, si dejamos solo los 2 bit más 
+significativos podremos presentar a 240 hz y si solo dejamos el mas significativo podemos 
+llevar a los 480 hz.
+Debido a esto es que la imagenes en el codigo se podrian ajustar para lograr llegar a los
+120 hz.
+
+Antes de presentar al secuencia de imagenes del protocolo, se envia el primer frame a mostrar
+y se chequea la comunicacion con el proyecor si es que se usa mas de 60 hz.
+Las funciones implementadas para realizar esta tarea son:
+	setProjector(4) ajusta el proyector a 4 bit lo que permite muestrear a 120 hz con compresion de datos, usando los bit mas significativos
+	setProjector(8) ajusta el proyector a 8 bit (img) lo que permite muestrear a 60 hz
+	setTrigger(800) pone el trigger en alto por 800 ms
+	setTrigger(0)	pone el trigger en 0
+
+Consideraciones de diseño, 
+    - solo White noise requiere ser presentado a 120[hz]
+    - para usar la señal de sincronia digital, es necesario usar 120[hz] y enviar la señal de sincronia en la mitad de la imagen, para ello se 
+    repite la imagen en para ser presentada dos veces y quede como si se muestreara a 60[hz]
+
+
+A) the first images
+
+if experiment(kexp).bottomBar.is
+    if useProjector, si se usa el proyector UV (hdmi)
+	    try
+	        error = setProjector(4);% deja el proyector a 120hz
+	        error = error || setTrigger(800); % Periodo del trigger a 800us
+	        if ~experiment(kexp).bottomBar.useTrigger, % si no se usa el trigger entonces hace una marca por 18ms
+ 	            WaitSecs(.018); 
+	            error = error || setProjector(8); vuelve el proyector a su estado normal 60hz
+	        end
+
+if experiment(kexp).bottomBar.is
+    if useProjector, si se usa el proyector UV (hdmi)
+        try
+            if experiment(kexp).bottomBar.useTrigger, % si no se usa el trigger entonces hace una marca por 18ms
+                error = setProjector(4);% deja el proyector a 120hz
+                error = error || setTrigger(800); % Periodo del trigger a 800us
+            else
+                error = setProjector(4);% deja el proyector a 120hz
+                error = error || setTrigger(800); % Periodo del trigger a 800us
+                WaitSecs(.018); 
+                error = error || setProjector(8); vuelve el proyector a su estado normal 60hz
+
+
+B) Por cada repeticion 
+--- mal implementado, la idea es generar una marca cuando haga un cambio de repetición 
+if useProjector && ~experiment(kexp).bottomBar.useTrigger,
+        try
+            %send trigger when start repetition
+            error = setTrigger(800); % Periodo del trigger a 800us
+            WaitSecs(.018);
+            error = error || setTrigger(0);
+
+if experiment(kexp).bottomBar.is && useProjector && ~experiment(kexp).bottomBar.useTrigger,
+        try
+            %send trigger when start repetition
+            error = setProjector(4);% deja el proyector a 120hz
+            error = error || setTrigger(800); % Periodo del trigger a 800us
+            WaitSecs(.018); 
+            error = error || setProjector(8); vuelve el proyector a su estado normal 60hz
+            
+C) al final de cada repeticion
+
+if experiment(kexp).bottomBar.is && useProjector,
+    try  
+        if experiment(kexp).bottomBar.useTrigger,
+            error = setProjector(8); % si estaba usando el trigger (120hz) vuelve el proyector a su estado normal (60hz) y terminal el trigger
+        else
+            error = setProjector(4); % deja el proyector a 120hz
+            error = error || setTrigger(800); % define el periodo del trigger a 800us
+            WaitSecs(.018); % hace una marca de tiempo de 18[ms]
+            error = error || setProjector(8); %vuelve el proyector a su estado normal y terminal el trigger
+
+
+D) al final del protocolo
+
+if experiment(kexp).bottomBar.is && useProjector,
+    try  
+        error = setProjector(8); termina el trigger y vuelve a 60[hz]
+
+
+E) El primer frame del WN dentro del for.
+
+if experiment(kexp).bottomBar.is
+    if useProjector && (j == 1),
+        display('Setting trigger for projector')
+        try
+            error = setProjector(4); %fija a 120[hz] 
+            error = error || setTrigger(800); %Periodo del trigger a 800us

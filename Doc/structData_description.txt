@@ -1,0 +1,80 @@
+beforeStimulus
+	is:	booleano para saber si esta presente en el experimento
+	time: duracion del pre-estimulo [ms]
+	rest:
+	background: color del fondo
+		r:
+		g:
+		b:
+	bar: barra antes del estimulo
+		is: booleano para saber si esta presente en el experimento
+		r:
+		g:
+		b:
+		posLeft:
+		posTop:
+		posRight:
+		posBotton:
+	graph: imagen (en formato arragle n:m:3) para el fondo
+
+bottonBar
+	is: booleano para saber si esta presente en el experimento
+	useTrigger:
+	r:
+	g:
+	b:
+	baseR:
+	baseG:
+	baseB:
+	posLeft:
+	posTop:
+	posRight:
+	posBottom:
+	division:
+	graph:
+
+experiments
+	number:
+	selected:
+	file: indice de los archivos con los parametros de configuración para cada protocolo. Ej: un experimetno tiene 4 flicker file=[0 1 2 3 4]
+	list: string con la informacion del experimento cargado en la lista de samplingInterface
+
+img
+	directory: path absoluto a la carpeta que contiene las imagenes
+	files:
+	size: tamaño de las imagenes
+		width:
+		height:
+	totalFiles: numero de imagenes
+	nInitial: string con el nombre de la primera imagen
+	nInitialPos: 
+	nFinal: string con el nombre de la ultima imagen
+	nFinalPos:
+	deltaX:
+	deltaY:
+	background:
+		isimg: boolean
+		r:
+		g:
+		b:
+		imgName: string con el path absoluto de la ruta
+		graph:
+
+
+list
+
+mode
+
+modify
+
+screens
+
+time
+
+flicker
+
+onlyStimulus
+
+presentation
+
+whitenoise
