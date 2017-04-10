@@ -22,7 +22,7 @@ function varargout = SamplingInterface(varargin)
 
 % Edit the above text to modify the response to help SamplingInterface
 
-% Last Modified by GUIDE v2.5 03-Apr-2017 14:06:30
+% Last Modified by GUIDE v2.5 10-Apr-2017 16:10:44
 
 % Begin initialization code - DO NOT EDIT
 addpath('lib');
@@ -3923,9 +3923,10 @@ in = str2double(get(hObject,'String'));
 if isnan(in)
   set(hObject,'String',handles.whitenoise.blocks);
   errordlg('Input must be a number and positive', 'Error')
-else if in<=0,
-  set(hObject,'String',handles.whitenoise.blocks);
-  errordlg('Input must be a number and positive', 'Error')
+else
+    if in<=0,
+        set(hObject,'String',handles.whitenoise.blocks);
+        errordlg('Input must be a number and positive', 'Error')
     else
         handles.whitenoise.blocks = in;
     end
@@ -4176,11 +4177,12 @@ if ~handles.modify
 end
 in = str2double(get(hObject,'String'));
 if isnan(in)
-  set(hObject,'String',handles.beforeStimulus.background.r);
+  set(hObject,'String',handles.whitenoise.saveImages);
   errordlg('Input must be a number between 0 and the number of frames', 'Error')
-else if (in>handles.whitenoise.frames || in<0),
-  set(hObject,'String',handles.beforeStimulus.background.r);
-  errordlg('Input must be a number between 0 and the number of frames', 'Error')
+else
+    if (in>handles.whitenoise.frames || in<0),
+        set(hObject,'String',handles.whitenoise.saveImages);
+        errordlg('Input must be a number between 0 and the number of frames', 'Error')
     else
         handles.whitenoise.saveImages = in;
     end
@@ -5488,9 +5490,9 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 
-% --- Executes on button press in maskStimulusImgMaskSelect.
-function maskStimulusImgMaskSelect_Callback(hObject, eventdata, handles)
-% hObject    handle to maskStimulusImgMaskSelect (see GCBO)
+% --- Executes on button press in maskStimulusImgMaskSelect1.
+function maskStimulusImgMaskSelect1_Callback(hObject, eventdata, handles)
+% hObject    handle to maskStimulusImgMaskSelect1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 if ~handles.modify
@@ -6782,3 +6784,624 @@ function uipushtool13_ClickedCallback(hObject, eventdata, handles)
 % hObject    handle to uipushtool13 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+
+
+
+function imgMaskDirectory_Callback(hObject, eventdata, handles)
+if ~handles.modify
+    return
+end
+in = get(hObject,'String');
+if ~isempty(in),
+    if exist(in,'dir'),
+        pos = searchFirstFile(in);
+        if pos,
+            handles.maskStimulus.mask.img.directory = in;
+            set(handles.imgMaskDirectory,'String',in);
+            filelist = dir(in);
+            filelist = dir_to_Win_ls(filelist);
+            handles.maskStimulus.mask.img.list = char('',filelist(3:size(filelist,1),:));
+            set(handles.imgMaskInitial,'String',char('Initial image',handles.maskStimulus.mask.img.list(2:end,:)));
+            set(handles.imgMaskFinal,'String',char('Final image',handles.maskStimulus.mask.img.list(2:end,:)));
+            set(handles.imgMaskInitial,'Value',pos);
+            set(handles.imgMaskFinal,'Value',pos);
+            set(handles.imgMasknFiles,'String',1);
+            handles.maskStimulus.mask.img.nInitial = handles.maskStimulus.mask.img.list(pos,:);
+            handles.maskStimulus.mask.img.nInitialPos = pos;
+            handles.maskStimulus.mask.img.nFinal = handles.maskStimulus.mask.img.list(pos,:);
+            handles.maskStimulus.mask.img.nFinalPos = pos;
+            imageInfo = imfinfo(fullfile(handles.maskStimulus.mask.img.directory,handles.maskStimulus.mask.img.nInitial));
+            handles.maskStimulus.mask.img.size.width = imageInfo.Width;
+            handles.maskStimulus.mask.img.size.height = imageInfo.Height;
+            set(handles.imgMaskSizeWidth,'String',handles.maskStimulus.mask.img.size.width);
+            set(handles.imgMaskSizeHeight,'String',handles.maskStimulus.mask.img.size.height);
+            handles.maskStimulus.mask.img.files = 1;
+
+        else
+            errordlg('Directory has no supported image files','Error');
+            set(handles.imgMaskDirectory,'String',handles.maskStimulus.mask.img.directory);
+        end
+    end 
+end
+
+
+% --- Executes during object creation, after setting all properties.
+function imgMaskDirectory_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to imgMaskDirectory (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on button press in maskStimulusImgMaskSelect.
+function maskStimulusImgMaskSelect_Callback(hObject, eventdata, handles)
+if ~handles.modify
+    return
+end
+in = uigetdir;
+if in~=0,
+    pos = searchFirstFile(in);
+    if pos,
+        handles.maskStimulus.mask.img.directory = in;
+        set(handles.imgMaskDirectory,'String',in);
+        filelist = dir(in);
+        filelist = dir_to_Win_ls(filelist);
+        handles.maskStimulus.mask.img.list = char('',filelist(3:size(filelist,1),:));
+        set(handles.imgMaskInitial,'String',char('Initial image',handles.maskStimulus.mask.img.list(2:end,:)));
+        set(handles.imgMaskFinal,'String',char('Final image',handles.maskStimulus.mask.img.list(2:end,:)));
+        set(handles.imgMaskInitial,'Value',pos);
+        set(handles.imgMaskFinal,'Value',pos);
+        set(handles.imgMasknFiles,'String',1);
+        handles.maskStimulus.mask.img.nInitial = handles.maskStimulus.mask.img.list(pos,:);
+        handles.maskStimulus.mask.img.nInitialPos = pos;
+        handles.maskStimulus.mask.img.nFinal = handles.maskStimulus.mask.img.list(pos,:);
+        handles.maskStimulus.mask.img.nFinalPos = pos;
+        imageInfo = imfinfo(fullfile(handles.maskStimulus.mask.img.directory,handles.maskStimulus.mask.img.nInitial));
+        % if handles.maskStimulus.mask.img.size.width ~=0 && handles.img.deltaX~=0 && handles.img.deltaY~=0 && ...
+        %         (handles.maskStimulus.mask.img.size.width ~= imageInfo.Width || ...
+        %         handles.maskStimulus.mask.img.size.height ~= imageInfo.Height),
+        %     answ = questdlg(['The stimulus of this new folder have different size. '...
+        %         'Would you like to conserve the default image position (Delta X, Delta Y)?'],...
+        %         'Conserve image position','Yes','No','No');
+        %     if ~isempty(answ) && strcmp(answ,'No'),
+        %         handles.img.deltaX = 0;
+        %         handles.img.deltaY = 0;
+        %         set(handles.imgDeltaX,'String',handles.img.deltaX);
+        %         set(handles.imgDeltaY,'String',handles.img.deltaY);
+        %     end
+        % end
+        handles.maskStimulus.mask.img.size.width = imageInfo.Width;
+        handles.maskStimulus.mask.img.size.height = imageInfo.Height;
+        set(handles.imgMaskSizeWidth,'String',handles.maskStimulus.mask.img.size.width);
+        set(handles.imgMaskSizeHeight,'String',handles.maskStimulus.mask.img.size.height);
+        handles.maskStimulus.mask.img.files = 1;
+  
+    else
+        errordlg('Directory has no supported image files','Error');
+        set(handles.imgMaskDirectory,'String',handles.maskStimulus.mask.img.directory);
+    end        
+end
+guidata(hObject,handles);
+
+
+
+% --- Executes on selection change in imgMaskInitial.
+function imgMaskInitial_Callback(hObject, eventdata, handles)
+if ~handles.modify
+    set(hObject,'Value',handles.maskStimulus.mask.img.nInitialPos);
+    return
+end
+dirlist = dir(handles.maskStimulus.mask.img.directory);
+pos = get(hObject,'Value');
+if pos~=1 && (dirlist(pos+1).isdir || ~supportedImageFormat(dirlist(pos+1).name)),
+    errordlg('The selected file is not a supported image file','Error');
+    set(hObject,'Value',handles.maskStimulus.mask.img.nInitialPos);
+else if pos~=1
+        handles.maskStimulus.mask.img.nInitial = handles.maskStimulus.mask.img.list(pos,:);
+        handles.maskStimulus.mask.img.nInitialPos = pos;
+        imageInfo = imfinfo(fullfile(handles.maskStimulus.mask.img.directory,handles.maskStimulus.mask.img.nInitial));
+        handles.maskStimulus.mask.img.size.width = imageInfo.Width;
+        handles.maskStimulus.mask.img.size.height = imageInfo.Height;
+        set(handles.imgMaskSizeWidth,'String',handles.maskStimulus.mask.img.size.width);
+        set(handles.imgMaskSizeHeight,'String',handles.maskStimulus.mask.img.size.height);
+        difference=find((handles.maskStimulus.mask.img.nInitial==handles.maskStimulus.mask.img.nFinal)==0);
+        if ~isempty(difference),
+            nExt = find(handles.maskStimulus.mask.img.nInitial=='.');
+            ext = handles.maskStimulus.mask.img.nInitial(nExt:end);
+            name = handles.maskStimulus.mask.img.nInitial(1:difference(1)-1);
+            nInit = str2double(handles.maskStimulus.mask.img.nInitial(difference(1):nExt(end)-1));
+            nFinal = str2double(handles.maskStimulus.mask.img.nFinal(difference(1):nExt(end)-1));
+            if nFinal - nInit < 0,
+                files = 0;
+            else
+            	files = nFinal - nInit + 1;
+            end
+            set(handles.imgMasknFiles,'String',files);
+            handles.maskStimulus.mask.img.files = files;
+        else
+            set(handles.imgMasknFiles,'String',1);
+            handles.maskStimulus.mask.img.files = 1;
+        end
+    else
+        set(handles.imgMasknFiles,'String',0);
+        handles.maskStimulus.mask.img.files = 0;
+    end
+end
+guidata(hObject,handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function imgMaskInitial_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to imgMaskInitial (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on selection change in imgMaskFinal.
+function imgMaskFinal_Callback(hObject, eventdata, handles)
+% hObject    handle to imgMaskFinal (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = cellstr(get(hObject,'String')) returns imgMaskFinal contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from imgMaskFinal
+
+
+% --- Executes during object creation, after setting all properties.
+function imgMaskFinal_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to imgMaskFinal (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on button press in imgMaskSelectAll.
+function imgMaskSelectAll_Callback(hObject, eventdata, handles)
+
+if ~handles.modify %|| (handles.maskStimulus.mask.img.nInitial == 1)
+    return
+end
+pos = searchFirstFile(handles.maskStimulus.mask.img.directory);
+set(handles.imgMaskInitial,'Value',pos);
+handles.maskStimulus.mask.img.nInitial = handles.maskStimulus.mask.img.list(pos,:);
+handles.maskStimulus.mask.img.nInitialPos = pos;
+pos = searchLastFile(handles.maskStimulus.mask.img.directory);
+set(handles.imgMaskFinal,'Value',pos);
+handles.maskStimulus.mask.img.nFinalPos = pos;
+handles.maskStimulus.mask.img.nFinal = handles.maskStimulus.mask.img.list(pos,:);
+difference=find((handles.maskStimulus.mask.img.nInitial==handles.maskStimulus.mask.img.nFinal)==0);
+
+if ~isempty(difference),
+    nExt = find(handles.maskStimulus.mask.img.nInitial=='.');
+    ext = handles.maskStimulus.mask.img.nInitial(nExt:end);
+    name = handles.maskStimulus.mask.img.nInitial(1:difference(1)-1);
+    nInit = str2double(handles.maskStimulus.mask.img.nInitial(difference(1):nExt(end)-1));
+    nFinal = str2double(handles.maskStimulus.mask.img.nFinal(difference(1):nExt(end)-1));
+    files = nFinal - nInit + 1;
+    set(handles.imgMasknFiles,'String',files);
+    handles.maskStimulus.mask.img.files = files;
+else
+    set(handles.imgMasknFiles,'String',1);
+    handles.maskStimulus.mask.img.files = 1;
+end
+guidata(hObject,handles);
+
+
+
+function MSwnProtocolNframe_Callback(hObject, eventdata, handles)
+if ~handles.modify
+    return
+end
+in = str2double(get(hObject,'String'));
+if isnan(in)
+  set(hObject,'String',handles.maskStimulus.protocol.wn.frames);
+  errordlg('Input must be a number and positive', 'Error')
+else if in<=0,
+  set(hObject,'String',handles.maskStimulus.protocol.wn.frames);
+  errordlg('Input must be a number and positive', 'Error')
+    else
+        handles.maskStimulus.protocol.wn.frames = in;
+        handles.maskStimulus.time = handles.maskStimulus.protocol.wn.frames...
+            * 1/handles.maskStimulus.fps;
+        set(handles.maskStimulusTime,'String',datestr(datenum(0,0,0,0,0,...
+            handles.maskStimulus.time),'HH:MM:SS.FFF'));
+    end
+end
+guidata(hObject,handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function MSwnProtocolNframe_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to MSwnProtocolNframe (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function MSwnProtocolXpixel_Callback(hObject, eventdata, handles)
+if ~handles.modify
+    return
+end
+in = str2double(get(hObject,'String'));
+if isnan(in)
+  set(hObject,'String',handles.maskStimulus.protocol.wn.pxX);
+  errordlg('Input must be a number and positive', 'Error')
+else
+    if in<=0,
+        set(hObject,'String',handles.maskStimulus.protocol.wn.pxX);
+        errordlg('Input must be a number and positive', 'Error')
+    else
+        handles.maskStimulus.protocol.wn.pxX = in;
+    end
+end
+guidata(hObject,handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function MSwnProtocolXpixel_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to MSwnProtocolXpixel (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function MSwnProtocolYpixel_Callback(hObject, eventdata, handles)
+if ~handles.modify
+    return
+end
+in = str2double(get(hObject,'String'));
+if isnan(in)
+  set(hObject,'String',handles.maskStimulus.protocol.wn.pxY);
+  errordlg('Input must be a number and positive', 'Error')
+else
+    if in<=0,
+        set(hObject,'String',handles.maskStimulus.protocol.wn.pxY);
+        errordlg('Input must be a number and positive', 'Error')
+    else
+        handles.maskStimulus.protocol.wn.pxY = in;
+    end
+end
+guidata(hObject,handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function MSwnProtocolYpixel_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to MSwnProtocolYpixel (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function MSwnProtocolBlocks_Callback(hObject, eventdata, handles)
+if ~handles.modify
+    return
+end
+in = str2double(get(hObject,'String'));
+if isnan(in)
+  set(hObject,'String',handles.maskStimulus.protocol.wn.blocks);
+  errordlg('Input must be a number and positive', 'Error')
+else
+    if in<=0,
+        set(hObject,'String',handles.maskStimulus.protocol.wn.blocks);
+        errordlg('Input must be a number and positive', 'Error')
+    else
+        handles.maskStimulus.protocol.wn.blocks = in;
+    end
+end
+guidata(hObject,handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function MSwnProtocolBlocks_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to MSwnProtocolBlocks (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on selection change in MSwnProtocolType.
+function MSwnProtocolType_Callback(hObject, eventdata, handles)
+if ~handles.modify
+    set(hObject,'Value',1.0);
+    return
+end
+in = get(hObject,'Value');
+switch in,
+    case 1, handles.maskStimulus.protocol.wn.type = 'BW';
+    case 2, handles.maskStimulus.protocol.wn.type = 'BB';
+    case 3, handles.maskStimulus.protocol.wn.type = 'BG';
+    case 4, handles.maskStimulus.protocol.wn.type = 'BC';
+    case 5, handles.maskStimulus.protocol.wn.type = 'BBGC';
+    case 6, handles.maskStimulus.protocol.wn.type = 'BY';
+    case 7, handles.maskStimulus.protocol.wn.type = 'BLG';
+    otherwise, handles.maskStimulus.protocol.wn.type = 'BW';
+end
+guidata(hObject,handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function MSwnProtocolType_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to MSwnProtocolType (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function MSwnProtocolSaveImages_Callback(hObject, eventdata, handles)
+if ~handles.modify
+    return
+end
+in = str2double(get(hObject,'String'));
+if isnan(in)
+  set(hObject,'String',handles.maskStimulus.protocol.wn.saveImages);
+  errordlg('Input must be a number between 0 and the number of frames', 'Error')
+else
+    if (in>handles.whitenoise.frames || in<0),
+        set(hObject,'String',handles.maskStimulus.protocol.wn.saveImages);
+        errordlg('Input must be a number between 0 and the number of frames', 'Error')
+    else
+        handles.maskStimulus.protocol.wn.saveImages = in;
+    end
+end
+guidata(hObject,handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function MSwnProtocolSaveImages_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to MSwnProtocolSaveImages (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on button press in MSwnProtocolPreview.
+function MSwnProtocolPreview_Callback(hObject, eventdata, handles)
+if ~handles.modify
+    return
+end
+% noiseimg =  uint8(randi(2,handles.maskStimulus.protocol.wn.blocks,handles.maskStimulus.protocol.wn.blocks)-1);
+% noiseimg = Expand(noiseimg,handles.maskStimulus.protocol.wn.pxX,handles.maskStimulus.protocol.wn.pxY);
+% z = zeros(size(noiseimg));
+% IR = handles.maskStimulus.protocol.wn.intensity(1);
+% IG = handles.maskStimulus.protocol.wn.intensity(2);
+% IB = handles.maskStimulus.protocol.wn.intensity(3);
+% 
+% switch handles.maskStimulus.protocol.wn.type,
+%     case 'BW', noiseimg = noiseimg*IR;
+%     case 'BB', noiseimg = cat(3,z,z,noiseimg*IB);
+%     case 'BG', noiseimg = cat(3,z,noiseimg*IG,z);
+%     case 'BC', noiseimg = cat(3,z,noiseimg*IG,noiseimg*IB);
+%     case 'BBGC', noiseimg2 =  uint8(randi(2,handles.whitenoise.blocks,handles.whitenoise.blocks)-1);
+%                  noiseimg = cat(3,z,noiseimg*IG,IB*Expand(noiseimg2,handles.whitenoise.pxX,handles.whitenoise.pxY));
+%     case 'BY', noiseimg = cat(3,noiseimg*IR,noiseimg*IG,z);
+%     case 'BLG', noiseimg = cat(3,z,noiseimg*IG,(~noiseimg)*IB);
+%     otherwise, noiseimg = noiseimg*IR;
+% end
+[~, noiseimg] = getRandWNimg(handles.maskStimulus.protocol.wn);
+
+if ismac,
+    [handles.img.deltaX,handles.img.deltaY] = moveImage(handles.img.deltaX,handles.img.deltaY,...
+        handles.screens.selected,noiseimg);
+else
+    [handles.img.deltaX,handles.img.deltaY] = moveImageWin(handles.img.deltaX,handles.img.deltaY,...
+        handles.screens.selected,noiseimg);
+end
+set(handles.imgDeltaX,'String',handles.img.deltaX);
+set(handles.imgDeltaY,'String',handles.img.deltaY);
+guidata(hObject,handles);
+
+
+
+function MSwnProtocolIntensityG_Callback(hObject, eventdata, handles)
+if ~handles.modify
+    return
+end
+in = str2double(get(hObject,'String'));
+if isnan(in)
+  set(hObject,'String',handles.maskStimulus.protocol.wn.intensity(2));
+  errordlg('Input must be a number between 0 and 255', 'Error')
+else if (in>255 || in<0),
+  set(hObject,'String',handles.maskStimulus.protocol.wn.intensity(2));
+  errordlg('Input must be a number between 0 and 255', 'Error')
+    else
+        handles.maskStimulus.protocol.wn.intensity(2) = uint8(in);
+    end
+end
+guidata(hObject,handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function MSwnProtocolIntensityG_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to MSwnProtocolIntensityG (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function MSwnProtocolIntensityB_Callback(hObject, eventdata, handles)
+if ~handles.modify
+    return
+end
+in = str2double(get(hObject,'String'));
+if isnan(in)
+  set(hObject,'String',handles.maskStimulus.protocol.wn.intensity(3));
+  errordlg('Input must be a number between 0 and 255', 'Error')
+else if (in>255 || in<0),
+  set(hObject,'String',handles.maskStimulus.protocol.wn.intensity(3));
+  errordlg('Input must be a number between 0 and 255', 'Error')
+    else
+        handles.maskStimulus.protocol.wn.intensity(3) = uint8(in);
+    end
+end
+guidata(hObject,handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function MSwnProtocolIntensityB_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to MSwnProtocolIntensityB (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function MSwnProtocolIntensityR_Callback(hObject, eventdata, handles)
+if ~handles.modify
+    return
+end
+in = str2double(get(hObject,'String'));
+if isnan(in)
+  set(hObject,'String',handles.maskStimulus.protocol.wn.intensity(1));
+  errordlg('Input must be a number between 0 and 255', 'Error')
+else if (in>255 || in<0),
+  set(hObject,'String',handles.maskStimulus.protocol.wn.intensity(1));
+  errordlg('Input must be a number between 0 and 255', 'Error')
+    else
+        handles.maskStimulus.protocol.wn.intensity(1) = uint8(in);
+    end
+end
+guidata(hObject,handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function MSwnProtocolIntensityR_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to MSwnProtocolIntensityR (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on button press in MSwnProtocolSeedSelected.
+function MSwnProtocolSeedSelected_Callback(hObject, eventdata, handles)
+if ~handles.modify
+    set(hObject,'Value',0.0);
+    return
+end
+value = get(hObject,'Value');
+if value && ~isstruct(handles.maskStimulus.protocol.wn.possibleSeed),
+    [s,n,f] = searchForSeed();
+    if ~isstruct(s),
+        set(hObject,'Value',0.0);
+    else
+        handles.maskStimulus.protocol.wn.seed = s;
+        set(handles.MSwnProtocolSeedPath,'String',fullfile(f,n));
+    end
+else
+    if value
+        handles.maskStimulus.protocol.wn.seed = handles.maskStimulus.protocol.wn.possibleSeed;
+    end
+end
+guidata(hObject,handles);
+
+
+
+function MSwnProtocolSeedPath_Callback(hObject, eventdata, handles)
+% hObject    handle to MSwnProtocolSeedPath (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of MSwnProtocolSeedPath as text
+%        str2double(get(hObject,'String')) returns contents of MSwnProtocolSeedPath as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function MSwnProtocolSeedPath_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to MSwnProtocolSeedPath (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on button press in MSwnProtocolSeedfileSelect.
+function MSwnProtocolSeedfileSelect_Callback(hObject, eventdata, handles)
+if ~handles.modify
+    return
+end
+[s,n,f] = searchForSeed();
+if isstruct(s)
+    handles.maskStimulus.protocol.wn.possibleSeed = s;
+    handles.maskStimulus.protocol.wn.seedFile = fullfile(f,n);
+    set(handles.MSwnProtocolSeedPath,'String',handles.maskStimulus.protocol.wn.seedFile);
+    if get(handles.MSwnProtocolSeedSelected,'Value')
+        handles.maskStimulus.protocol.wn.seed = s;
+    end
+end
+guidata(hObject,handles);
+
+
+% --- Executes on button press in MSwnProtocolCreateSeed.
+function MSwnProtocolCreateSeed_Callback(hObject, eventdata, handles)
+rng('shuffle');
+s = rng;
+uisave('s','seed.mat');

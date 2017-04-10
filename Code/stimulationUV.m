@@ -612,12 +612,14 @@ while(kexp<length(data.experiments.file)),
                     
                     % Draw the images-textures of protocol kexp
                     Screen('DrawTexture', win, experiment(kexp).img.charge(imgNumber-nInit+1),[],experiment(kexp).position); 
+                    
                     if (~experiment(kexp).flicker.repeatBackground && rep==experiment(kexp).flicker.repetitions ) ...
                          || (experiment(kexp).flicker.repeatBackground && ...
                          experiment(kexp).img.repeated==experiment(kexp).flicker.repetitions),
                         Screen('Close',experiment(kexp).img.charge(imgNumber-nInit+1));
                     end
-
+                    
+                    % Analog Synchronize
                     if experiment(kexp).bottomBar.is
                         % Bars are now only presented during images, 
                         % then the level is now the middle of the previous
@@ -683,7 +685,8 @@ while(kexp<length(data.experiments.file)),
             end
             
             % if repeat with the prev. background then the index kexp
-            % return to kexp-2 (the background)
+            % return to kexp-2 (the background) until complete the
+            % repetition
             if experiment(kexp).flicker.repeatBackground && kexp>1 && strcmp(experiment(kexp-1).mode,'Presentation') ...
                     && experiment(kexp).img.repeated < experiment(kexp).flicker.repetitions,
                 experiment(kexp).img.repeated = experiment(kexp).img.repeated + 1;
@@ -737,7 +740,7 @@ while(kexp<length(data.experiments.file)),
             % select then mark only for 18[ms] before stimulus. Otherwise
             % show the analog synchronize
             if experiment(kexp).bottomBar.is
-                if useProjector,
+                if useProjector, % Digital synchronize
                     try
                         if experiment(kexp).bottomBar.useTrigger, 
                             error = setProjector(FPS_120HZ);
@@ -760,7 +763,7 @@ while(kexp<length(data.experiments.file)),
                         Screen('CloseAll')
                         return
                     end
-                else
+                else % Analog synchronize
                     Screen('FillRect', win,baseColorBar + colorBar*mod(b,experiment(kexp).bottomBar.division),positionBar);
                     b = b + 1;
                 end
@@ -793,6 +796,7 @@ while(kexp<length(data.experiments.file)),
                 else
                     tmp = nInit; 
                     
+                    % Digital Synchronize 
                     % For repetition without prev. background and use projector and not use
                     % trigger, it's mark for 18[ms] the start of repetition.
                     if experiment(kexp).bottomBar.is && useProjector && ~experiment(kexp).bottomBar.useTrigger,
@@ -835,6 +839,7 @@ while(kexp<length(data.experiments.file)),
                     % draw Texture 
                     Screen('DrawTexture', win, experiment(kexp).img.charge(k-nInit+1),[],experiment(kexp).position); %img, [], experiment(kexp).position);
                    
+                    % Analog Syncronize
                     % draw botton bar
                     if experiment(kexp).bottomBar.is && ~useProjector
                         Screen('FillRect', win,baseColorBar + colorBar*mod(b,experiment(kexp).bottomBar.division), positionBar);
@@ -853,6 +858,8 @@ while(kexp<length(data.experiments.file)),
                             (nRefreshImg - 0.5) * refresh);
                     end
                 end
+                
+                Time(kexp).finish = WaitSecs((nRefreshImg - 0.5) * refresh);
                 
                 % End Digital Synchronize
                 % If the trigger was select (120 hz) the projector 
@@ -883,24 +890,7 @@ while(kexp<length(data.experiments.file)),
                 end
             end
 
-            Time(kexp).finish = WaitSecs((nRefreshImg - 0.5) * refresh);
-            
-%             if experiment(kexp).bottomBar.is && useProjector,
-%                 try  
-%                     error = setProjector(8);
-%                 catch exceptions
-%                     display(['Error communicating with the projector: setting trigger. ' exceptions.message]); Stack  = dbstack; Stack.line
-%                     Screen('Close')
-%                     Screen('CloseAll')
-%                     return
-%                 end
-%                 if error,
-%                     display('Error communicating with the projector: setting trigger')
-%                     Screen('Close')
-%                     Screen('CloseAll')
-%                     return
-%                 end
-%             end
+
 
             if data.serial.is
                 IOPort('Write', serialCom, down);
@@ -991,21 +981,29 @@ while(kexp<length(data.experiments.file)),
                 finalImage = uint8(0*experiment(kexp).noiseimg);
                 for imageCombination = 1:2;  
                     if ~(use60 && imageCombination==2),
-                        
                         [experiment(kexp).noise, experiment(kexp).noiseimg] ...
                                 = getRandWNimg(experiment(kexp).whitenoise);
                         % Save the fist images of WN
-                        if j<=experiment(kexp).whitenoise.saveImages,
+                        if use60,
+                            saveIndex = j;
+                        else
+                            saveIndex = (j-1)*2 + imageCombination;
+                        end
+                        if saveIndex<=experiment(kexp).whitenoise.saveImages,
                             if strcmp(experiment(kexp).whitenoise.type,'BW')
-                                experiment(kexp).whitenoise.imgToComp(:,:,j)...
+                                experiment(kexp).whitenoise.imgToComp(:,:,saveIndex)...
                                     = experiment(kexp).noiseimg;
                             else
-                                experiment(kexp).whitenoise.imgToComp(:,:,:,j)...
+                                experiment(kexp).whitenoise.imgToComp(:,:,:,saveIndex)...
                                     = experiment(kexp).noiseimg;
                             end
                         end
                     end
-                    finalImage = finalImage + bitshift(bitshift(experiment(kexp).noiseimg,-4),4*(imageCombination-1));
+                    if ~use60,
+                        finalImage = finalImage + bitshift(bitshift(experiment(kexp).noiseimg,-4),4*(imageCombination-1));
+                    else
+                        finalImage = experiment(kexp).noiseimg;
+                    end
                 end
                 
                 noisetxt = Screen('MakeTexture',win,finalImage);
@@ -1013,13 +1011,16 @@ while(kexp<length(data.experiments.file)),
                 Screen('DrawTexture', win, noisetxt,[],experiment(kexp).position);
                 Screen('Close',noisetxt);
                 
-                % draw botton bar or set trigger
+                % Start Digital or Analog Synchronize
+                % If use 120Hz and the trigger was select the projector 
+                % mark all frame with digital pulse, otherwise
+                % show the analog synchronize
                 if experiment(kexp).bottomBar.is
-                    if useProjector && (j == 1),
+                    if useProjector && (j == 1), 
                         display('Setting trigger for projector')
                         try
-                            error = setProjector(4);
-                            error = error || setTrigger(800);
+                            error = setProjector(FPS_120HZ);
+                            error = error || setTrigger(TRIGGER_TIME_UP);                 
                         catch exceptions
                             display(['Error communicating with the projector: setting trigger. ' exceptions.message]); Stack  = dbstack; Stack.line
                             Screen('Close')
@@ -1053,18 +1054,12 @@ while(kexp<length(data.experiments.file)),
             end
             
             Time(kexp).finish = WaitSecs((nRefreshImg - 0.5) * refresh);
-            
-            if data.serial.is
-                IOPort('Write', serialCom, down);
-            end
-            
-            if experiment(kexp).img.background.isImg
-                Screen('Close',background);
-            end
-            
+
+            % End Digital Synchronize, down the 120[hz] to 60[hz]
+            % and finish the trigger
             if experiment(kexp).bottomBar.is && useProjector,
-                try
-                    error = setProjector(8);
+                try  
+                    error = setProjector(FPS_60HZ);
                 catch exceptions
                     display(['Error communicating with the projector: setting trigger. ' exceptions.message]); Stack  = dbstack; Stack.line
                     Screen('Close')
@@ -1078,6 +1073,16 @@ while(kexp<length(data.experiments.file)),
                     return
                 end
             end
+            
+            if data.serial.is
+                IOPort('Write', serialCom, down);
+            end
+            
+            if experiment(kexp).img.background.isImg
+                Screen('Close',background);
+            end
+            
+
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %%%%%%%%%%%%%%%%%%%%%%%% MASK STIMULUS MODE %%%%%%%%%%%%%%%%%%%%%%%
         elseif strcmp(experiment(kexp).mode,'Mask stimulus'),
@@ -1376,7 +1381,6 @@ while(kexp<length(data.experiments.file)),
             
             % Load the images and fix these as a texture 
             % before of the presentation
-            
             if intensity ~= 0 && experiment(kexp).img.files > 0, 
                 if experiment(kexp).img.files == 1,
                     num = [];
@@ -1424,7 +1428,8 @@ while(kexp<length(data.experiments.file)),
                 end
             end
             
-            if strcmp(experiment(kexp).maskStimulus.protocol.type,'White noise'),
+            % Set seed for random number for White noise MASK
+            if strcmp(experiment(kexp).maskStimulus.mask.type,'White noise'),
                 rng(experiment(kexp).maskStimulus.mask.wn.seed);
                 % create the images to the white noise
                 [experiment(kexp).maskStimulus.mask.wn.noise, ...
@@ -1433,9 +1438,16 @@ while(kexp<length(data.experiments.file)),
                     =  setWNimg(experiment(kexp).maskStimulus.mask.wn);                
             end
             
-
-
-
+             % Set seed for random number for White noise sub-Protocol
+            if strcmp(experiment(kexp).maskStimulus.protocol.type,'White noise'),
+                rng(experiment(kexp).maskStimulus.protocol.wn.seed);
+                % create the images to the white noise
+                [experiment(kexp).maskStimulus.protocol.wn.noise, ...
+                 experiment(kexp).maskStimulus.protocol.wn.imgToComp, ...
+                 experiment(kexp).maskStimulus.protocol.wn.noiseimg] ...
+                    =  setWNimg(experiment(kexp).maskStimulus.protocol.wn);                
+            end
+            
             
             % Get the Mask
             s1 = experiment(kexp).maskStimulus.mask.width;
@@ -1444,8 +1456,7 @@ while(kexp<length(data.experiments.file)),
             [x, y] = meshgrid(-s1/2:1:s1/2-1, -s2/2:1:s2/2-1);
             imgMask =  uint8(ones(s2, s1)*255);
             rotMask = deg2rad(angle);
-            % oval shape
-            if strcmp(maskShape,'oval')
+            if strcmp(maskShape,'oval')% oval shape
                 x = x + shiftX;
                 y = y - shiftY;
                 mask = uint8((((x*cos(rotMask)-y*sin(rotMask))./width).^2+...
@@ -1467,6 +1478,8 @@ while(kexp<length(data.experiments.file)),
                 end
                 mask = imgMask;
             end
+            
+            
 
             % Draw background and sync bar before stimulus
             if experiment(kexp).beforeStimulus.is
@@ -1486,27 +1499,60 @@ while(kexp<length(data.experiments.file)),
             end
                         
             % Get Mask Image for texture ('White noise' 'Img' 'Solid color' black)
-            ovalmask = getMaskImg( experiment(kexp).maskStimulus.mask, mask );
-            textureMask = Screen('MakeTexture', win, ovalmask);
+            imgmask = getMaskImg( experiment(kexp).maskStimulus.mask, mask );
             if strcmp(experiment(kexp).maskStimulus.mask.type,'White noise')
                 if experiment(kexp).maskStimulus.mask.wn.saveImages >= 1,
                     if strcmp(experiment(kexp).maskStimulus.mask.wn.type,'BW')
                         experiment(kexp).maskStimulus.mask.wn.imgToComp(:,:,1)...
-                            = ovalmask(:,:,1);   
+                            = imgmask(:,:,1);   
                     else
                         experiment(kexp).maskStimulus.mask.wn.imgToComp(:,:,:,1)...
-                            = ovalmask(:,:,1:3);
+                            = imgmask(:,:,1:3);
                     end
                 end
             end
+            textureMask = Screen('MakeTexture', win, imgmask);
+            
+            % Get the first image for white noise protocol
+            if strcmp(experiment(kexp).maskStimulus.protocol.type,'White noise')
+                finalImage = uint8(0*experiment(kexp).maskStimulus.protocol.wn.noise);
+                for imageCombination = 1:2;  
+                    if ~(use60 && imageCombination==2),
+                        [~, noiseimg] ...
+                                = getRandWNimg(experiment(kexp).maskStimulus.protocol.wn);
+                        % Save the fist images of WN
+                        if use60,
+                            saveIndex = j;
+                        else
+                            saveIndex = (j-1)*2 + imageCombination;
+                        end
+                        if saveIndex<=experiment(kexp).maskStimulus.protocol.wn.saveImages,
+                            if strcmp(experiment(kexp).maskStimulus.protocol.wn.type,'BW')
+                                experiment(kexp).maskStimulus.protocol.wn.imgToComp(:,:,saveIndex)...
+                                    = noiseimg;
+                            else
+                                experiment(kexp).maskStimulus.protocol.wn.imgToComp(:,:,:,saveIndex)...
+                                    = noiseimg;
+                            end
+                        end
+                    end
+                    if use60,
+                        finalImage = noiseimg;                                
+                    else
+                        finalImage = finalImage + bitshift(bitshift(noiseimg,-4),4*(imageCombination-1));
+                    end
+                end            
+            end            
        
             % Draw the  first  stimulus for check the well comunication
             % with projector if it's successful continue  the experiment 
             % otherwise the next experiment is displayed
-            
             if strcmp(experiment(kexp).maskStimulus.protocol.type,'Images') ||...
               strcmp(experiment(kexp).maskStimulus.protocol.type,'Flicker'),
                 firstStimulusTexture = experiment(kexp).img.charge(1);
+                Screen('DrawTexture', win, firstStimulusTexture,[],experiment(kexp).position);
+            elseif strcmp(experiment(kexp).maskStimulus.protocol.type,'White noise'),
+                firstStimulusTexture = Screen('MakeTexture',win,finalImage); 
                 Screen('DrawTexture', win, firstStimulusTexture,[],experiment(kexp).position);
             elseif strcmp(experiment(kexp).maskStimulus.protocol.type,'Solid color'),
                 colorSC = [experiment(kexp).maskStimulus.protocol.solidColor.r,...
@@ -1514,20 +1560,27 @@ while(kexp<length(data.experiments.file)),
                     experiment(kexp).maskStimulus.protocol.solidColor.b];
                 Screen('FillRect',win,colorSC*intensity,experiment(kexp).position);
             end
+            
             % Draw mask
             Screen('DrawTexture', win, textureMask, [], experiment(kexp).positionMask);
             Screen('Close',textureMask);
 
-            % Draw the sync botton bar in protocol 
-            % Check the comunication to projector
-            if experiment(kexp).bottomBar.is,
-                if useProjector,
+            % Start Digital or Analog Synchronize
+            % If use 120Hz and the trigger was select the projector 
+            % mark all frame with digital pulse, if the trigger was not 
+            % select then mark only for 18[ms] before stimulus. Otherwise
+            % show the analog synchronize
+            if experiment(kexp).bottomBar.is
+                if useProjector,% digital synchronize
                     try
-                        error = setProjector(4);
-                        error = error || setTrigger(800); 
-                        if ~experiment(kexp).bottomBar.useTrigger,
-                            WaitSecs(.018);
-                            error = error || setProjector(8);
+                        if experiment(kexp).bottomBar.useTrigger, 
+                            error = setProjector(FPS_120HZ);
+                            error = error || setTrigger(TRIGGER_TIME_UP); 
+                        else
+                            error = setProjector(FPS_120HZ);
+                            error = error || setTrigger(TRIGGER_TIME_UP); 
+                            WaitSecs(WAIT_TIME_SIGNAL); 
+                            error = error || setProjector(FPS_60HZ);
                         end
                     catch exceptions
                         display(['Error communicating with the projector: setting trigger. ' exceptions.message]); Stack  = dbstack; Stack.line
@@ -1541,7 +1594,7 @@ while(kexp<length(data.experiments.file)),
                         Screen('CloseAll')
                         return
                     end
-                else
+                else % analog synchronize
                     Screen('FillRect', win,baseColorBar + colorBar*mod(b,experiment(kexp).bottomBar.division), positionBar);
                     b = b + 1;
                 end
@@ -1576,11 +1629,21 @@ while(kexp<length(data.experiments.file)),
                         else
                             tmp = nInit; 
 
-                            if useProjector && ~experiment(kexp).bottomBar.useTrigger,
-                                try
-                                    error = setTrigger(800);
-                                    WaitSecs(.018);
-                                    error = error || setTrigger(0);
+%                             if useProjector && ~experiment(kexp).bottomBar.useTrigger,
+%                                 try
+%                                     error = setTrigger(800);
+%                                     WaitSecs(.018);
+%                                     error = error || setTrigger(0);
+
+                                % Digital Synchronize 
+                                % For repetition without prev. background and use projector and not use
+                                % trigger, it's mark for 18[ms] the start of repetition.
+                                if experiment(kexp).bottomBar.is && useProjector && ~experiment(kexp).bottomBar.useTrigger,
+                                        try
+                                            error = setProjector(FPS_120HZ);
+                                            error = error || setTrigger(TRIGGER_TIME_UP); 
+                                            WaitSecs(WAIT_TIME_SIGNAL); 
+                                            error = error || setProjector(FPS_60HZ); 
                                 catch exceptions
                                     display(['Error communicating with the projector: setting trigger. ' exceptions.message]); Stack  = dbstack; Stack.line
                                     Screen('Close')
@@ -1607,25 +1670,27 @@ while(kexp<length(data.experiments.file)),
                             nloop = nloop+1;
 
                             % MASK type
-                            ovalmask = getMaskImg( experiment(kexp).maskStimulus.mask, mask );
+                            imgmask = getMaskImg( experiment(kexp).maskStimulus.mask, mask );
                              if strcmp(experiment(kexp).maskStimulus.mask.type,'White noise')
                                 if experiment(kexp).maskStimulus.mask.wn.saveImages >= nloop,
                                     if strcmp(experiment(kexp).maskStimulus.mask.wn.type,'BW')
                                         experiment(kexp).maskStimulus.mask.wn.imgToComp(:,:,nloop)...
-                                            = ovalmask(:,:,1);   
+                                            = imgmask(:,:,1);   
                                     else
                                         experiment(kexp).maskStimulus.mask.wn.imgToComp(:,:,:,nloop)...
-                                            = ovalmask(:,:,1:3);
+                                            = imgmask(:,:,1:3);
                                     end
                                 end
                             end
-                            textureMask = Screen('MakeTexture', win, ovalmask);
+                            textureMask = Screen('MakeTexture', win, imgmask);
 
                             % draw Texture 
                             Screen('DrawTexture', win, experiment(kexp).img.charge(kimg-nInit+1),[],experiment(kexp).position); %img, [], experiment(kexp).position);
                             Screen('DrawTextures', win, textureMask, [], experiment(kexp).positionMask);
                             Screen('Close',textureMask);
+      
                             %draw botton bar
+                            % Analog Sychronize
                             if experiment(kexp).bottomBar.is,
                                 Screen('FillRect', win,baseColorBar + colorBar*mod(b,experiment(kexp).bottomBar.division), positionBar);
                                 b = b + 1;
@@ -1656,11 +1721,20 @@ while(kexp<length(data.experiments.file)),
                             tmp = nInit+1; 
                         else
                             tmp = nInit; 
-                            if useProjector && ~experiment(kexp).bottomBar.useTrigger,
+%                             if useProjector && ~experiment(kexp).bottomBar.useTrigger,
+%                                 try
+%                                     error = setTrigger(800);
+%                                     WaitSecs(.018);
+%                                     error = error || setTrigger(0);
+                            % Digital Synchronize 
+                            % For repetition without prev. background and use projector and not use
+                            % trigger, it's mark for 18[ms] the start of repetition.
+                            if experiment(kexp).bottomBar.is && useProjector && ~experiment(kexp).bottomBar.useTrigger,
                                 try
-                                    error = setTrigger(800);
-                                    WaitSecs(.018);
-                                    error = error || setTrigger(0);
+                                    error = setProjector(FPS_120HZ);
+                                    error = error || setTrigger(TRIGGER_TIME_UP); 
+                                    WaitSecs(WAIT_TIME_SIGNAL); 
+                                    error = error || setProjector(FPS_60HZ);
                                 catch exceptions
                                     display(['Error communicating with the projector: setting trigger. ' exceptions.message]); Stack  = dbstack; Stack.line
                                     Screen('Close')
@@ -1687,16 +1761,16 @@ while(kexp<length(data.experiments.file)),
                             nloop = nloop+1;
 
                             % MASK type
-                            ovalmask = getMaskImg( experiment(kexp).maskStimulus.mask, mask);
-                            textureMask = Screen('MakeTexture', win, ovalmask);
+                            imgmask = getMaskImg( experiment(kexp).maskStimulus.mask, mask);
+                            textureMask = Screen('MakeTexture', win, imgmask);
                             if strcmp(experiment(kexp).maskStimulus.mask.type,'White noise')
                                 if experiment(kexp).maskStimulus.mask.wn.saveImages >= nloop,
                                     if strcmp(experiment(kexp).maskStimulus.mask.wn.type,'BW')
                                         experiment(kexp).maskStimulus.mask.wn.imgToComp(:,:,nloop)...
-                                            = ovalmask(:,:,1);   
+                                            = imgmask(:,:,1);   
                                     else
                                         experiment(kexp).maskStimulus.mask.wn.imgToComp(:,:,1:3,nloop)...
-                                            = ovalmask(:,:,1:3);
+                                            = imgmask(:,:,1:3);
                                     end
                                 end
                             end
@@ -1707,7 +1781,8 @@ while(kexp<length(data.experiments.file)),
                                 Screen('DrawTextures', win, textureMask, [], experiment(kexp).positionMask);
                                 Screen('Close',textureMask);
                                 
-                                %draw botton bar
+                                % draw botton bar
+                                % Analog Synchronize
                                 if experiment(kexp).bottomBar.is,
                                     Screen('FillRect', win,baseColorBar + colorBar*mod(b,experiment(kexp).bottomBar.division), positionBar);
                                     b = b + 1;
@@ -1751,11 +1826,15 @@ while(kexp<length(data.experiments.file)),
                             tmp = 2; 
                         else
                             tmp = 1; 
-                            if useProjector && ~experiment(kexp).bottomBar.useTrigger,
+                            % Digital Synchronize 
+                            % For repetition without prev. background and use projector and not use
+                            % trigger, it's mark for 18[ms] the start of repetition.
+                            if experiment(kexp).bottomBar.is && useProjector && ~experiment(kexp).bottomBar.useTrigger,
                                 try
-                                    error = setTrigger(800);
-                                    WaitSecs(.018);
-                                    error = error || setTrigger(0);
+                                    error = setProjector(FPS_120HZ);
+                                    error = error || setTrigger(TRIGGER_TIME_UP); 
+                                    WaitSecs(WAIT_TIME_SIGNAL); 
+                                    error = error || setProjector(FPS_60HZ); 
                                 catch exceptions
                                     display(['Error communicating with the projector: setting trigger. ' exceptions.message]); Stack  = dbstack; Stack.line
                                     Screen('Close')
@@ -1782,16 +1861,16 @@ while(kexp<length(data.experiments.file)),
                             nloop = nloop+1;
 
                             % MASK type
-                            ovalmask = getMaskImg( experiment(kexp).maskStimulus.mask, mask );
-                            textureMask = Screen('MakeTexture', win, ovalmask);
+                            imgmask = getMaskImg( experiment(kexp).maskStimulus.mask, mask );
+                            textureMask = Screen('MakeTexture', win, imgmask);
                             if strcmp(experiment(kexp).maskStimulus.mask.type,'White noise')
                                 if experiment(kexp).maskStimulus.mask.wn.saveImages >= nloop,
                                     if strcmp(experiment(kexp).maskStimulus.mask.wn.type,'BW')
                                         experiment(kexp).maskStimulus.mask.wn.imgToComp(:,:,nloop)...
-                                            = ovalmask(:,:,1);   
+                                            = imgmask(:,:,1);   
                                     else
                                         experiment(kexp).maskStimulus.mask.wn.imgToComp(:,:,:,nloop)...
-                                            = ovalmask(:,:,1:3);
+                                            = imgmask(:,:,1:3);
                                     end
                                 end
                             end                            
@@ -1800,7 +1879,10 @@ while(kexp<length(data.experiments.file)),
                             Screen('FillRect',win,colorSC*intensity,experiment(kexp).position);
                             Screen('DrawTextures', win, textureMask, [], experiment(kexp).positionMask);
                             Screen('Close',textureMask);
+                            
+                            
                             %draw botton bar
+                            % Analog Synchronize
                             if experiment(kexp).bottomBar.is,
                                 Screen('FillRect', win,baseColorBar + colorBar*mod(b,experiment(kexp).bottomBar.division), positionBar);
                                 b = b + 1;
@@ -1821,19 +1903,94 @@ while(kexp<length(data.experiments.file)),
                         Screen('FillRect',win,[0,0,0],experiment(kexp).position);
                         vbl = Screen('Flip', win, vbl);
                     end
+                case 'White noise'
+                    limit = experiment(kexp).whitenoise.frames/(2-use60);
+                    for j=2:limit,
+                        % Set the background
+                        if experiment(kexp).img.background.isImg
+                            Screen('FillRect',win,[0 0 0]);
+                            Screen('DrawTexture',win,background);
+                        else
+                            Screen('FillRect', win, backgroundImgColor);
+                        end
+
+                        if ~mod(j,1000),
+                            disp(['Rep: ' num2str(j) '/' num2str(limit)]);
+                        end
+                        %% new code UV
+                        % Get the random White Noise image
+                        % compress img if run to 120 hz
+                        finalImage = uint8(0*experiment(kexp).maskStimulus.protocol.wn.noise);
+                        for imageCombination = 1:2;  
+                            if ~(use60 && imageCombination==2),
+                                [~, noiseimg] ...
+                                        = getRandWNimg(experiment(kexp).maskStimulus.protocol.wn);
+                                % Save the fist images of WN
+                                if use60,
+                                    saveIndex = j;
+                                else
+                                    saveIndex = (j-1)*2 + imageCombination;
+                                end
+                                if saveIndex<=experiment(kexp).maskStimulus.protocol.wn.saveImages,
+                                    if strcmp(experiment(kexp).maskStimulus.protocol.wn.type,'BW')
+                                        experiment(kexp).maskStimulus.protocol.wn.imgToComp(:,:,saveIndex)...
+                                            = noiseimg;
+                                    else
+                                        experiment(kexp).maskStimulus.protocol.wn.imgToComp(:,:,:,saveIndex)...
+                                            = noiseimg;
+                                    end
+                                end
+                            end
+                            if use60,
+                                finalImage = noiseimg;                                
+                            else
+                                finalImage = finalImage + bitshift(bitshift(noiseimg,-4),4*(imageCombination-1));
+                            end
+                        end 
+
+                        noisetxt = Screen('MakeTexture',win,finalImage);
+                        % draw Texture 
+                        Screen('DrawTexture', win, noisetxt,[],experiment(kexp).position);
+                        Screen('Close',noisetxt);
+
+                        % Analog Synchronize
+                        if experiment(kexp).bottomBar.is && ~useProjector
+                            Screen('FillRect', win,baseColorBar + colorBar*mod(b,experiment(kexp).bottomBar.division), positionBar);
+                                b = b + 1;
+                        end
+
+                        if data.serial.is
+                            % fwrite(serialCom,change);
+                            IOPort('Write', serialCom, change);
+                            b_serial = b_serial + 1;
+                        end
+
+                        if nRefreshImg == 1,
+                            vbl = Screen('Flip', win, vbl);
+                        else
+                            vbl = Screen('Flip', win, vbl + ...
+                                (nRefreshImg - 0.5) * refresh);
+                        end
+                    end                    
+                    
             end
-                
+            Time(kexp).finish = WaitSecs((nRefreshImg - 0.5) * refresh);
+            
             experiment(kexp).maskStimulus.mask.mask = mask;
            
+            % End Digital Synchronize
+            % If the trigger was select (120 hz) the projector 
+            % return to normal state  (60 hz) and with these end the trigger state.
+            % Otherwise mark end for 18 [ms] with the trigger signal 
             if experiment(kexp).bottomBar.is && useProjector,
                 try  
                     if experiment(kexp).bottomBar.useTrigger,
-                        error = setProjector(8);
+                        error = setProjector(FPS_60HZ); 
                     else
-                        error = setProjector(4);
-                        error = error || setTrigger(800);
-                        WaitSecs(.018);
-                        error = error || setProjector(8);
+                        error = setProjector(FPS_120HZ); 
+                        error = error || setTrigger(TRIGGER_TIME_UP); 
+                        WaitSecs(WAIT_TIME_SIGNAL); 
+                        error = error || setProjector(FPS_60HZ);
                     end
                 catch exceptions
                     display(['Error communicating with the projector: setting trigger. ' exceptions.message]); Stack  = dbstack; Stack.line
@@ -1849,25 +2006,7 @@ while(kexp<length(data.experiments.file)),
                 end
             end
             
-            Time(kexp).finish = WaitSecs((nRefreshImg - 0.5) * refresh);
-           
-            % ?????
-            if experiment(kexp).bottomBar.is && useProjector,
-                try  
-                    error = setProjector(8);
-                catch exceptions
-                    display(['Error communicating with the projector: setting trigger. ' exceptions.message]); Stack  = dbstack; Stack.line
-                    Screen('Close')
-                    Screen('CloseAll')
-                    return
-                end
-                if error,
-                    display('Error communicating with the projector: setting trigger')
-                    Screen('Close')
-                    Screen('CloseAll')
-                    return
-                end
-            end
+            
 
             if data.serial.is, Port('Write', serialCom, down); end
             
