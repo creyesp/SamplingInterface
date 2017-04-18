@@ -10,11 +10,7 @@ delete *.si;
 handles.mode = 'Flicker';
 
 % Set the parameters of <<<General options Panel>>
-<<<<<<< HEAD
 handles.img.directory='...';
-=======
-handles.img.directory=pwd;
->>>>>>> f9e35751058790517b587088fee9340ad4d4067b
 filelist = dir_to_Win_ls(dir(handles.img.directory));
 handles.list = char('',filelist(3:size(filelist,1),:));
 pos = searchFirstFile(handles.img.directory);
@@ -25,10 +21,6 @@ if pos==0,
     handles.img.size.height = 0;
 else
     handles.img.files = 1;
-<<<<<<< HEAD
-=======
-    disp(handles.img.directory)
->>>>>>> f9e35751058790517b587088fee9340ad4d4067b
     imageInfo = imfinfo(fullfile(handles.img.directory,handles.list(pos,:)));
     handles.img.size.width = imageInfo.Width;
     handles.img.size.height = imageInfo.Height;
@@ -82,7 +74,6 @@ handles.bottomBar.posBottom = 100;
 handles.bottomBar.division = 4;
 handles.bottomBar.graph = zeros(100,100,3);
 
-<<<<<<< HEAD
 handles.sync.is = false;
 handles.sync.isdigital = false;
 handles.sync.digital.mode = 'Start and end'; % use trigger -> 'Start and end' 'On every frames'
@@ -99,8 +90,6 @@ handles.sync.analog.posBottom = 100;
 handles.sync.analog.division = 4;
 handles.sync.analog.graph = zeros(100,100,3);
 
-=======
->>>>>>> f9e35751058790517b587088fee9340ad4d4067b
 % Set the parameters of <<<Image before stimuling Panel>>
 handles.beforeStimulus.is = false;
 handles.beforeStimulus.time = 50;
@@ -120,7 +109,6 @@ handles.beforeStimulus.graph = zeros(100,100,3);
 axes(handles.beforeStimulusGraph);
 imshow(handles.beforeStimulus.graph);
 
-<<<<<<< HEAD
 % Set general parameter of protocol
 % to do 
 handles.protocol.width = 0;
@@ -129,8 +117,6 @@ handles.protocol.useImages = false;
 
 
 
-=======
->>>>>>> f9e35751058790517b587088fee9340ad4d4067b
 % Set the parameters of <<<Option using only Background Panel>>
 handles.presentation.r = 0;
 handles.presentation.g = 0;
@@ -187,12 +173,9 @@ handles.whitenoise.time = handles.whitenoise.frames * 1/handles.whitenoise.fps;
 % Set the parameters of <<<Option using Mask Stimulus Panel>>
 handles.maskStimulus.fps = 1.0/(2.0*handles.screens.refreshRate);
 handles.maskStimulus.repeatBackground = false;
-<<<<<<< HEAD
 handles.maskStimulus.mask.useImages = false;
 handles.maskStimulus.mask.width = 0;
 handles.maskStimulus.mask.height = 0;
-=======
->>>>>>> f9e35751058790517b587088fee9340ad4d4067b
 handles.maskStimulus.mask.type = 'background';%('White noise' 'Img' 'Solid color')
 handles.maskStimulus.mask.wn.blocks = 100;
 handles.maskStimulus.mask.wn.pxY = 5;
@@ -205,7 +188,6 @@ handles.maskStimulus.mask.wn.possibleSeed = 0;
 handles.maskStimulus.mask.wn.seedFile ='...';
 handles.maskStimulus.mask.wn.graph = zeros(1,1,3);
 
-<<<<<<< HEAD
 % handles.maskStimulus.mask.img.name = '...';
 handles.maskStimulus.mask.img.directory = '...';
 handles.maskStimulus.mask.img.list = 0;
@@ -213,15 +195,6 @@ handles.maskStimulus.mask.img.nInitial = 0;
 handles.maskStimulus.mask.img.nInitialPos = 1;
 handles.maskStimulus.mask.img.nFinal = 0;
 handles.maskStimulus.mask.img.nFinalPos = 1;
-=======
-handles.maskStimulus.mask.img.name = '...';
-handles.maskStimulus.mask.img.directory = '...';
-handles.maskStimulus.mask.img.list = 0;
-handles.maskStimulus.mask.img.nInitial = 0;
-handles.maskStimulus.mask.img.nInitialPos = 0;
-handles.maskStimulus.mask.img.nFinal = 0;
-handles.maskStimulus.mask.img.nFinalPos = 0;
->>>>>>> f9e35751058790517b587088fee9340ad4d4067b
 handles.maskStimulus.mask.img.size.width = 0;
 handles.maskStimulus.mask.img.size.height = 0;
 handles.maskStimulus.mask.img.files = 0;
@@ -251,10 +224,7 @@ handles.maskStimulus.protocol.flicker.bg.r = 0;
 handles.maskStimulus.protocol.flicker.bg.g = 0;
 handles.maskStimulus.protocol.flicker.bg.b = 0;
 handles.maskStimulus.protocol.flicker.bg.graph = zeros(1,1,3);
-<<<<<<< HEAD
 % falta la grafica
-=======
->>>>>>> f9e35751058790517b587088fee9340ad4d4067b
 handles.maskStimulus.protocol.solidColor.r = 0;
 handles.maskStimulus.protocol.solidColor.g = 0;
 handles.maskStimulus.protocol.solidColor.b = 0;

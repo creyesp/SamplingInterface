@@ -138,11 +138,7 @@ if strcmp('print',use)
                     end
                 case 'Img'
                     inf = char(inf, 'Mask type: Image',...
-<<<<<<< HEAD
                         ['Path images: ' handles.maskStimulus.mask.img.directory]);
-=======
-                        ['Path images: ' handles.maskStimulus.mask.img.name]);
->>>>>>> f9e35751058790517b587088fee9340ad4d4067b
                 otherwise
                     inf = char(inf, 'Mask type: Black Images');
             end
