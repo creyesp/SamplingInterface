@@ -1,0 +1,193 @@
+beforeStimulus
+	is:	booleano para saber si esta presente en el experimento
+	time: duracion del pre-estimulo [ms]
+	rest:
+	background: color del fondo
+		r:
+		g:
+		b:
+	bar: barra antes del estimulo
+		is: booleano para saber si esta presente en el experimento
+		r:
+		g:
+		b:
+		posLeft:
+		posTop:
+		posRight:
+		posBotton:
+	graph: imagen (en ofrmato arragle n:m:3) para el fondo
+
+bottonBar
+	is: booleano para saber si esta presente en el experimento
+	useTrigger:
+	r:
+	g:
+	b:
+	baseR:
+	baseG:
+	baseB:
+	posLeft:
+	posTop:
+	posRight:
+	posBottom:
+	division:
+	graph:
+
+experiments
+	number:
+	selected:
+	file: indice de los archivos con los parametros de configuración para cada protocolo. Ej: un experimetno de 4 flicker tiene file=[0 1 2 3 4]
+	list: string con la informacion del experimento cargado en la lista de samplingInterface
+
+img
+	directory: path absoluto a la carpeta que contiene las imagenes
+	files:
+	size: tamaño de las imagenes
+		width:
+		height:
+	totalFiles: numero de imagenes
+	nInitial: string con el nombre de la primera imagen
+	nInitialPos: 
+	nFinal: string con el nombre de la ultima imagen
+	nFinalPos:
+	deltaX: corrimiento en el eje x
+	deltaY:	corriemiento en el eje y 
+	background:
+		isimg: boolean
+		r:
+		g:
+		b:
+		imgName: string con el path absoluto de la ruta
+		graph:
+
+
+list
+	arreglo de string con el nombre de las imagenes asociadas al protocolo cargado
+
+
+mode
+	nombre del tipo de protocolo que se esta corriendo
+
+modify
+
+screens
+	list: lista con el indice de los monitores disponibles
+	selected: monitor seleccionado
+	height: resolucion de la pantalla
+	width: resolucion de la pantalla
+	refreshRate: tasa de refresco en [ms]
+
+time
+	duración total del protocolo (flicker, WN, ...) en [seg]
+
+presentation
+	r: intensidad para el canal rojo
+	g: intensidad para el canal verde
+	b: intensidad para el canal azul
+	time: 
+	graph: array de 1x1x3
+
+flicker
+	time: duracion del protocolo
+	fps: cantidad de fps que espera para el cambio
+	dutyCicle: porcentaje de tiempo en alto de la imagen
+	imgTime: duracion en ON [ms]
+	backgroundTime: duración en OFF [ms]
+	repetitions: numero de repeticiones para el flicker
+	repeatBackground: booleano 
+	r: intensidad para el canal rojo
+	g: intensidad para el canal verde
+	b: intensidad para el canal azul
+	img: 
+		name: path con la imagen a presentar
+		is: boolean para para presentar img en lugar de color
+	graph: array de 1x1x3
+
+onlyStimulus
+	fps: numero de frames a presentar 
+	repetitions: numemero de repeticiones de del estimulo
+	repeatBackgraound: boolean para ...
+	time: 
+
+whitenoise
+	fps:
+	blocks: cantidad de bloques del 'tablero'
+	pxX: numero de pixeles por bloque en x
+	pxY: numero de pixeles por bloque en x
+	reduceSide:
+	type: string con el tipo de WN. ej ['BW']
+	frames:
+	saveImages: 
+	intensity: arreglo de 3 valores para definir la intensidad de cada canal
+	seed:
+		type: string con el nombre del tipo de WN
+		Seed: entero con el numero de las semilla
+		State: 
+	possibleSeed:
+	seedFile: string
+	time:
+
+maskStimulus
+	fps:
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+En stimulation()
+data = 'Final configuration.si' + parametos del estimulo en ejecución
+	data.refresh
+	data.startedTime
+	data.finishedTime
+experiment(i) parametos de cada protocolo dentro del experimeto. ej Exp001.si, Exp002si,...
+	experiment(i).img.charge(i): guarda las texturas cargadas con las imagenes que se presentaran
+
+experiment(i).noiseimg = arreglo con el tamaño de los bloques pero con el largo de los canales de colores [1 o 3]
+experiment(i).whitenoise.imgToComp = arreglo con el tamaño de los bloques*pixel pero con el largo de los canales de colores [1 o 3]
+experiment(i).noise = arreglo con el tamaño de los bloques
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+step
+ - Draw background and sync bar before stimulus
+ - Draw background Texture
+ - Set background Flicker image as a texture
+ - Draw the sync botton bar in protocol
+ - 
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Preguntas 
+ - Porque presentar firstStimulusTexture?
+ - tmp es devido a que se presento 'firstStimulusTexture'?
+	 for j=1:rep+1,
+	    if j==1, 
+	        tmp = nInit+1; 
+	    else
+	        tmp = nInit; 
+ - Porque en cada protocolo (stimulus) se repite el codigo de bottom bar?
+ - porque 
+ 	if nRefreshImg==1,
+        nRefreshImg = 0.5;
+    end
+ - las variable serial? son para sincronizar la señan digital de registro?
+ - la variable b y b_serial son para cambiar la intensidad de la señal roja? -> countsync countsync_serial
+ - proque lee el archivo de configuracion anterior en addExperiment_Callback? SamplingInteface()
+ - para que combinar imagens en WN if ~(use60 & imageCombination==2),
+
+ - Revisar ??? en el codigo
+
+ 
+setProjector(4) ajsuta el proyector a 4 bit lo que permite muestrear a 120 hz con compresion de datos, usando los bit mas significativos
+setProjector(8) ajusta el proyector a 8 bit (img) lo que permite muestrear a 60 hz
+setTrigger(800) pone el trigger en alto por 800 ms
+setTrigger(0)	pone el trigger en 0
+
+
+    if experiment(kexp).flicker.repeatBackground,
+        nRep = 0;
+    else
+        nRep = experiment(kexp).flicker.repetitions;
+    end        
+
+
+

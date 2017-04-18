@@ -1,0 +1,201 @@
+handles.addExperiment -> pushbutton agrega los parametros del protocolo a la lista
+% handles.experimentList -> listbox muestra todos los protocolos que se han agregado al experimento
+handles.upExp -> pushbutton camboa el orden de los experiemtos en la lista
+handles.downExp -> pushbutton camboa el orden de los experiemtos en la lista
+handles.startStimulation -> pushbutton corre el protocolo configurado en la lista
+% handles.totalTime -> text duracion total del experimento con todos los protocolos y sus repetiociones
+
+'Select screen' 
+	% handles.searchScreen -> pushbutton obtiene el numero de pantallas disponibles 
+	% handles.selectScreen -> popupmenu enlista los posibles monitores que se pueden usar
+'Display information'
+	% handles.screenRefreshRateHz -> text tasa de refresco de la pantalla en hz
+	% handles.screenRefreshRateMs -> text tasa de refresco de la pantalla en ms
+	% handles.screenHeight -> text alto del monitor en px
+	% handles.screenWidth -> text ancho del monitor en px
+'Sample format'
+	handles.samplingFormat -> popupmenu muestra las posibles protocolos a configurar
+'General options'
+	'Stimulus'
+		% handles.imgBackgroundGraph -> grafico
+		% handles.imgDirectory -> path de las imagenes
+		% handles.imgInitial -> popupmenu con la lasta para la imagen inicial
+		% handles.imgFinal -> popupmenu con la lasta para la imagen inicial
+		% handles.nFiles -> txtt numero de imagenes
+		% handles.backgroundColor -> checkbox para asignar color al fondo
+		% handles.backgroundR -> edit color rojo del fondo
+		% handles.backgroundG -> edit color verde del fondo
+		% handles.backgroundB -> edit color azuk del fondo
+		% handles.backgroundImg -> checkbox si se usa ina imagen de fondo
+		% handles.backgroundImgDirection -> edir path de la imagen de fondo
+		% handles.imgSizeWidth -> edit ancho de la imagen
+		% handles.imgSizeHeight -> edit largo de la imagen
+		
+		% handles.bottomBarGraph -> grafico
+		handles.selectDirectory -> button para buscar imagenes
+		handles.selectAll -> button para selectiona todas las imagenes de la lista
+		handles.backgroundImgSelect -> button para seleccionar la imagen a usar en el fondo
+		% handles.stimulusBottomBarLevelR -> edit color rojo base para la barra
+		% handles.stimulusBottomBarLevelG -> edit color verde base para la barra
+		% handles.stimulusBottomBarLevelB -> edit color azul base para la barra
+		% handles.stimulusBottomBarCr -> edit color rojo para la barra
+		% handles.stimulusBottomBarCg -> edit color verde para la barra
+		% handles.stimulusBottomBarCb -> edit color azul para la barra
+		% handles.stimulusBottomBarL -> edit position de la barra en porcentaje left
+		% handles.stimulusBottomBarR -> edit position de la barra en porcentaje top
+		% handles.stimulusBottomBarR -> edit position de la barra en porcentaje right
+		% handles.stimulusBottomBarB -> edit position de la barra en porcentaje bottom
+		% handles.bottomBarDivision -> edit numero de diviciones en el color de la barra sobre la base
+		handles.imgSetPos -> pushbutton inicia una sesion de prueba para ajustar la imagen en el proyector
+		% handles.imgDeltaX -> edit corriemiento relativo al centro de la pantalla para imagen
+		% handles.imgDeltaY -> edit corriemiento relativo al centro de la pantalla para imagen
+		% handles.addTrigger -> checkbox usar trigger en proyector UV
+		% handles.insertBottomBar -> checkbox usa la barra para mostrar proyecion
+	'Image before stimulus'
+		% handles.beforeStimulusGraph -> graph 
+		% handles.useImgBeforeStimuling -> checkbox usar antes del estimulo
+		% handles.beforeStimulusTime -> edit tiempo de presentacion antes del estimulo
+		% handles.beforeStimulusRest -> checkbox 
+		% handles.beforeStimulusBgndR -> edit color del fondo rojo
+		% handles.beforeStimulusBgndG -> edit color del fondo verde
+		% handles.beforeStimulusBgndV -> edit color del fondo azul
+		% handles.beforeStimulusBottomBar -> chekbox 
+		% handles.beforeStimulusBottomBarR -> edit fija el color de la barra 
+		% handles.beforeStimulusBottomBarG -> edit fija el color de la barra 
+		% handles.beforeStimulusBottomBarB -> edit fija el color de la barra 
+		% handles.beforeStimulusBottomBarLeft -> edir fija la posicion de la barra en porcentaje
+		% handles.beforeStimulusBottomBarTop -> edir fija la posicion de la barra en porcentaje
+		% handles.beforeStimulusBottomBarRight -> edir fija la posicion de la barra en porcentaje
+		% handles.beforeStimulusBottomBarBottom -> edir fija la posicion de la barra en porcentaje
+
+
+
+'Option using white noise'
+	% handles.maskStimulusFps -> edit 
+	% handles.maskStimulusTime -> text tiempo total del protocolo
+	% handles.maskStimulusNextFps -> pushbutton siguiente fps posible
+	% handles.maskStimulusPreviousFps -> pushbutton previo fps posible
+	% handles.whiteNoiseFrames -> edit numero de frames a mostrar
+	% handles.whiteNoiseBlocks -> edit numero de bloques del checkerboar
+	% handles.whiteNoisePxsX -> edit numero de px en x para cada bloque
+	% handles.whiteNoisePxsY -> edit numero de px en y para cada bloque
+	% handles.noiseMenu -> popupmenu tipo de whitenoise a usar, referente a los colores del checkerboard
+	handles.whiteNoisePreview -> pushbutton muestra en pantalla como se ve el checkerboar tomando los parametros de arriba
+	% handles.whiteNoiseSaveImages -> edit numero de imagenes a guardar del checkerboard presentado
+	handles.useSeed -> checkbox si esta usando una semilla predetermidana
+	% handles.seedFile -> edit path de la semilla
+	handles.seedFileSelect -> pushbutton levanta una ventana para buscar el path de la semilla
+	% handles.whiteNoiseIntensityR -> edit valor de la intensidad del color
+	% handles.whiteNoiseIntensityG -> edit valor de la intensidad del color
+	% handles.whiteNoiseIntensityB -> edit valor de la intensidad del color
+	handles.createRandomSeed -> pushbutton crea un archivo seed
+
+'Option using only stimulus'
+	% handles.onlyStimulusFps -> edit 
+	% handles.onlyStimulusNextFps -> pushbutton 
+	% handles.onlyStimulusPreviousFps -> pushbutton 
+	% handles.onlyStimulusImageRepeatition -> edit
+	% handles.onlyStimulusTime -> text
+	handles.onlyStimulusRepWithBackground -> checkbox
+
+'Option using flicker'
+	'Timming configuration'
+		% handles.flickerImgTime -> edit
+		% handles.flickerBackgroundTime -> edit
+		% handles.flickerPreviousImgTime -> pushbutton
+		% handles.flickerNextImgTime -> pushbutton
+		% handles.flickerPreviousBgndTime -> pushbutton
+		% handles.flickerNextBgndTime -> pushbutton
+		% handles.flickerTimeConf -> checkbox %% modifica handles.flicker.confFrecuencyused 
+	'Frequency configuration'
+		% handles.flickerFrequency -> edit
+		% handles.flickerPreviousFrequency -> pushbutton
+		% handles.flickerNextFrequency -> pushbutton
+		% handles.flickerDc -> edit
+		% handles.flickerDcSlider -> slider 
+		% handles.flickerFreqConf -> checkbox %% modifica handles.flicker.confFrecuencyused 
+	'Common configuration'
+		% handles.flickerGraph -> graph
+		% handles.flickerSignalGraph -> graph
+		% handles.flickerImageRepetition -> edit
+		handles.flickerRepWithBackground -> checkbox
+		% handles.flickerR -> edit
+		% handles.flickerG -> edit
+		% handles.flickerB -> edit
+		% handles.flickerUseImg -> checkbox
+		% handles.flickerImgDirection -> edit path de la imagen background del flicker
+		handles.flickerSelectImg -> pushbutton permite buscar el path de la imagen de fondo
+		% handles.flickerTime -> text tiempo de duracion del flicker
+
+'Add only background time'
+	% handles.presentationGraph -> graph
+	% handles.presentationR -> edit
+	% handles.presentationG -> edit
+	% handles.presentationB -> edit
+	% handles.presentationTime -> edit
+	handles.addPresentation -> pushbutton
+	% handles.presentationIsImage -> checkbox
+	% handles.presentationImg -> edit path de la imagen para la presentacion
+	handles.presentationImgSelect -> pushbutton
+	% handles.presentationImgMov -> popup menu
+
+'Options mask Stimulus'
+	'General Information'
+		% handles.maskStimulusRepWithBackground -> checkbox 
+		% handles.maskStimulusTime -> text
+		% handles.maskStimulusNextFps -> pushbutton
+		% handles.maskStimulusPreviousFps -> pushbutton 
+		% handles.maskStimulusFps -> edit
+		% handles.maskStimulusRepeat -> edit
+	'Configuration'
+		handles.typeProtocol -> popupmenu   % Select... Flicker Images Solid color
+		handles.typeMask -> popupmenu   % Select... Solid color	Image White Noise
+	'Mask configuration'
+		'Mask image configuration'
+			% handles.maskStimulusImgMaskFile -> edit Path de la imagen de la mascara
+			handles.maskStimulusImgMaskSelect -> pushbutton permite buscar el path de la imagen de la mascara
+		'Solid color configuration'
+			% handles.maskStimulusSolidMaskR -> edit
+			% handles.maskStimulusSolidMaskG -> edit
+			% handles.maskStimulusSolidMaskB -> edit
+			% handles.MSSolidColorGraph -> Graph 		
+		'White noise configuration'
+			% handles.maskStimulusBlockWNMask -> edit
+			% handles.maskStimulusPxsXWNMask -> edit
+			% handles.maskStimulusPxYWNMask -> edit
+			handles.maskStimulusWNType -> popupmenu
+			handles.maskStimulusPreviewWN -> pushbutton
+			handles.maskStimulusCreateRandomSeed -> pushbutton
+			% handles.maskStimulusSaveimgWNMask -> edit
+			% handles.maskStimulosUseSeed -> checkbox
+			% handles.maskStimulusSeedFile -> edit path de la seed
+			handles.maskStimulusSeedFileSelect -> pushbutton permite buscar el path de la imagen
+			% handles.maskStimulusIntensityRWNMask -> edit
+			% handles.maskStimulusIntensityGWNMask -> edit
+			% handles.maskStimulusIntensityBWNMask -> edit
+			% handles.MSwhitenoiseIntensityGraph -> Graph 
+	'Protocol configuration'
+		'Flicker configuration'
+			% handles.MSflickerGraph -> graph
+			handles.maskStimulusFlickerImgSelect -> pushbutton
+			% handles.maskStimulusFlickerImgFile -> edit path de images background
+			% handles.maskStimulusFlickerImg -> checkbox si se usa img como background del flash
+			% handles.maskStimulusFlickerR -> edit
+			% handles.maskStimulusFlickerG -> edit
+			% handles.maskStimulusFlickerB -> edit
+			'Timming configuration'
+				% handles.maskStimulusFlickerNextBgTime -> 
+				% handles.maskStimulusFlickerPreviousBgTime -> 
+				% handles.maskStimulusFlickerNextImgTime -> pushbutton
+				% handles.maskStimulusFlickerPreviousImgTime -> pushbutton
+				% handles.maskStimulusBackgroundtimeFlicker -> edit
+				% handles.maskStimulusImgtimeFlicker -> 
+		'Image configuration'
+		'solid color configuration'
+			% handles.MSsolidcolorProtocolGraph -> graph
+			% handles.maskStimulusSolidColorProtocolR -> edit
+			% handles.maskStimulusSolidColorProtocolG -> edit
+			% handles.maskStimulusSolidColorProtocolB -> edit
+			% handles.maskstimuluswidthpxSolidColor -> edit
+			% handles.maskstimulusheightpxSolidColor -> edit
+			% handles.maskStimulusSolidColorNframesProto -> edit
