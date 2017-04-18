@@ -22,11 +22,7 @@ function varargout = SamplingInterface(varargin)
 
 % Edit the above text to modify the response to help SamplingInterface
 
-<<<<<<< HEAD
 % Last Modified by GUIDE v2.5 18-Apr-2017 10:37:33
-=======
-% Last Modified by GUIDE v2.5 10-Apr-2017 16:10:44
->>>>>>> f9e35751058790517b587088fee9340ad4d4067b
 
 % Begin initialization code - DO NOT EDIT
 addpath('lib');
@@ -78,11 +74,7 @@ function startStimulation_Callback(hObject, eventdata, handles)
 if length(handles.experiments.file) < 2
     errordlg('There''s no experiment loaded to be run','Error');
 else
-<<<<<<< HEAD
     stimulation(handles);
-=======
-    stimulationUV(handles);
->>>>>>> f9e35751058790517b587088fee9340ad4d4067b
 end
 
 function onlyStimulusFps_Callback(hObject, eventdata, handles)
@@ -1683,58 +1675,6 @@ function presentationB_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
-<<<<<<< HEAD
-=======
-
-
-
-
-function [handles] = updateTimeMaskStimulus(hObject, eventdata, handles)
-	if handles.beforeStimulus.is
-	    t = handles.beforeStimulus.time/1000.0;
-	else
-	    t = 0;
-    end
-
-    if strcmp(handles.maskStimulus.protocol.type,'Flicker'),
-		if ~get(handles.maskStimulusRepWithBackground,'Value')
-		    handles.maskStimulus.time = t + (handles.maskStimulus.protocol.flicker.periodo/1000.0 )...
-                *(handles.maskStimulus.repetitions+1)*handles.img.files;
-        else
-        	handles.maskStimulus.time = t + (handles.maskStimulus.protocol.flicker.periodo/1000.0)...
-                *handles.img.files;
-		end
-		set(handles.maskStimulusTime,'String',datestr(datenum(0,0,0,0,0,...
-		        handles.maskStimulus.time),'HH:MM:SS.FFF'));
-	elseif strcmp(handles.maskStimulus.protocol.type,'Images')
-		if ~get(handles.maskStimulusRepWithBackground,'Value')
-		    handles.maskStimulus.time = handles.img.files/handles.maskStimulus.fps...
-		        * (handles.maskStimulus.repetitions + 1) + t;
-		else
-		    handles.maskStimulus.time = handles.img.files/handles.maskStimulus.fps + t;
-		end
-        set(handles.maskStimulusTime,'String',datestr(datenum(0,0,0,0,0,...
-            handles.maskStimulus.time),'HH:MM:SS.FFF'));
-	elseif strcmp(handles.maskStimulus.protocol.type,'Solid color')
-		if ~get(handles.maskStimulusRepWithBackground,'Value')
-		    handles.maskStimulus.time = ...
-		    handles.maskStimulus.protocol.solidColor.nframes/handles.maskStimulus.fps...
-            *(handles.maskStimulus.repetitions+1) + t;
-		else
-		    handles.maskStimulus.time = ...
-		    handles.maskStimulus.protocol.solidColor.nframes/handles.maskStimulus.fps + t;
-		end
-		set(handles.maskStimulusTime,'String',datestr(datenum(0,0,0,0,0,...
-		    handles.maskStimulus.time),'HH:MM:SS.FFF'));
-    else
-        handles.maskStimulus.time = t;
-		set(handles.maskStimulusTime,'String',datestr(datenum(0,0,0,0,0,...
-		    handles.maskStimulus.time),'HH:MM:SS.FFF'));
-    end
-    disp(['updateTimeMaskStimulus(): ' datestr(datenum(0,0,0,0,0,...
-		    handles.maskStimulus.time),'HH:MM:SS.FFF')])
-    guidata(hObject,handles);
->>>>>>> f9e35751058790517b587088fee9340ad4d4067b
     
 % --------------------------------------------------------------------
 function restart_ClickedCallback(hObject, eventdata, handles)
@@ -1820,7 +1760,6 @@ if in~=0
         if isempty(selection)
             return
         end
-<<<<<<< HEAD
 %         switch selection, 
 %           case 'Yes',
 %              delete *.si;
@@ -1832,19 +1771,6 @@ if in~=0
 %             otherwise
 %              return 
 %         end
-=======
-        switch selection, 
-          case 'Yes',
-             delete *.si;
-             delete *.dsi;
-             Screen('Preference', 'SkipSyncTests', 0);
-             Screen('Preference', 'VisualDebugLevel', 4);
-             delete(gcf);
-             exit;
-            otherwise
-             return 
-        end
->>>>>>> f9e35751058790517b587088fee9340ad4d4067b
     end
 end
 guidata(hObject,handles);
@@ -1892,10 +1818,7 @@ if ~isempty(in),
             end
             handles.img.size.width = imageInfo.Width;
             handles.img.size.height = imageInfo.Height;
-<<<<<<< HEAD
             
-=======
->>>>>>> f9e35751058790517b587088fee9340ad4d4067b
             set(handles.imgSizeWidth,'String',handles.img.size.width);
             set(handles.imgSizeHeight,'String',handles.img.size.height);
             if handles.beforeStimulus.is,
@@ -2279,7 +2202,6 @@ function addExperiment_Callback(hObject, eventdata, handles)
 if ~handles.modify
     return
 end
-<<<<<<< HEAD
 
 [handles.protocol.width, handles.protocol.height] = getProtocolSize(handles);
 handles.protocol.useImages = UseImagesProtocol(handles);
@@ -2291,9 +2213,6 @@ if handles.img.files~=0 ...
         || strcmp(handles.mode,'White noise') ...
         || strcmp(handles.maskStimulus.protocol.type,'Solid color')...
         || strcmp(handles.maskStimulus.protocol.type,'White noise'),
-=======
-if handles.img.files~=0 || strcmp(handles.mode,'White noise') || strcmp(handles.maskStimulus.protocol.type,'Solid color')
->>>>>>> f9e35751058790517b587088fee9340ad4d4067b
     handles.experiments.number = handles.experiments.number+1;
     handles.experiments.file = [handles.experiments.file handles.experiments.number];
 %     save(['Exp' sprintf('%03d',handles.experiments.number) '.si'],'-struct','handles');
@@ -2328,7 +2247,6 @@ if handles.img.files~=0 || strcmp(handles.mode,'White noise') || strcmp(handles.
             handles.time = handles.time + handles.onlyStimulus.time;
          end
     elseif strcmp(handles.mode,'Mask stimulus')
-<<<<<<< HEAD
         switch handles.maskStimulus.protocol.type,
             case 'Flicker'
                 newExp = ['MS - P(fl - ' num2str(round(handles.maskStimulus.protocol.flicker.dutyCycle*100))...
@@ -2369,44 +2287,6 @@ if handles.img.files~=0 || strcmp(handles.mode,'White noise') || strcmp(handles.
                 return        
         end
         
-=======
-        
-        if strcmp(handles.maskStimulus.protocol.type,'Flicker')
-            newExp = ['MS - P(fl - ' num2str(round(handles.maskStimulus.protocol.flicker.dutyCycle*100))...
-                '% - ' num2str(1000/handles.maskStimulus.protocol.flicker.periodo,'%.1f') '[Hz]) - '...
-                get(handles.nFiles,'String') ' file(s) - '];
-        elseif strcmp(handles.maskStimulus.protocol.type,'Images')
-            newExp = ['MS - P(OS - ' get(handles.nFiles,'String') ' file(s) - ' ...
-                num2str(handles.maskStimulus.fps,3) '[fps]) - '];
-        elseif  strcmp(handles.maskStimulus.protocol.type,'Solid color')
-            newExp = ['MS - P(SC - ' num2str(handles.maskStimulus.protocol.solidColor.nframes) ...
-                ' frame(s) - ' num2str(handles.maskStimulus.fps,3) '[fps]) - '];
-        else
-            errordlg('You are trying to add a experiment without protocol type','Error');
-            return
-        end
-
-        if   strcmp(handles.maskStimulus.mask.type, 'White noise')
-            if exist(handles.maskStimulus.mask.wn.seedFile,'file')
-                newExp = [newExp 'M(WN) '];
-            else
-                errordlg('You are trying to add a white noise mask without seed file','Error');
-                return
-            end
-        elseif strcmp(handles.maskStimulus.mask.type, 'Img')
-            if exist(handles.maskStimulus.mask.img.name,'file')
-                newExp = [newExp 'M(IMG) '];
-            else
-                errordlg('You are trying to add an imageless mask','Error');
-                return
-            end
-        elseif strcmp(handles.maskStimulus.mask.type,'Solid color')
-            newExp = [newExp 'M(SC) '];
-        else
-            errordlg('You are trying to add a experiment without mask type','Error');
-            return
-        end
->>>>>>> f9e35751058790517b587088fee9340ad4d4067b
         newExp = [newExp num2str(handles.maskStimulus.time,5) ' [s]' ];
 
         if get(handles.maskStimulusRepWithBackground,'Value') && length(handles.experiments.file)>1
@@ -2674,12 +2554,9 @@ if handles.presentation.time ~= 0
         'HH:MM:SS.FFF'));
     handles.mode = tmp;
     guidata(hObject,handles);
-<<<<<<< HEAD
     
     handles.protocol.width = handles.screens.width;
     handles.protocol.height = handles.screens.height;
-=======
->>>>>>> f9e35751058790517b587088fee9340ad4d4067b
 else
     errordlg('You are trying to add a timeless background','Error');
 end
@@ -3571,10 +3448,6 @@ else
     handles.flicker.dutyCicle = 100 * handles.flicker.fps * handles.flicker.imgTime/1000;
     handles.flicker.time = actualizeTemporalGraph(handles);
     handles.flicker.confFrecuencyused = false;
-<<<<<<< HEAD
-=======
-    disp(handles.flicker.confFrecuencyused)
->>>>>>> f9e35751058790517b587088fee9340ad4d4067b
 end
 guidata(hObject,handles);
 % Hint: get(hObject,'Value') returns toggle state of flickerTimeConf
@@ -3708,10 +3581,6 @@ else
     handles.flicker.dutyCicle = str2double(get(handles.flickerDc,'String'));
     handles.flicker.time = actualizeTemporalGraph(handles);
     handles.flicker.confFrecuencyused = true;
-<<<<<<< HEAD
-=======
-    disp(handles.flicker.confFrecuencyused)
->>>>>>> f9e35751058790517b587088fee9340ad4d4067b
 
 end
 guidata(hObject,handles);
@@ -3729,10 +3598,6 @@ if ~get(handles.flickerRepWithBackground,'Value'),
 else
     time = t + handles.img.files* 1/handles.flicker.fps;
 end
-<<<<<<< HEAD
-=======
-disp(time)
->>>>>>> f9e35751058790517b587088fee9340ad4d4067b
 set(handles.flickerTime,'String',datestr(datenum(0,0,0,0,0,...
     time),'HH:MM:SS.FFF'));
 axes(handles.flickerSignalGraph);
@@ -3851,7 +3716,6 @@ function imgSetPos_Callback(hObject, eventdata, handles)
 if ~handles.modify
     return
 end
-<<<<<<< HEAD
 switch handles.mode
     case 'White noise',
         [~, img] = getRandWNimg(handles.whitenoise);
@@ -3896,22 +3760,6 @@ set(handles.imgDeltaX,'String',handles.img.deltaX);
 set(handles.imgDeltaY,'String',handles.img.deltaY);
 guidata(hObject,handles);
 
-=======
-if strcmp(handles.mode,'White noise'),
-    whiteNoisePreview_Callback(hObject, eventdata, handles);
-else
-    if ismac
-        [handles.img.deltaX,handles.img.deltaY] = moveImage(handles.img.deltaX,handles.img.deltaY,...
-            handles.screens.selected,imread(fullfile(handles.img.directory,handles.img.nInitial)));
-    else
-        [handles.img.deltaX,handles.img.deltaY] = moveImageWin(handles.img.deltaX,handles.img.deltaY,...
-            handles.screens.selected,imread(fullfile(handles.img.directory,handles.img.nInitial)));
-    end
-set(handles.imgDeltaX,'String',handles.img.deltaX);
-set(handles.imgDeltaY,'String',handles.img.deltaY);
-guidata(hObject,handles);
-end
->>>>>>> f9e35751058790517b587088fee9340ad4d4067b
 
 function imgDeltaX_Callback(hObject, eventdata, handles)
 % hObject    handle to imgDeltaX (see GCBO)
@@ -4223,47 +4071,6 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 
-<<<<<<< HEAD
-=======
-% --- Executes on button press in whiteNoisePreview.
-function whiteNoisePreview_Callback(hObject, eventdata, handles)
-% hObject    handle to whiteNoisePreview (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-if ~handles.modify
-    return
-end
-noiseimg =  uint8(randi(2,handles.whitenoise.blocks,handles.whitenoise.blocks)-1);
-noiseimg = Expand(noiseimg,handles.whitenoise.pxX,handles.whitenoise.pxY);
-z = zeros(size(noiseimg));
-IR = handles.whitenoise.intensity(1);
-IG = handles.whitenoise.intensity(2);
-IB = handles.whitenoise.intensity(3);
-
-switch handles.whitenoise.type,
-    case 'BW', noiseimg = noiseimg*IR;
-    case 'BB', noiseimg = cat(3,z,z,noiseimg*IB);
-    case 'BG', noiseimg = cat(3,z,noiseimg*IG,z);
-    case 'BC', noiseimg = cat(3,z,noiseimg*IG,noiseimg*IB);
-    case 'BBGC', noiseimg2 =  uint8(randi(2,handles.whitenoise.blocks,handles.whitenoise.blocks)-1);
-                 noiseimg = cat(3,z,noiseimg*IG,IB*Expand(noiseimg2,handles.whitenoise.pxX,handles.whitenoise.pxY));
-    case 'BY', noiseimg = cat(3,noiseimg*IR,noiseimg*IG,z);
-    case 'BLG', noiseimg = cat(3,z,noiseimg*IG,(~noiseimg)*IB);
-    otherwise, noiseimg = noiseimg*IR;
-end
-
-if ismac,
-    [handles.img.deltaX,handles.img.deltaY] = moveImage(handles.img.deltaX,handles.img.deltaY,...
-        handles.screens.selected,noiseimg);
-else
-    [handles.img.deltaX,handles.img.deltaY] = moveImageWin(handles.img.deltaX,handles.img.deltaY,...
-        handles.screens.selected,noiseimg);
-end
-set(handles.imgDeltaX,'String',handles.img.deltaX);
-set(handles.imgDeltaY,'String',handles.img.deltaY);
-guidata(hObject,handles);
-
->>>>>>> f9e35751058790517b587088fee9340ad4d4067b
 
 % --- Executes on button press in onlyStimulusRepWithBackground.
 function onlyStimulusRepWithBackground_Callback(hObject, eventdata, handles)
@@ -4522,10 +4329,7 @@ else if in<=0,
   errordlg('Input must be a number and positive', 'Error')
     else
         handles.whitenoise.pxY = in;
-<<<<<<< HEAD
         handles.protocol.height = handles.whitenoise.pxY * handles.whitenoise.blocks;
-=======
->>>>>>> f9e35751058790517b587088fee9340ad4d4067b
     end
 end
 guidata(hObject,handles);
@@ -4851,7 +4655,6 @@ end
 in = get(hObject,'Value');
 if in==1,
     handles.maskStimulus.mask.type = '';
-<<<<<<< HEAD
     handles.maskStimulus.mask.useImages = false;
     set(handles.maskConfigurationMSPanel,'visible','off');
     set(handles.solidcolorMaskMSPanel,'visible','off');
@@ -4860,21 +4663,12 @@ if in==1,
     if isempty(handles.maskStimulus.protocol.type),
         set(handles.protocolConfigurationMSPanel,'visible','off');
         set(handles.whitenoiseProtoMSPanel,'visible','off');
-=======
-    set(handles.maskConfiguration,'visible','off');
-    set(handles.solidcolorMSPanel,'visible','off');
-    set(handles.whitenoiseMSPanel,'visible','off');
-    set(handles.imgMSPanel,'visible','off');
-    if isempty(handles.maskStimulus.protocol.type),
-        set(handles.protocolConfiguration,'visible','off');
->>>>>>> f9e35751058790517b587088fee9340ad4d4067b
         set(handles.imgProtoMSPanel,'visible','off');
         set(handles.solidColorProtoMSPanel,'visible','off');
         set(handles.flickerProtoMSPanel,'visible','off');
     end
 elseif in == 2,
     handles.maskStimulus.mask.type = 'Solid color';
-<<<<<<< HEAD
     handles.maskStimulus.mask.useImages = false;
     set(handles.maskConfigurationMSPanel,'visible','on');
     set(handles.solidcolorMaskMSPanel,'visible','on');
@@ -4897,31 +4691,11 @@ elseif in==3,
     
     set(handles.protocolConfigurationMSPanel,'visible','off');
     set(handles.whitenoiseProtoMSPanel,'visible','off');
-=======
-    set(handles.maskConfiguration,'visible','on');
-    set(handles.solidcolorMSPanel,'visible','on');
-    set(handles.whitenoiseMSPanel,'visible','off');
-    set(handles.imgMSPanel,'visible','off');
-    
-    set(handles.protocolConfiguration,'visible','off');
-    set(handles.imgProtoMSPanel,'visible','off');
-    set(handles.solidColorProtoMSPanel,'visible','off');
-    set(handles.flickerProtoMSPanel,'visible','off');
-elseif in==3,
-    handles.maskStimulus.mask.type = 'Img';
-    set(handles.maskConfiguration,'visible','on');
-    set(handles.solidcolorMSPanel,'visible','off');
-    set(handles.whitenoiseMSPanel,'visible','off');
-    set(handles.imgMSPanel,'visible','on');
-    
-    set(handles.protocolConfiguration,'visible','off');
->>>>>>> f9e35751058790517b587088fee9340ad4d4067b
     set(handles.imgProtoMSPanel,'visible','off');
     set(handles.solidColorProtoMSPanel,'visible','off');
     set(handles.flickerProtoMSPanel,'visible','off');
 else
     handles.maskStimulus.mask.type = 'White noise';
-<<<<<<< HEAD
     handles.maskStimulus.mask.useImages = false;
     set(handles.maskConfigurationMSPanel,'visible','on');
     set(handles.solidcolorMaskMSPanel,'visible','off');
@@ -4930,14 +4704,6 @@ else
     
     set(handles.protocolConfigurationMSPanel,'visible','off');
     set(handles.whitenoiseProtoMSPanel,'visible','off');
-=======
-    set(handles.maskConfiguration,'visible','on');
-    set(handles.solidcolorMSPanel,'visible','off');
-    set(handles.whitenoiseMSPanel,'visible','on');
-    set(handles.imgMSPanel,'visible','off');
-    
-    set(handles.protocolConfiguration,'visible','off');
->>>>>>> f9e35751058790517b587088fee9340ad4d4067b
     set(handles.imgProtoMSPanel,'visible','off');
     set(handles.solidColorProtoMSPanel,'visible','off');
     set(handles.flickerProtoMSPanel,'visible','off');
@@ -4973,7 +4739,6 @@ end
 in = get(hObject,'Value');
 if in==1,
     handles.maskStimulus.protocol.type = '';
-<<<<<<< HEAD
     
     if isempty(handles.maskStimulus.mask.type),
         set(handles.maskConfigurationMSPanel,'visible','off');
@@ -4984,22 +4749,11 @@ if in==1,
     
     set(handles.protocolConfigurationMSPanel,'visible','off');
     set(handles.whitenoiseProtoMSPanel,'visible','off');
-=======
-    if isempty(handles.maskStimulus.mask.type),
-        set(handles.maskConfiguration,'visible','off');
-        set(handles.solidcolorMSPanel,'visible','off');
-        set(handles.whitenoiseMSPanel,'visible','off');
-        set(handles.imgMSPanel,'visible','off');
-    end
-    
-    set(handles.protocolConfiguration,'visible','off');
->>>>>>> f9e35751058790517b587088fee9340ad4d4067b
     set(handles.imgProtoMSPanel,'visible','off');
     set(handles.solidColorProtoMSPanel,'visible','off');
     set(handles.flickerProtoMSPanel,'visible','off');
 elseif in==2,
     handles.maskStimulus.protocol.type = 'Flicker';
-<<<<<<< HEAD
     
     set(handles.maskConfigurationMSPanel,'visible','off');
     set(handles.solidcolorMaskMSPanel,'visible','off');
@@ -5008,20 +4762,11 @@ elseif in==2,
     
     set(handles.protocolConfigurationMSPanel,'visible','on');
     set(handles.whitenoiseProtoMSPanel,'visible','off');
-=======
-    set(handles.maskConfiguration,'visible','off');
-    set(handles.solidcolorMSPanel,'visible','off');
-    set(handles.whitenoiseMSPanel,'visible','off');
-    set(handles.imgMSPanel,'visible','off');
-    
-    set(handles.protocolConfiguration,'visible','on');
->>>>>>> f9e35751058790517b587088fee9340ad4d4067b
     set(handles.imgProtoMSPanel,'visible','off');
     set(handles.solidColorProtoMSPanel,'visible','off');
     set(handles.flickerProtoMSPanel,'visible','on');   
 elseif in==3,
     handles.maskStimulus.protocol.type = 'Images';
-<<<<<<< HEAD
     
     set(handles.maskConfigurationMSPanel,'visible','off');
     set(handles.solidcolorMaskMSPanel,'visible','off');
@@ -5057,28 +4802,6 @@ elseif in ==5;
     set(handles.imgProtoMSPanel,'visible','off');
     set(handles.solidColorProtoMSPanel,'visible','off');
     set(handles.flickerProtoMSPanel,'visible','off');
-=======
-    set(handles.maskConfiguration,'visible','off');
-    set(handles.solidcolorMSPanel,'visible','off');
-    set(handles.whitenoiseMSPanel,'visible','off');
-    set(handles.imgMSPanel,'visible','off');
-    
-    set(handles.protocolConfiguration,'visible','on');
-    set(handles.imgProtoMSPanel,'visible','on');
-    set(handles.solidColorProtoMSPanel,'visible','off');
-    set(handles.flickerProtoMSPanel,'visible','off');
-else
-    handles.maskStimulus.protocol.type = 'Solid color';
-    set(handles.maskConfiguration,'visible','off');
-    set(handles.solidcolorMSPanel,'visible','off');
-    set(handles.whitenoiseMSPanel,'visible','off');
-    set(handles.imgMSPanel,'visible','off');
-    
-    set(handles.protocolConfiguration,'visible','on');
-    set(handles.imgProtoMSPanel,'visible','off');
-    set(handles.solidColorProtoMSPanel,'visible','on');
-    set(handles.flickerProtoMSPanel,'visible','off');
->>>>>>> f9e35751058790517b587088fee9340ad4d4067b
 end
 updateTimeMaskStimulus(hObject, eventdata, handles);
 % guidata(hObject,handles);
@@ -5320,7 +5043,6 @@ function maskStimulusPreviewWN_Callback(hObject, eventdata, handles)
 % hObject    handle to maskStimulusPreviewWN (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-<<<<<<< HEAD
     if ~handles.modify
         return
     end
@@ -5337,40 +5059,6 @@ function maskStimulusPreviewWN_Callback(hObject, eventdata, handles)
             handles.screens.selected,noiseimg);
     end
     guidata(hObject,handles);
-=======
-if ~handles.modify
-    return
-end
-noiseimg =  uint8(randi(2,handles.maskStimulus.mask.wn.blocks,handles.maskStimulus.mask.wn.blocks)-1);
-noiseimg = Expand(noiseimg,handles.maskStimulus.mask.wn.pxX,handles.maskStimulus.mask.wn.pxY);
-z = zeros(size(noiseimg));
-IR = handles.maskStimulus.mask.wn.intensity(1);
-IG = handles.maskStimulus.mask.wn.intensity(2);
-IB = handles.maskStimulus.mask.wn.intensity(3);
-
-switch handles.maskStimulus.mask.wn.type,
-    case 'BW', noiseimg = noiseimg*IR;
-    case 'BB', noiseimg = cat(3,z,z,noiseimg*IB);
-    case 'BG', noiseimg = cat(3,z,noiseimg*IG,z);
-    case 'BC', noiseimg = cat(3,z,noiseimg*IG,noiseimg*IB);
-    case 'BBGC', noiseimg2 =  uint8(randi(2,handles.maskStimulus.mask.wn.blocks,handles.maskStimulus.mask.wn.blocks)-1);
-                 noiseimg = cat(3,z,noiseimg*IG,IB*Expand(noiseimg2,handles.maskStimulus.mask.wn.pxX,handles.maskStimulus.mask.wn.pxY));
-    case 'BY', noiseimg = cat(3,noiseimg*IR,noiseimg*IG,z);
-    case 'BLG', noiseimg = cat(3,z,noiseimg*IG,(~noiseimg)*IB);
-    otherwise, noiseimg = noiseimg*IR;
-end
-
-if ismac,
-    [handles.img.deltaX,handles.img.deltaY] = moveImage(handles.img.deltaX,handles.img.deltaY,...
-        handles.screens.selected,noiseimg);
-else
-    [handles.img.deltaX,handles.img.deltaY] = moveImageWin(handles.img.deltaX,handles.img.deltaY,...
-        handles.screens.selected,noiseimg);
-end
-set(handles.imgDeltaX,'String',handles.img.deltaX);
-set(handles.imgDeltaY,'String',handles.img.deltaY);
-guidata(hObject,handles);
->>>>>>> f9e35751058790517b587088fee9340ad4d4067b
 
 
 % --- Executes on button press in maskStimulusCreateRandomSeed.
@@ -5510,10 +5198,6 @@ else
         errordlg('Input must be a number between 0 and 255', 'Error')
     else
         handles.maskStimulus.mask.wn.intensity(3) = uint8(in);
-<<<<<<< HEAD
-=======
-        disp(handles.maskStimulus.mask.wn.intensity)
->>>>>>> f9e35751058790517b587088fee9340ad4d4067b
         handles.maskStimulus.mask.wn.graph(:,:,3) = in/255.0;
         axes(handles.MSwhitenoiseIntensityGraph);
         imshow( handles.maskStimulus.mask.wn.graph);
@@ -5555,10 +5239,6 @@ else
         errordlg('Input must be a number between 0 and 255', 'Error')
     else
         handles.maskStimulus.mask.wn.intensity(2) = uint8(in);
-<<<<<<< HEAD
-=======
-        disp(handles.maskStimulus.mask.wn.intensity)
->>>>>>> f9e35751058790517b587088fee9340ad4d4067b
         handles.maskStimulus.mask.wn.graph(:,:,2) = in/255.0;
         axes(handles.MSwhitenoiseIntensityGraph);
         imshow( handles.maskStimulus.mask.wn.graph);        
@@ -5600,10 +5280,6 @@ else
         errordlg('Input must be a number between 0 and 255', 'Error')
     else
         handles.maskStimulus.mask.wn.intensity(1) = uint8(in);
-<<<<<<< HEAD
-=======
-        disp(handles.maskStimulus.mask.wn.intensity)
->>>>>>> f9e35751058790517b587088fee9340ad4d4067b
         handles.maskStimulus.mask.wn.graph(:,:,1) = in/255.0;
         axes(handles.MSwhitenoiseIntensityGraph);
         imshow( handles.maskStimulus.mask.wn.graph);        
@@ -5803,13 +5479,8 @@ guidata(hObject,handles);
 
 
 % --------------------------------------------------------------------
-<<<<<<< HEAD
 function whitenoiseMaskMSPanel_ButtonDownFcn(hObject, eventdata, handles)
 % hObject    handle to whitenoiseMaskMSPanel (see GCBO)
-=======
-function whitenoiseMSPanel_ButtonDownFcn(hObject, eventdata, handles)
-% hObject    handle to whitenoiseMSPanel (see GCBO)
->>>>>>> f9e35751058790517b587088fee9340ad4d4067b
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
@@ -5963,549 +5634,6 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 
-<<<<<<< HEAD
-% --- Executes on button press in maskStimulusFlickerImgSelect.
-function maskStimulusFlickerImgSelect_Callback(hObject, eventdata, handles)
-% hObject    handle to maskStimulusFlickerImgSelect (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-if ~handles.modify
-    return
-end
-imgFiles = {['*.bmp;*.gif;*.hdf;*.jpeg;*.jpg;*.jp2;*.jpf;*.jpx;*.j2c;*.j2k'...
-    ';*.pbm;*.pcx;*.pgm;*.png;*.pnm;*.ppm;*.ras;*.tiff;*.xwd;*.cur;*.fits;*.ico'],...
-    ['Image files (*.bmp,*.gif,*.hdf,*.jpeg,*.jpg,*.jp2,*.jpf,*.jpx,*.j2c,*.j2k'...
-    ',*.pbm,*.pcx,*.pgm,*.png,*.pnm,*.ppm,*.ras,*.tiff,*.xwd,*.cur,*.fits,*.ico)']};
-[fileName,fileDirection] = uigetfile(imgFiles,'Select image to use as background');
-if fileName ~= 0
-    handles.maskStimulus.protocol.flicker.bg.name = fullfile(fileDirection,fileName);
-    set(handles.maskStimulusFlickerImgFile,'String',handles.maskStimulus.protocol.flicker.bg.name);
-end
-guidata(hObject,handles);
-
-
-function maskStimulusFlickerImgFile_Callback(hObject, eventdata, handles)
-% hObject    handle to maskStimulusFlickerImgFile (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of maskStimulusFlickerImgFile as text
-%        str2double(get(hObject,'String')) returns contents of maskStimulusFlickerImgFile as a double
-
-
-% --- Executes during object creation, after setting all properties.
-function maskStimulusFlickerImgFile_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to maskStimulusFlickerImgFile (see GCBO)
-=======
-
-function edit476_Callback(hObject, eventdata, handles)
-% hObject    handle to edit476 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of edit476 as text
-%        str2double(get(hObject,'String')) returns contents of edit476 as a double
-
-
-% --- Executes during object creation, after setting all properties.
-function edit476_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to edit476 (see GCBO)
->>>>>>> f9e35751058790517b587088fee9340ad4d4067b
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
-
-<<<<<<< HEAD
-% --- Executes on button press in maskStimulusFlickerImg.
-function maskStimulusFlickerImg_Callback(hObject, eventdata, handles)
-% hObject    handle to maskStimulusFlickerImg (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-if ~handles.modify
-    set(hObject,'Value',0.0);
-    return
-end
-if get(hObject,'Value')==1.0
-    handles.maskStimulus.protocol.flicker.bg.isImg  = true;
-    if ~supportedImageFormat(handles.maskStimulus.protocol.flicker.bg.name)
-        imgFiles = {['*.bmp;*.gif;*.hdf;*.jpeg;*.jpg;*.jp2;*.jpf;*.jpx;*.j2c;*.j2k'...
-            ';*.pbm;*.pcx;*.pgm;*.png;*.pnm;*.ppm;*.ras;*.tiff;*.xwd;*.cur;*.fits;*.ico'],...
-            ['Image files (*.bmp,*.gif,*.hdf,*.jpeg,*.jpg,*.jp2,*.jpf,*.jpx,*.j2c,*.j2k'...
-            ',*.pbm,*.pcx,*.pgm,*.png,*.pnm,*.ppm,*.ras,*.tiff,*.xwd,*.cur,*.fits,*.ico)']};
-        [fileName,fileDirection] = uigetfile(imgFiles,'Select image to use as background');
-        if fileName == 0
-            set(hObject,'Value',0.0);
-            handles.maskStimulus.protocol.flicker.bg.isImg = false;
-        else
-            handles.maskStimulus.protocol.flicker.bg.name = fullfile(fileDirection,fileName);
-            set(handles.maskStimulusFlickerImgFile,'String',handles.maskStimulus.protocol.flicker.bg.name);
-        end
-    end
-else
-    handles.maskStimulus.protocol.flicker.bg.isImg = false;
-end
-guidata(hObject,handles);
-% Hint: get(hObject,'Value') returns toggle state of maskStimulusFlickerImg
-
-
-% --- Executes on button press in checkbox77.
-function checkbox77_Callback(hObject, eventdata, handles)
-% hObject    handle to checkbox77 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hint: get(hObject,'Value') returns toggle state of checkbox77
-
-
-
-function maskStimulusRepeat_Callback(hObject, eventdata, handles)
-% hObject    handle to maskStimulusRepeat (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-in = str2double(get(hObject,'String'));
-if isnan(in)
-  set(hObject,'String',handles.maskStimulus.repetitions);
-  errordlg('Input must be a number and non negative', 'Error')
-else
-    if in<0,
-        set(hObject,'String',handles.maskStimulus.repetitions);
-        errordlg('Input must be a number and non negative', 'Error')
-    else
-        handles.maskStimulus.repetitions = in;
-    end
-end
-updateTimeMaskStimulus(hObject, eventdata, handles);
-
-
-
-% --- Executes during object creation, after setting all properties.
-function maskStimulusRepeat_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to maskStimulusRepeat (see GCBO)
-=======
-
-function edit477_Callback(hObject, eventdata, handles)
-% hObject    handle to edit477 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of edit477 as text
-%        str2double(get(hObject,'String')) returns contents of edit477 as a double
-
-
-% --- Executes during object creation, after setting all properties.
-function edit477_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to edit477 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
-
-
-function edit478_Callback(hObject, eventdata, handles)
-% hObject    handle to edit478 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of edit478 as text
-%        str2double(get(hObject,'String')) returns contents of edit478 as a double
-
-
-% --- Executes during object creation, after setting all properties.
-function edit478_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to edit478 (see GCBO)
->>>>>>> f9e35751058790517b587088fee9340ad4d4067b
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
-
-
-<<<<<<< HEAD
-function maskStimulusSolidColorProtocolR_Callback(hObject, eventdata, handles)
-% hObject    handle to maskStimulusSolidColorProtocolR (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-if ~handles.modify
-    return
-end
-in = str2double(get(hObject,'String'));
-if isnan(in)
-  set(hObject,'String',handles.maskStimulus.protocol.solidColor.r);
-  errordlg('Input must be a number between 0 and 255', 'Error')
-else
-    if (in>255 || in<0),
-        set(hObject,'String',handles.maskStimulus.protocol.solidColor.r);
-        errordlg('Input must be a number between 0 and 255', 'Error')
-    else
-        handles.maskStimulus.protocol.solidColor.r = in;
-        handles.maskStimulus.protocol.solidColor.graph(:,:,1) = in/255.0;
-        axes(handles.MSsolidcolorProtocolGraph);
-        imshow(handles.maskStimulus.protocol.solidColor.graph);
-    end
-end
-guidata(hObject,handles);
-% Hints: get(hObject,'String') returns contents of maskStimulusSolidColorProtocolR as text
-%        str2double(get(hObject,'String')) returns contents of maskStimulusSolidColorProtocolR as a double
-
-
-% --- Executes during object creation, after setting all properties.
-function maskStimulusSolidColorProtocolR_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to maskStimulusSolidColorProtocolR (see GCBO)
-=======
-function edit509_Callback(hObject, eventdata, handles)
-% hObject    handle to whiteNoiseFps (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of whiteNoiseFps as text
-%        str2double(get(hObject,'String')) returns contents of whiteNoiseFps as a double
-
-
-% --- Executes during object creation, after setting all properties.
-function edit509_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to whiteNoiseFps (see GCBO)
->>>>>>> f9e35751058790517b587088fee9340ad4d4067b
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
-
-<<<<<<< HEAD
-
-function maskStimulusSolidColorProtocolG_Callback(hObject, eventdata, handles)
-% hObject    handle to maskStimulusSolidColorProtocolG (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-if ~handles.modify
-    return
-end
-in = str2double(get(hObject,'String'));
-if isnan(in)
-  set(hObject,'String',handles.maskStimulus.protocol.solidColor.g);
-  errordlg('Input must be a number between 0 and 255', 'Error')
-else
-    if (in>255 || in<0),
-        set(hObject,'String',handles.maskStimulus.protocol.solidColor.g);
-        errordlg('Input must be a number between 0 and 255', 'Error')
-    else
-        handles.maskStimulus.protocol.solidColor.g = in;
-        handles.maskStimulus.protocol.solidColor.graph(:,:,2) = in/255.0;
-        axes(handles.MSsolidcolorProtocolGraph);
-        imshow(handles.maskStimulus.protocol.solidColor.graph);
-    end
-end
-guidata(hObject,handles);
-% Hints: get(hObject,'String') returns contents of maskStimulusSolidColorProtocolG as text
-%        str2double(get(hObject,'String')) returns contents of maskStimulusSolidColorProtocolG as a double
-
-
-% --- Executes during object creation, after setting all properties.
-function maskStimulusSolidColorProtocolG_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to maskStimulusSolidColorProtocolG (see GCBO)
-=======
-% --- Executes on button press in whiteNoiseNextFps.
-function pushbutton84_Callback(hObject, eventdata, handles)
-% hObject    handle to whiteNoiseNextFps (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-
-% --- Executes on button press in whiteNoisePreviousFps.
-function pushbutton85_Callback(hObject, eventdata, handles)
-% hObject    handle to whiteNoisePreviousFps (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-
-
-function edit510_Callback(hObject, eventdata, handles)
-% hObject    handle to whiteNoiseFrames (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of whiteNoiseFrames as text
-%        str2double(get(hObject,'String')) returns contents of whiteNoiseFrames as a double
-
-
-% --- Executes during object creation, after setting all properties.
-function edit510_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to whiteNoiseFrames (see GCBO)
->>>>>>> f9e35751058790517b587088fee9340ad4d4067b
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
-
-
-<<<<<<< HEAD
-function maskStimulusSolidColorProtocolB_Callback(hObject, eventdata, handles)
-% hObject    handle to maskStimulusSolidColorProtocolB (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-if ~handles.modify
-=======
-function edit511_Callback(hObject, eventdata, handles)
-% hObject    handle to whiteNoiseBlocks (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of whiteNoiseBlocks as text
-%        str2double(get(hObject,'String')) returns contents of whiteNoiseBlocks as a double
-
-
-% --- Executes during object creation, after setting all properties.
-function edit511_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to whiteNoiseBlocks (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
-
-
-function edit512_Callback(hObject, eventdata, handles)
-% hObject    handle to whiteNoisePxsX (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of whiteNoisePxsX as text
-%        str2double(get(hObject,'String')) returns contents of whiteNoisePxsX as a double
-
-
-% --- Executes during object creation, after setting all properties.
-function edit512_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to whiteNoisePxsX (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
-
-
-function edit513_Callback(hObject, eventdata, handles)
-% hObject    handle to whiteNoisePxsY (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of whiteNoisePxsY as text
-%        str2double(get(hObject,'String')) returns contents of whiteNoisePxsY as a double
-
-
-% --- Executes during object creation, after setting all properties.
-function edit513_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to whiteNoisePxsY (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
-
-% --- Executes on selection change in noiseMenu.
-function popupmenu31_Callback(hObject, eventdata, handles)
-% hObject    handle to noiseMenu (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: contents = cellstr(get(hObject,'String')) returns noiseMenu contents as cell array
-%        contents{get(hObject,'Value')} returns selected item from noiseMenu
-
-
-% --- Executes during object creation, after setting all properties.
-function popupmenu31_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to noiseMenu (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: popupmenu controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
-
-% --- Executes on button press in whiteNoisePreview.
-function pushbutton86_Callback(hObject, eventdata, handles)
-% hObject    handle to whiteNoisePreview (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-
-
-function edit514_Callback(hObject, eventdata, handles)
-% hObject    handle to whiteNoiseSaveImages (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of whiteNoiseSaveImages as text
-%        str2double(get(hObject,'String')) returns contents of whiteNoiseSaveImages as a double
-
-
-% --- Executes during object creation, after setting all properties.
-function edit514_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to whiteNoiseSaveImages (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
-
-% --- Executes on button press in useSeed.
-function checkbox81_Callback(hObject, eventdata, handles)
-% hObject    handle to useSeed (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hint: get(hObject,'Value') returns toggle state of useSeed
-
-
-
-function edit515_Callback(hObject, eventdata, handles)
-% hObject    handle to seedFile (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of seedFile as text
-%        str2double(get(hObject,'String')) returns contents of seedFile as a double
-
-
-% --- Executes during object creation, after setting all properties.
-function edit515_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to seedFile (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
-
-% --- Executes on button press in seedFileSelect.
-function pushbutton88_Callback(hObject, eventdata, handles)
-% hObject    handle to seedFileSelect (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-
-
-function edit516_Callback(hObject, eventdata, handles)
-% hObject    handle to whiteNoiseIntensityG (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of whiteNoiseIntensityG as text
-%        str2double(get(hObject,'String')) returns contents of whiteNoiseIntensityG as a double
-
-
-% --- Executes during object creation, after setting all properties.
-function edit516_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to whiteNoiseIntensityG (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
-
-
-function edit517_Callback(hObject, eventdata, handles)
-% hObject    handle to whiteNoiseIntensityB (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of whiteNoiseIntensityB as text
-%        str2double(get(hObject,'String')) returns contents of whiteNoiseIntensityB as a double
-
-
-% --- Executes during object creation, after setting all properties.
-function edit517_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to whiteNoiseIntensityB (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
-
-
-function edit518_Callback(hObject, eventdata, handles)
-% hObject    handle to whiteNoiseIntensityR (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of whiteNoiseIntensityR as text
-%        str2double(get(hObject,'String')) returns contents of whiteNoiseIntensityR as a double
-
-
-% --- Executes during object creation, after setting all properties.
-function edit518_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to whiteNoiseIntensityR (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
-
-% --- Executes on button press in createRandomSeed.
-function pushbutton87_Callback(hObject, eventdata, handles)
-% hObject    handle to createRandomSeed (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-
 % --- Executes on button press in maskStimulusFlickerImgSelect.
 function maskStimulusFlickerImgSelect_Callback(hObject, eventdata, handles)
 % hObject    handle to maskStimulusFlickerImgSelect (see GCBO)
@@ -6711,7 +5839,6 @@ function maskStimulusSolidColorProtocolB_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 if ~handles.modify
->>>>>>> f9e35751058790517b587088fee9340ad4d4067b
     return
 end
 in = str2double(get(hObject,'String'));
@@ -6779,15 +5906,7 @@ else
         in = in * handles.screens.refreshRate;
         handles.maskStimulus.protocol.flicker.imgTime = 1000*in;
         handles.maskStimulus.protocol.flicker.periodo = handles.maskStimulus.protocol.flicker.imgTime + handles.maskStimulus.protocol.flicker.backgroundTime;
-<<<<<<< HEAD
         handles.maskStimulus.protocol.flicker.dutyCycle = handles.maskStimulus.protocol.flicker.imgTime/handles.maskStimulus.protocol.flicker.periodo;       
-=======
-        handles.maskStimulus.protocol.flicker.dutyCycle = handles.maskStimulus.protocol.flicker.imgTime/handles.maskStimulus.protocol.flicker.periodo;
-    
-        disp('dutyclycle:')
-        disp([handles.maskStimulus.protocol.flicker.imgTime,handles.maskStimulus.protocol.flicker.backgroundTime,...
-        handles.maskStimulus.protocol.flicker.periodo, handles.maskStimulus.protocol.flicker.dutyCycle])        
->>>>>>> f9e35751058790517b587088fee9340ad4d4067b
 
         set(hObject,'String',handles.maskStimulus.protocol.flicker.imgTime);
 %         updateTimeMaskStimulus(hObject, eventdata, handles);
@@ -6852,19 +5971,7 @@ else
         handles.maskStimulus.protocol.flicker.periodo = handles.maskStimulus.protocol.flicker.imgTime + handles.maskStimulus.protocol.flicker.backgroundTime;
         handles.maskStimulus.protocol.flicker.dutyCycle = handles.maskStimulus.protocol.flicker.imgTime./handles.maskStimulus.protocol.flicker.periodo;
 
-<<<<<<< HEAD
       
-=======
-        disp('dutyclycle:')
-        disp([handles.maskStimulus.protocol.flicker.imgTime,handles.maskStimulus.protocol.flicker.backgroundTime,...
-            handles.maskStimulus.protocol.flicker.periodo, handles.maskStimulus.protocol.flicker.dutyCycle])        
-%         updateTimeMaskStimulus(hObject, eventdata, handles);
-%         if get(handles.flickerTimeConf,'Value'),
-%             handles.flicker.fps = 1 / (in + str2double(get(handles.flickerImgTime,'String'))/1000);
-%             handles.flicker.dutyCicle = 100 * (1 - handles.flicker.fps * in);
-%             handles.flicker.time = actualizeTemporalGraph(handles);
-%         end
->>>>>>> f9e35751058790517b587088fee9340ad4d4067b
     end
 end
 updateTimeMaskStimulus(hObject, eventdata, handles);
@@ -6906,12 +6013,6 @@ set(handles.maskStimulusImgtimeFlicker,'String',handles.maskStimulus.protocol.fl
 
 handles.maskStimulus.protocol.flicker.periodo = handles.maskStimulus.protocol.flicker.imgTime + handles.maskStimulus.protocol.flicker.backgroundTime;
 handles.maskStimulus.protocol.flicker.dutyCycle = handles.maskStimulus.protocol.flicker.imgTime/handles.maskStimulus.protocol.flicker.periodo;
-<<<<<<< HEAD
-=======
-disp('dutyclycle:')
-disp([handles.maskStimulus.protocol.flicker.imgTime,handles.maskStimulus.protocol.flicker.backgroundTime,...
-handles.maskStimulus.protocol.flicker.periodo, handles.maskStimulus.protocol.flicker.dutyCycle])
->>>>>>> f9e35751058790517b587088fee9340ad4d4067b
 
 updateTimeMaskStimulus(hObject, eventdata, handles);
 % if(get(handles.flickerTimeConf,'Value'))
@@ -6937,12 +6038,6 @@ set(handles.maskStimulusFlickerNextImgTime,'String',rr*(round(handles.maskStimul
 set(handles.maskStimulusImgtimeFlicker,'String',handles.maskStimulus.protocol.flicker.imgTime);
 handles.maskStimulus.protocol.flicker.periodo = handles.maskStimulus.protocol.flicker.imgTime + handles.maskStimulus.protocol.flicker.backgroundTime;
 handles.maskStimulus.protocol.flicker.dutyCycle = handles.maskStimulus.protocol.flicker.imgTime/handles.maskStimulus.protocol.flicker.periodo;
-<<<<<<< HEAD
-=======
-disp('dutyclycle:')
-disp([handles.maskStimulus.protocol.flicker.imgTime,handles.maskStimulus.protocol.flicker.backgroundTime,...
-handles.maskStimulus.protocol.flicker.periodo, handles.maskStimulus.protocol.flicker.dutyCycle])
->>>>>>> f9e35751058790517b587088fee9340ad4d4067b
 updateTimeMaskStimulus(hObject, eventdata, handles);
 % if(get(handles.flickerTimeConf,'Value'))
 %     handles.flicker.fps = 1000 / (handles.flicker.imgTime + handles.flicker.backgroundTime);
@@ -6970,12 +6065,6 @@ set(handles.maskStimulusFlickerNextBgTime,'String',rr*(round(handles.maskStimulu
 set(handles.maskStimulusBackgroundtimeFlicker,'String',handles.maskStimulus.protocol.flicker.backgroundTime);
 handles.maskStimulus.protocol.flicker.periodo = handles.maskStimulus.protocol.flicker.imgTime + handles.maskStimulus.protocol.flicker.backgroundTime;
 handles.maskStimulus.protocol.flicker.dutyCycle = handles.maskStimulus.protocol.flicker.imgTime/handles.maskStimulus.protocol.flicker.periodo;
-<<<<<<< HEAD
-=======
-disp('dutyclycle:')
-disp([handles.maskStimulus.protocol.flicker.imgTime,handles.maskStimulus.protocol.flicker.backgroundTime,...
-handles.maskStimulus.protocol.flicker.periodo, handles.maskStimulus.protocol.flicker.dutyCycle])
->>>>>>> f9e35751058790517b587088fee9340ad4d4067b
 updateTimeMaskStimulus(hObject, eventdata, handles);
 % if(get(handles.flickerTimeConf,'Value'))
 %     handles.flicker.fps = 1000 / (handles.flicker.imgTime + handles.flicker.backgroundTime);
@@ -7000,12 +6089,6 @@ set(handles.maskStimulusFlickerNextBgTime,'String',rr*(round(handles.maskStimulu
 set(handles.maskStimulusBackgroundtimeFlicker,'String',handles.maskStimulus.protocol.flicker.backgroundTime);
 handles.maskStimulus.protocol.flicker.periodo = handles.maskStimulus.protocol.flicker.imgTime + handles.maskStimulus.protocol.flicker.backgroundTime;
 handles.maskStimulus.protocol.flicker.dutyCycle = handles.maskStimulus.protocol.flicker.imgTime/handles.maskStimulus.protocol.flicker.periodo;
-<<<<<<< HEAD
-=======
-disp('dutyclycle:')
-disp([handles.maskStimulus.protocol.flicker.imgTime,handles.maskStimulus.protocol.flicker.backgroundTime,...
-handles.maskStimulus.protocol.flicker.periodo, handles.maskStimulus.protocol.flicker.dutyCycle])
->>>>>>> f9e35751058790517b587088fee9340ad4d4067b
 updateTimeMaskStimulus(hObject, eventdata, handles);
 % if(get(handles.flickerTimeConf,'Value'))
 %     handles.flicker.fps = 1000 / (handles.flicker.imgTime + handles.flicker.backgroundTime);
@@ -7126,10 +6209,7 @@ else
         errordlg('Input must be a number and non negative', 'Error')
     else
         handles.maskStimulus.protocol.solidColor.height = in;
-<<<<<<< HEAD
         handles.protocol.height = in;
-=======
->>>>>>> f9e35751058790517b587088fee9340ad4d4067b
     end
 end
 guidata(hObject,handles);
@@ -7449,7 +6529,6 @@ end
 
 % --- Executes on selection change in imgMaskFinal.
 function imgMaskFinal_Callback(hObject, eventdata, handles)
-<<<<<<< HEAD
 if ~handles.modify
     set(hObject,'Value',handles.maskStimulus.mask.img.nInitialPos);
     return
@@ -7487,14 +6566,6 @@ else
     end
 end
 updateTimeMaskStimulus(hObject, eventdata, handles);
-=======
-% hObject    handle to imgMaskFinal (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: contents = cellstr(get(hObject,'String')) returns imgMaskFinal contents as cell array
-%        contents{get(hObject,'Value')} returns selected item from imgMaskFinal
->>>>>>> f9e35751058790517b587088fee9340ad4d4067b
 
 
 % --- Executes during object creation, after setting all properties.
@@ -7551,7 +6622,6 @@ in = str2double(get(hObject,'String'));
 if isnan(in)
   set(hObject,'String',handles.maskStimulus.protocol.wn.frames);
   errordlg('Input must be a number and positive', 'Error')
-<<<<<<< HEAD
 else
     if in<=0,
         set(hObject,'String',handles.maskStimulus.protocol.wn.frames);
@@ -7561,20 +6631,6 @@ else
     end
 end
 updateTimeMaskStimulus(hObject, eventdata, handles)
-=======
-else if in<=0,
-  set(hObject,'String',handles.maskStimulus.protocol.wn.frames);
-  errordlg('Input must be a number and positive', 'Error')
-    else
-        handles.maskStimulus.protocol.wn.frames = in;
-        handles.maskStimulus.time = handles.maskStimulus.protocol.wn.frames...
-            * 1/handles.maskStimulus.fps;
-        set(handles.maskStimulusTime,'String',datestr(datenum(0,0,0,0,0,...
-            handles.maskStimulus.time),'HH:MM:SS.FFF'));
-    end
-end
-guidata(hObject,handles);
->>>>>>> f9e35751058790517b587088fee9340ad4d4067b
 
 
 % --- Executes during object creation, after setting all properties.
@@ -7638,11 +6694,8 @@ else
         errordlg('Input must be a number and positive', 'Error')
     else
         handles.maskStimulus.protocol.wn.pxY = in;
-<<<<<<< HEAD
         handles.protocol.height = handles.maskStimulus.protocol.wn.pxY ...
             * handles.maskStimulus.protocol.wn.blocks;         
-=======
->>>>>>> f9e35751058790517b587088fee9340ad4d4067b
     end
 end
 guidata(hObject,handles);
@@ -7675,11 +6728,7 @@ else
         set(hObject,'String',handles.maskStimulus.protocol.wn.blocks);
         errordlg('Input must be a number and positive', 'Error')
     else
-<<<<<<< HEAD
         handles.maskStimulus.protocol.wn.blocks = in;        
-=======
-        handles.maskStimulus.protocol.wn.blocks = in;
->>>>>>> f9e35751058790517b587088fee9340ad4d4067b
     end
 end
 guidata(hObject,handles);
@@ -7764,47 +6813,6 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 
-<<<<<<< HEAD
-=======
-% --- Executes on button press in MSwnProtocolPreview.
-function MSwnProtocolPreview_Callback(hObject, eventdata, handles)
-if ~handles.modify
-    return
-end
-% noiseimg =  uint8(randi(2,handles.maskStimulus.protocol.wn.blocks,handles.maskStimulus.protocol.wn.blocks)-1);
-% noiseimg = Expand(noiseimg,handles.maskStimulus.protocol.wn.pxX,handles.maskStimulus.protocol.wn.pxY);
-% z = zeros(size(noiseimg));
-% IR = handles.maskStimulus.protocol.wn.intensity(1);
-% IG = handles.maskStimulus.protocol.wn.intensity(2);
-% IB = handles.maskStimulus.protocol.wn.intensity(3);
-% 
-% switch handles.maskStimulus.protocol.wn.type,
-%     case 'BW', noiseimg = noiseimg*IR;
-%     case 'BB', noiseimg = cat(3,z,z,noiseimg*IB);
-%     case 'BG', noiseimg = cat(3,z,noiseimg*IG,z);
-%     case 'BC', noiseimg = cat(3,z,noiseimg*IG,noiseimg*IB);
-%     case 'BBGC', noiseimg2 =  uint8(randi(2,handles.whitenoise.blocks,handles.whitenoise.blocks)-1);
-%                  noiseimg = cat(3,z,noiseimg*IG,IB*Expand(noiseimg2,handles.whitenoise.pxX,handles.whitenoise.pxY));
-%     case 'BY', noiseimg = cat(3,noiseimg*IR,noiseimg*IG,z);
-%     case 'BLG', noiseimg = cat(3,z,noiseimg*IG,(~noiseimg)*IB);
-%     otherwise, noiseimg = noiseimg*IR;
-% end
-[~, noiseimg] = getRandWNimg(handles.maskStimulus.protocol.wn);
-
-if ismac,
-    [handles.img.deltaX,handles.img.deltaY] = moveImage(handles.img.deltaX,handles.img.deltaY,...
-        handles.screens.selected,noiseimg);
-else
-    [handles.img.deltaX,handles.img.deltaY] = moveImageWin(handles.img.deltaX,handles.img.deltaY,...
-        handles.screens.selected,noiseimg);
-end
-set(handles.imgDeltaX,'String',handles.img.deltaX);
-set(handles.imgDeltaY,'String',handles.img.deltaY);
-guidata(hObject,handles);
-
-
-
->>>>>>> f9e35751058790517b587088fee9340ad4d4067b
 function MSwnProtocolIntensityG_Callback(hObject, eventdata, handles)
 if ~handles.modify
     return
@@ -7968,7 +6976,6 @@ function MSwnProtocolCreateSeed_Callback(hObject, eventdata, handles)
 rng('shuffle');
 s = rng;
 uisave('s','seed.mat');
-<<<<<<< HEAD
 
 
 % --- Executes on selection change in TypeSynchronization.
@@ -8033,5 +7040,3 @@ function digitalSyncMode_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
-=======
->>>>>>> f9e35751058790517b587088fee9340ad4d4067b
