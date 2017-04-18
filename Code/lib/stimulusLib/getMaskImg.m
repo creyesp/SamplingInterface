@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 function [ maskImg ] = getMaskImg( maskStruct, mask, nloop)
+=======
+function [ maskImg ] = getMaskImg( maskStruct, mask)
+>>>>>>> f9e35751058790517b587088fee9340ad4d4067b
 %Get a mask image depending on the mask type [White noise, Img, Solid color]
 % input : 
 %   maskStruct : struct mask
@@ -26,7 +30,11 @@ function [ maskImg ] = getMaskImg( maskStruct, mask, nloop)
             end
         case 'Img'
             maskImg =  uint8(ones(s2, s1,4));
+<<<<<<< HEAD
             maskImg(:,:,1:3) = maskStruct.img.imgpreloaded{mod(nloop,maskStruct.img.files)+1};
+=======
+            maskImg(:,:,1:3) = maskStruct.img.img;
+>>>>>>> f9e35751058790517b587088fee9340ad4d4067b
             maskImg(:,:,4) = mask;                            
         case 'Solid color'
             maskImg =  uint8(ones(s2, s1,4));
@@ -39,4 +47,8 @@ function [ maskImg ] = getMaskImg( maskStruct, mask, nloop)
             maskImg(:,:,1) = black;
             maskImg(:,:,2) = mask;            
     end
+<<<<<<< HEAD
 end
+=======
+end
+>>>>>>> f9e35751058790517b587088fee9340ad4d4067b

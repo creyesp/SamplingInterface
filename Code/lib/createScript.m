@@ -1,6 +1,7 @@
 
 function createScript(file)
 [folder,name] = fileparts(file);
+<<<<<<< HEAD
 
 
 if isunix,
@@ -12,6 +13,12 @@ else
     text = sprintf(['#!/bin/sh\n\n' matlab ' -nojvm -nodisplay -r "cd ''' folder '''; stimulation('''...
             name '.zip'')" 2>&1 | grep -v "exclude an item from Time Machine"']);
 end
+=======
+matlab = [matlabroot '/bin/matlab'];
+
+text = sprintf(['#!/bin/sh\n\n' matlab ' -nojvm -nodisplay -r "cd ''' folder '''; stimulation('''...
+        name '.zip'')" 2>&1 | grep -v "exclude an item from Time Machine"']);
+>>>>>>> f9e35751058790517b587088fee9340ad4d4067b
     
 fid = fopen(fullfile(folder,[name '.command']),'wt');
 fwrite(fid,text,'uchar');

@@ -73,6 +73,7 @@ set(handles.totalTime,'String',datestr(datenum(0,0,0,0,0,handles.time),'HH:MM:SS
 
 % Set the parameters of <<<Sample format Panel subsection Digital Signal>>
 % handles.bottomBar.graph = zeros(100,100,3);
+<<<<<<< HEAD
 if handles.sync.is,
     if handles.sync.isdigital
         set(handles.TypeSynchronization,'value',3)
@@ -94,6 +95,8 @@ else
     set(handles.DigitalsyncPanel,'visible','off')
     set(handles.TypeSynchronization,'value',1)
 end
+=======
+>>>>>>> f9e35751058790517b587088fee9340ad4d4067b
 if handles.bottomBar.is,
     set(handles.insertBottomBar,'Value',1.0);
     handles.bottomBar.graph(floor(handles.bottomBar.posTop): ...
@@ -314,6 +317,7 @@ if handles.maskStimulus.repeatBackground
 else
     set(handles.maskStimulusRepWithBackground,'Value',0.0);
 end
+<<<<<<< HEAD
 
 set( handles.imgMaskDirectory , 'String', handles.maskStimulus.mask.img.directory);
 set( handles.imgMaskInitial , 'Value', handles.maskStimulus.mask.img.nInitialPos);
@@ -322,6 +326,9 @@ set( handles.imgMasknFiles , 'String', handles.maskStimulus.mask.img.files);
 set( handles.imgMaskSizeWidth , 'String', handles.maskStimulus.mask.img.size.width);
 set( handles.imgMaskSizeHeight , 'String', handles.maskStimulus.mask.img.size.height);
 
+=======
+set(handles.maskStimulusImgMaskFile,'String',handles.maskStimulus.mask.img.name)
+>>>>>>> f9e35751058790517b587088fee9340ad4d4067b
 handles.maskStimulus.mask.solidColor.graph(:,:,1) = handles.maskStimulus.mask.solidColor.r;
 handles.maskStimulus.mask.solidColor.graph(:,:,2) = handles.maskStimulus.mask.solidColor.g;
 handles.maskStimulus.mask.solidColor.graph(:,:,3) = handles.maskStimulus.mask.solidColor.b;
@@ -346,6 +353,7 @@ if exist(handles.maskStimulus.mask.wn.seedFile,'file'),
 else
     set(handles.maskStimulosUseSeed,'Value',0.0);
 end
+<<<<<<< HEAD
 switch handles.maskStimulus.mask.wn.type,
     case 'BW', set(handles.maskStimulusWNType,'Value', 1);
     case 'BG', set(handles.maskStimulusWNType,'Value', 3);
@@ -356,14 +364,25 @@ switch handles.maskStimulus.mask.wn.type,
     case 'BLG', set(handles.maskStimulusWNType,'Value', 7);
     otherwise , set(handles.maskStimulusWNType,'Value', 1);
 end
+=======
+set(handles.maskStimulusWNType,'Value',1);
+>>>>>>> f9e35751058790517b587088fee9340ad4d4067b
 
 handles.maskStimulus.protocol.flicker.bg.graph(:,:,1) = handles.maskStimulus.protocol.flicker.bg.r;
 handles.maskStimulus.protocol.flicker.bg.graph(:,:,2) = handles.maskStimulus.protocol.flicker.bg.g;
 handles.maskStimulus.protocol.flicker.bg.graph(:,:,3) = handles.maskStimulus.protocol.flicker.bg.b;
 axes(handles.MSflickerGraph);
 imshow(handles.maskStimulus.protocol.flicker.bg.graph);
+<<<<<<< HEAD
 
 
+=======
+handles.maskStimulus.protocol.solidColor.graph(:,:,1) = handles.maskStimulus.protocol.solidColor.r;
+handles.maskStimulus.protocol.solidColor.graph(:,:,2) = handles.maskStimulus.protocol.solidColor.g;
+handles.maskStimulus.protocol.solidColor.graph(:,:,3) = handles.maskStimulus.protocol.solidColor.b;
+axes(handles.MSsolidcolorProtocolGraph);
+imshow(handles.maskStimulus.protocol.flicker.bg.graph);
+>>>>>>> f9e35751058790517b587088fee9340ad4d4067b
 set(handles.maskStimulusImgtimeFlicker,'String',handles.maskStimulus.protocol.flicker.imgTime)
 set(handles.maskStimulusFlickerPreviousImgTime,'String',0)
 set(handles.maskStimulusFlickerNextImgTime,'String',2*handles.maskStimulus.protocol.flicker.imgTime)
@@ -379,12 +398,16 @@ end
 set(handles.maskStimulusFlickerR,'String',handles.maskStimulus.protocol.flicker.bg.r);
 set(handles.maskStimulusFlickerG,'String',handles.maskStimulus.protocol.flicker.bg.g);
 set(handles.maskStimulusFlickerB,'String',handles.maskStimulus.protocol.flicker.bg.b);
+<<<<<<< HEAD
 % Masked Stimulus - Solod Color protocol -
+=======
+>>>>>>> f9e35751058790517b587088fee9340ad4d4067b
 set(handles.maskStimulusSolidColorProtocolR,'String',handles.maskStimulus.protocol.solidColor.r);
 set(handles.maskStimulusSolidColorProtocolG,'String',handles.maskStimulus.protocol.solidColor.g);
 set(handles.maskStimulusSolidColorProtocolB,'String',handles.maskStimulus.protocol.solidColor.b);
 set(handles.maskstimuluswidthpxSolidColor,'String',handles.maskStimulus.protocol.solidColor.width);
 set(handles.maskstimulusheightpxSolidColor,'String',handles.maskStimulus.protocol.solidColor.height);
+<<<<<<< HEAD
 set(handles.maskStimulusSolidColorNframesProto,'String',handles.maskStimulus.protocol.solidColor.nframes);
 handles.maskStimulus.protocol.solidColor.graph(:,:,1) = handles.maskStimulus.protocol.solidColor.r;
 handles.maskStimulus.protocol.solidColor.graph(:,:,2) = handles.maskStimulus.protocol.solidColor.g;
@@ -417,3 +440,6 @@ switch handles.maskStimulus.protocol.wn.type,
     case 'BLG', set(handles.MSwnProtocolType,'Value', 7);
     otherwise , set(handles.MSwnProtocolType,'Value', 1);
 end
+=======
+set(handles.maskStimulusSolidColorNframesProto,'String',handles.maskStimulus.protocol.solidColor.nframes);
+>>>>>>> f9e35751058790517b587088fee9340ad4d4067b
