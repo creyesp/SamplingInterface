@@ -152,8 +152,15 @@ handles.startStimulation -> pushbutton corre el protocolo configurado en la list
 		handles.typeMask -> popupmenu   % Select... Solid color	Image White Noise
 	'Mask configuration'
 		'Mask image configuration'
-			% handles.maskStimulusImgMaskFile -> edit Path de la imagen de la mascara
 			handles.maskStimulusImgMaskSelect -> pushbutton permite buscar el path de la imagen de la mascara
+			handles.imgMaskDirectory -> edit 
+			handles.imgMaskInitial -> popupmenu
+			handles.imgMaskFinal -> popupmenu
+			handles.imgMasknFiles -> edit
+			handles.imgMaskSelectAll -> pushbutton
+			handles.imgMaskSizeWidth -> edit
+			handles.imgMaskSizeHeight -> edit
+
 		'Solid color configuration'
 			% handles.maskStimulusSolidMaskR -> edit
 			% handles.maskStimulusSolidMaskG -> edit
@@ -199,3 +206,21 @@ handles.startStimulation -> pushbutton corre el protocolo configurado en la list
 			% handles.maskstimuluswidthpxSolidColor -> edit
 			% handles.maskstimulusheightpxSolidColor -> edit
 			% handles.maskStimulusSolidColorNframesProto -> edit
+		'White noise configuration'
+			handles.MSwnProtocolNframe -> edit
+			handles.MSwnProtocolXpixel -> edit
+			handles.MSwnProtocolYpixel -> edit
+			handles.MSwnProtocolBlocks -> edit
+			handles.MSwnProtocolType -> popupmenu
+			handles.MSwnProtocolSaveImages -> edit
+			handles.MSwnProtocolPreview -> pushbutton
+			handles.MSwnProtocolIntensityG -> edit
+			handles.MSwnProtocolIntensityB -> edit
+			handles.MSwnProtocolIntensityR -> edit
+			handles.MSwnProtocolSeedSelected -> checkbox
+			handles.MSwnProtocolSeedPath -> edit
+			handles.MSwnProtocolSeedfileSelect -> pushbutton
+			handles.MSwnProtocolCreateSeed -> pushbutton
+
+
+			

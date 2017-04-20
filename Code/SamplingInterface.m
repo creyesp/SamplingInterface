@@ -945,34 +945,31 @@ end
 
 
 function stimulusBottomBarCr_Callback(hObject, eventdata, handles)
-% hObject    handle to stimulusBottomBarCr (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
 if ~handles.modify
     return
 end
 in = str2double(get(hObject,'String'));
 if isnan(in)
-  set(hObject,'String',handles.bottomBar.r);
-  errordlg(['Input must be a number between ' num2str(handles.bottomBar.baseR) ' (base level) and 255'], 'Error')
-else if (in>255 || in<handles.bottomBar.baseR),
-  set(hObject,'String',handles.bottomBar.r);
-  errordlg(['Input must be a number between ' num2str(handles.bottomBar.baseR) ' (base level) and 255'], 'Error')
+    set(hObject,'String',handles.sync.analog.r);
+    errordlg(['Input must be a number between ' num2str(handles.sync.analog.baseR) ' (base level) and 255'], 'Error')
+else
+    if (in>255 || in<handles.sync.analog.baseR),
+        set(hObject,'String',handles.sync.analog.r);
+        errordlg(['Input must be a number between ' num2str(handles.sync.analog.baseR) ' (base level) and 255'], 'Error')
     else
-        handles.bottomBar.r = in;
-        handles.bottomBar.graph(floor(handles.bottomBar.posTop): ...
-            floor(handles.bottomBar.posBottom),...
-            floor(handles.bottomBar.posLeft):...
-            floor(handles.bottomBar.posRight),1) = in/255.0;
-        if handles.bottomBar.is,
+        handles.sync.analog.r = in;
+        handles.sync.analog.graph(floor(handles.sync.analog.posTop): ...
+            floor(handles.sync.analog.posBottom),...
+            floor(handles.sync.analog.posLeft):...
+            floor(handles.sync.analog.posRight),1) = in/255.0;
+        if ~handles.sync.isdigital,
             axes(handles.bottomBarGraph);
-            imshow(handles.bottomBar.graph);
+            imshow(handles.sync.analog.graph);
         end
     end
 end
 guidata(hObject,handles)
-% Hints: get(hObject,'String') returns contents of stimulusBottomBarCr as text
-%        str2double(get(hObject,'String')) returns contents of stimulusBottomBarCr as a double
+
 
 
 % --- Executes during object creation, after setting all properties.
@@ -998,21 +995,23 @@ if ~handles.modify
 end
 in = str2double(get(hObject,'String'));
 if isnan(in)
-  set(hObject,'String',handles.bottomBar.g);
-  errordlg(['Input must be a number between ' num2str(handles.bottomBar.baseG) ' (base level) and 255'], 'Error')
-else if (in>255 || in<handles.bottomBar.g),
-  set(hObject,'String',handles.bottomBar.g);
-  errordlg(['Input must be a number between ' num2str(handles.bottomBar.baseG) ' (base level) and 255'], 'Error')
+    set(hObject,'String',handles.sync.analog.g);
+    errordlg(['Input must be a number between ' num2str(handles.sync.analog.baseG) ' (base level) and 255'], 'Error')
+else
+    if (in>255 || in<handles.sync.analog.baseG),
+        set(hObject,'String',handles.sync.analog.g);
+        errordlg(['Input must be a number between ' num2str(handles.sync.analog.baseG) ' (base level) and 255'], 'Error')
+        disp([in handles.sync.analog.g])
     else
-        handles.bottomBar.graph(floor(handles.bottomBar.posTop): ...
-            floor(handles.bottomBar.posBottom),...
-            floor(handles.bottomBar.posLeft):...
-            floor(handles.bottomBar.posRight),2) = in/255.0;
-        if handles.bottomBar.is,
+        handles.sync.analog.graph(floor(handles.sync.analog.posTop): ...
+            floor(handles.sync.analog.posBottom),...
+            floor(handles.sync.analog.posLeft):...
+            floor(handles.sync.analog.posRight),2) = in/255.0;
+        if ~handles.sync.isdigital,
             axes(handles.bottomBarGraph);
-            imshow(handles.bottomBar.graph);
+            imshow(handles.sync.analog.graph);
         end
-        handles.bottomBar.g = in;
+        handles.sync.analog.g = in;
     end
 end
 guidata(hObject,handles) 
@@ -1043,21 +1042,21 @@ if ~handles.modify
 end
 in = str2double(get(hObject,'String'));
 if isnan(in)
-  set(hObject,'String',handles.bottomBar.b);
-  errordlg(['Input must be a number between ' num2str(handles.bottomBar.baseB) ' (base level) and 255'], 'Error')
-else if (in>255 || in<handles.bottomBar.baseB),
-  set(hObject,'String',handles.bottomBar.b);
-  errordlg(['Input must be a number between ' num2str(handles.bottomBar.baseB) ' (base level) and 255'], 'Error')
+  set(hObject,'String',handles.sync.analog.b);
+  errordlg(['Input must be a number between ' num2str(handles.sync.analog.baseB) ' (base level) and 255'], 'Error')
+else if (in>255 || in<handles.sync.analog.baseB),
+  set(hObject,'String',handles.sync.analog.b);
+  errordlg(['Input must be a number between ' num2str(handles.sync.analog.baseB) ' (base level) and 255'], 'Error')
     else
-        handles.bottomBar.graph(floor(handles.bottomBar.posTop): ...
-            floor(handles.bottomBar.posBottom),...
-            floor(handles.bottomBar.posLeft):...
-            floor(handles.bottomBar.posRight),3) = in/255.0;
-        if handles.bottomBar.is,
+        handles.sync.analog.graph(floor(handles.sync.analog.posTop): ...
+            floor(handles.sync.analog.posBottom),...
+            floor(handles.sync.analog.posLeft):...
+            floor(handles.sync.analog.posRight),3) = in/255.0;
+        if ~handles.sync.isdigital,
             axes(handles.bottomBarGraph);
-            imshow(handles.bottomBar.graph);
+            imshow(handles.sync.analog.graph);
         end
-        handles.bottomBar.b = in;
+        handles.sync.analog.b = in;
     end
 end
 guidata(hObject,handles) 
@@ -1088,38 +1087,40 @@ if ~handles.modify
 end
 in = str2double(get(hObject,'String'));
 if isnan(in)
-  in = handles.bottomBar.posTop;
-  set(hObject,'String',in);
-  errordlg('Input must be a number between 1 and 100', 'Error')
-else if (in>100 || in<1),
-  in = handles.bottomBar.posTop;
-  set(hObject,'String',in);
-  errordlg('Input must be a number between 1 and 100', 'Error')
-    else if in > handles.bottomBar.posBottom,
-              in = handles.bottomBar.posTop;
+    in = handles.sync.analog.posTop;
+    set(hObject,'String',in);
+    errordlg('Input must be a number between 1 and 100', 'Error')
+else
+    if (in>100 || in<1),
+        in = handles.sync.analog.posTop;
+        set(hObject,'String',in);
+        errordlg('Input must be a number between 1 and 100', 'Error')
+    else
+        if in > handles.sync.analog.posBottom,
+              in = handles.sync.analog.posTop;
               set(hObject,'String',in);
               errordlg('Input must be equal or lower than Bottom value', 'Error')
         else
-            handles.bottomBar.posTop = in;
-            handles.bottomBar.graph = zeros(100,100,3);
-            handles.bottomBar.graph(floor(handles.bottomBar.posTop): ...
-                floor(handles.bottomBar.posBottom),...
-                floor(handles.bottomBar.posLeft):...
-                floor(handles.bottomBar.posRight),1) = ...
-                    handles.bottomBar.r ;
-            handles.bottomBar.graph(floor(handles.bottomBar.posTop): ...
-                floor(handles.bottomBar.posBottom),...
-                floor(handles.bottomBar.posLeft):...
-                floor(handles.bottomBar.posRight),2) = ...
-                    handles.bottomBar.g ;
-            handles.bottomBar.graph(floor(handles.bottomBar.posTop): ...
-                floor(handles.bottomBar.posBottom),...
-                floor(handles.bottomBar.posLeft):...
-                floor(handles.bottomBar.posRight),3) = ...
-                    handles.bottomBar.b ;                
-            if handles.bottomBar.is,
+            handles.sync.analog.posTop = in;
+            handles.sync.analog.graph = zeros(100,100,3);
+            handles.sync.analog.graph(floor(handles.sync.analog.posTop): ...
+                floor(handles.sync.analog.posBottom),...
+                floor(handles.sync.analog.posLeft):...
+                floor(handles.sync.analog.posRight),1) = ...
+                    handles.sync.analog.r ;
+            handles.sync.analog.graph(floor(handles.sync.analog.posTop): ...
+                floor(handles.sync.analog.posBottom),...
+                floor(handles.sync.analog.posLeft):...
+                floor(handles.sync.analog.posRight),2) = ...
+                    handles.sync.analog.g ;
+            handles.sync.analog.graph(floor(handles.sync.analog.posTop): ...
+                floor(handles.sync.analog.posBottom),...
+                floor(handles.sync.analog.posLeft):...
+                floor(handles.sync.analog.posRight),3) = ...
+                    handles.sync.analog.b ;                
+            if ~handles.sync.isdigital,
                 axes(handles.bottomBarGraph);
-                imshow(handles.bottomBar.graph);
+                imshow(handles.sync.analog.graph);
             end           
         end
     end
@@ -1152,38 +1153,40 @@ if ~handles.modify
 end
 in = str2double(get(hObject,'String'));
 if isnan(in)
-  in = handles.bottomBar.posRight;
-  set(hObject,'String',in);
-  errordlg('Input must be a number between 1 and 100', 'Error')
-else if (in>100 || in<1),
-  in = handles.bottomBar.posRight;
-  set(hObject,'String',in);
-  errordlg('Input must be a number between 1 and 100', 'Error')
-    else if in < handles.bottomBar.posLeft,
-              in = handles.bottomBar.posRight;
+    in = handles.sync.analog.posRight;
+    set(hObject,'String',in);
+    errordlg('Input must be a number between 1 and 100', 'Error')
+else
+    if (in>100 || in<1),
+        in = handles.sync.analog.posRight;
+        set(hObject,'String',in);
+        errordlg('Input must be a number between 1 and 100', 'Error')
+    else
+        if in < handles.sync.analog.posLeft,
+              in = handles.sync.analog.posRight;
               set(hObject,'String',in);
               errordlg('Input must be equal or higher than Left value', 'Error')
         else
-            handles.bottomBar.posRight = in;
-            handles.bottomBar.graph = zeros(100,100,3);
-            handles.bottomBar.graph(floor(handles.bottomBar.posTop): ...
-                floor(handles.bottomBar.posBottom),...
-                floor(handles.bottomBar.posLeft):...
-                floor(handles.bottomBar.posRight),1) = ...
-                    handles.bottomBar.r ;
-            handles.bottomBar.graph(floor(handles.bottomBar.posTop): ...
-                floor(handles.bottomBar.posBottom),...
-                floor(handles.bottomBar.posLeft):...
-                floor(handles.bottomBar.posRight),2) = ...
-                    handles.bottomBar.g ;
-            handles.bottomBar.graph(floor(handles.bottomBar.posTop): ...
-                floor(handles.bottomBar.posBottom),...
-                floor(handles.bottomBar.posLeft):...
-                floor(handles.bottomBar.posRight),3) = ...
-                    handles.bottomBar.b ;                
-            if handles.bottomBar.is,
+            handles.sync.analog.posRight = in;
+            handles.sync.analog.graph = zeros(100,100,3);
+            handles.sync.analog.graph(floor(handles.sync.analog.posTop): ...
+                floor(handles.sync.analog.posBottom),...
+                floor(handles.sync.analog.posLeft):...
+                floor(handles.sync.analog.posRight),1) = ...
+                    handles.sync.analog.r ;
+            handles.sync.analog.graph(floor(handles.sync.analog.posTop): ...
+                floor(handles.sync.analog.posBottom),...
+                floor(handles.sync.analog.posLeft):...
+                floor(handles.sync.analog.posRight),2) = ...
+                    handles.sync.analog.g ;
+            handles.sync.analog.graph(floor(handles.sync.analog.posTop): ...
+                floor(handles.sync.analog.posBottom),...
+                floor(handles.sync.analog.posLeft):...
+                floor(handles.sync.analog.posRight),3) = ...
+                    handles.sync.analog.b ;                
+            if ~handles.sync.isdigital,
                 axes(handles.bottomBarGraph);
-                imshow(handles.bottomBar.graph);
+                imshow(handles.sync.analog.graph);
             end          
         end
     end
@@ -1216,38 +1219,40 @@ if ~handles.modify
 end
 in = str2double(get(hObject,'String'));
 if isnan(in)
-  in = handles.bottomBar.posBottom;
-  set(hObject,'String',in);
-  errordlg('Input must be a number between 1 and 100', 'Error')
-else if (in>100 || in<1),
-  in = handles.bottomBar.posBottom;
-  set(hObject,'String',in);
-  errordlg('Input must be a number between 1 and 100', 'Error')
-    else if in < handles.bottomBar.posTop,
-              in = handles.bottomBar.posBottom;
+    in = handles.sync.analog.posBottom;
+    set(hObject,'String',in);
+    errordlg('Input must be a number between 1 and 100', 'Error')
+else
+    if (in>100 || in<1),
+        in = handles.sync.analog.posBottom;
+        set(hObject,'String',in);
+        errordlg('Input must be a number between 1 and 100', 'Error')
+    else
+        if in < handles.sync.analog.posTop,
+              in = handles.sync.analog.posBottom;
               set(hObject,'String',in);
               errordlg('Input must be equal or higher than Left value', 'Error')
         else
-            handles.bottomBar.posBottom = in;
-            handles.bottomBar.graph = zeros(100,100,3);
-            handles.bottomBar.graph(floor(handles.bottomBar.posTop): ...
-                floor(handles.bottomBar.posBottom),...
-                floor(handles.bottomBar.posLeft):...
-                floor(handles.bottomBar.posRight),1) = ...
-                    handles.bottomBar.r ;
-            handles.bottomBar.graph(floor(handles.bottomBar.posTop): ...
-                floor(handles.bottomBar.posBottom),...
-                floor(handles.bottomBar.posLeft):...
-                floor(handles.bottomBar.posRight),2) = ...
-                    handles.bottomBar.g ;
-            handles.bottomBar.graph(floor(handles.bottomBar.posTop): ...
-                floor(handles.bottomBar.posBottom),...
-                floor(handles.bottomBar.posLeft):...
-                floor(handles.bottomBar.posRight),3) = ...
-                    handles.bottomBar.b ;                
-            if handles.bottomBar.is,
+            handles.sync.analog.posBottom = in;
+            handles.sync.analog.graph = zeros(100,100,3);
+            handles.sync.analog.graph(floor(handles.sync.analog.posTop): ...
+                floor(handles.sync.analog.posBottom),...
+                floor(handles.sync.analog.posLeft):...
+                floor(handles.sync.analog.posRight),1) = ...
+                    handles.sync.analog.r ;
+            handles.sync.analog.graph(floor(handles.sync.analog.posTop): ...
+                floor(handles.sync.analog.posBottom),...
+                floor(handles.sync.analog.posLeft):...
+                floor(handles.sync.analog.posRight),2) = ...
+                    handles.sync.analog.g ;
+            handles.sync.analog.graph(floor(handles.sync.analog.posTop): ...
+                floor(handles.sync.analog.posBottom),...
+                floor(handles.sync.analog.posLeft):...
+                floor(handles.sync.analog.posRight),3) = ...
+                    handles.sync.analog.b ;                
+            if ~handles.sync.isdigital,
                 axes(handles.bottomBarGraph);
-                imshow(handles.bottomBar.graph);
+                imshow(handles.sync.analog.graph);
             end        
         end
     end
@@ -1280,38 +1285,40 @@ if ~handles.modify
 end
 in = str2double(get(hObject,'String'));
 if isnan(in)
-  in = handles.bottomBar.posLeft;
-  set(hObject,'String',in);
-  errordlg('Input must be a number between 1 and 100', 'Error')
-else if (in>100 || in<1),
-  in = handles.bottomBar.posLeft;
-  set(hObject,'String',in);
-  errordlg('Input must be a number between 1 and 100', 'Error')
-    else if in > handles.bottomBar.posRight,
-              in = handles.bottomBar.posLeft;
-              set(hObject,'String',in);
-              errordlg('Input must be equal or lower than Right value', 'Error')
+    in = handles.sync.analog.posLeft;
+    set(hObject,'String',in);
+    errordlg('Input must be a number between 1 and 100', 'Error')
+else
+    if (in>100 || in<1),
+        in = handles.sync.analog.posLeft;
+        set(hObject,'String',in);
+        errordlg('Input must be a number between 1 and 100', 'Error')
+    else
+        if in > handles.sync.analog.posRight,
+            in = handles.sync.analog.posLeft;
+            set(hObject,'String',in);
+            errordlg('Input must be equal or lower than Right value', 'Error')
         else
-            handles.bottomBar.posLeft = in;
-            handles.bottomBar.graph = zeros(100,100,3);
-            handles.bottomBar.graph(floor(handles.bottomBar.posTop): ...
-                floor(handles.bottomBar.posBottom),...
-                floor(handles.bottomBar.posLeft):...
-                floor(handles.bottomBar.posRight),1) = ...
-                    handles.bottomBar.r ;
-            handles.bottomBar.graph(floor(handles.bottomBar.posTop): ...
-                floor(handles.bottomBar.posBottom),...
-                floor(handles.bottomBar.posLeft):...
-                floor(handles.bottomBar.posRight),2) = ...
-                    handles.bottomBar.g ;
-            handles.bottomBar.graph(floor(handles.bottomBar.posTop): ...
-                floor(handles.bottomBar.posBottom),...
-                floor(handles.bottomBar.posLeft):...
-                floor(handles.bottomBar.posRight),3) = ...
-                    handles.bottomBar.b ;                
-            if handles.bottomBar.is,
+            handles.sync.analog.posLeft = in;
+            handles.sync.analog.graph = zeros(100,100,3);
+            handles.sync.analog.graph(floor(handles.sync.analog.posTop): ...
+                floor(handles.sync.analog.posBottom),...
+                floor(handles.sync.analog.posLeft):...
+                floor(handles.sync.analog.posRight),1) = ...
+                    handles.sync.analog.r ;
+            handles.sync.analog.graph(floor(handles.sync.analog.posTop): ...
+                floor(handles.sync.analog.posBottom),...
+                floor(handles.sync.analog.posLeft):...
+                floor(handles.sync.analog.posRight),2) = ...
+                    handles.sync.analog.g ;
+            handles.sync.analog.graph(floor(handles.sync.analog.posTop): ...
+                floor(handles.sync.analog.posBottom),...
+                floor(handles.sync.analog.posLeft):...
+                floor(handles.sync.analog.posRight),3) = ...
+                    handles.sync.analog.b ;                
+            if ~handles.sync.isdigital,
                 axes(handles.bottomBarGraph);
-                imshow(handles.bottomBar.graph);
+                imshow(handles.sync.analog.graph);
             end
         end
     end
@@ -2629,13 +2636,13 @@ if ~handles.modify
 end
 in = str2double(get(hObject,'String'));
 if isnan(in)
-  set(hObject,'String',handles.bottomBar.division);
+  set(hObject,'String',handles.sync.analog.division);
   errordlg('Input must be a natural number', 'Error')
 else if in<=0 || mod(in,1)~=0,
-  set(hObject,'String',handles.bottomBar.division);
+  set(hObject,'String',handles.sync.analog.division);
   errordlg('Input must be a natural number', 'Error')
     else
-        handles.bottomBar.division = in;
+        handles.sync.analog.division = in;
     end
 end
 guidata(hObject,handles);
@@ -3127,10 +3134,10 @@ if ~handles.modify
 end
 in = str2double(get(hObject,'String'));
 if isnan(in) || (in>255 || in<0),
-set(hObject,'String',handles.bottomBar.baseR);
-errordlg('Input must be a number between 0 and 255', 'Error')
+    set(hObject,'String',handles.sync.analog.baseR);
+    errordlg('Input must be a number between 0 and 255', 'Error')
 else
-    handles.bottomBar.baseR = in;
+    handles.sync.analog.baseR = in;
 end
 guidata(hObject,handles)
 % Hints: get(hObject,'String') returns contents of stimulusBottomBarLevelR as text
@@ -3160,10 +3167,10 @@ if ~handles.modify
 end
 in = str2double(get(hObject,'String'));
 if isnan(in) || (in>255 || in<0),
-set(hObject,'String',handles.bottomBar.baseG);
-errordlg('Input must be a number between 0 and 255', 'Error')
+    set(hObject,'String',handles.sync.analog.baseG);
+    errordlg('Input must be a number between 0 and 255', 'Error')
 else
-    handles.bottomBar.baseG = in;
+    handles.sync.analog.baseG = in;
 end
 guidata(hObject,handles)
 % Hints: get(hObject,'String') returns contents of stimulusBottomBarLevelG as text
@@ -3193,10 +3200,10 @@ if ~handles.modify
 end
 in = str2double(get(hObject,'String'));
 if isnan(in) || (in>255 || in<0),
-set(hObject,'String',handles.bottomBar.baseB);
-errordlg('Input must be a number between 0 and 255', 'Error')
+    set(hObject,'String',handles.sync.analog.baseB);
+    errordlg('Input must be a number between 0 and 255', 'Error')
 else
-    handles.bottomBar.baseB = in;
+    handles.sync.analog.baseB = in;
 end
 guidata(hObject,handles)
 % Hints: get(hObject,'String') returns contents of stimulusBottomBarLevelB as text
@@ -3872,12 +3879,12 @@ else if in<0,
         in = ceil(1.0/(in*handles.screens.refreshRate));
         handles.whitenoise.fps = 1.0/(in*handles.screens.refreshRate);
         if in == 1
-            set(handles.whitenoiseNextFps,'String',1.0/handles.screens.refreshRate);
+            set(handles.whiteNoiseNextFps,'String',1.0/handles.screens.refreshRate);
         else
-            set(handles.whitenoiseNextFps,'String',1.0/((in-1)*handles.screens.refreshRate));
+            set(handles.whiteNoiseNextFps,'String',1.0/((in-1)*handles.screens.refreshRate));
         end
-        set(handles.whitenoisePreviousFps,'String',1.0/((in+1)*handles.screens.refreshRate));
-        set(handles.whitenoiseFps,'String',handles.whitenoise.fps);
+        set(handles.whiteNoisePreviousFps,'String',1.0/((in+1)*handles.screens.refreshRate));
+        set(handles.whiteNoiseFps,'String',handles.whitenoise.fps);
         if handles.beforeStimulus.is
             t = handles.beforeStimulus.time/1000.0;
         else
@@ -6993,17 +7000,29 @@ switch type,
         handles.sync.is = false;
         set(handles.DigitalsyncPanel, 'visible', 'off');
         set(handles.AnalogsyncPanel, 'visible', 'off');
-    case 2,
+        handles.sync.analog.graph = zeros(100,100,3);
+    case 2, % analog
         handles.sync.is = true;
         handles.sync.isdigital = false;
         set(handles.DigitalsyncPanel, 'visible', 'off');
-        set(handles.AnalogsyncPanel, 'visible', 'on');        
-    case 3,
+        set(handles.AnalogsyncPanel, 'visible', 'on'); 
+        top = floor(handles.sync.analog.posTop);
+        bottom = floor(handles.sync.analog.posBottom);
+        left = floor(handles.sync.analog.posLeft);
+        rigth = floor(handles.sync.analog.posRight);
+        handles.sync.analog.graph(top:bottom, left:rigth, 1) = handles.sync.analog.r;
+        handles.sync.analog.graph(top:bottom, left:rigth, 2) = handles.sync.analog.g;
+        handles.sync.analog.graph(top:bottom, left:rigth, 3) = handles.sync.analog.b;        
+        
+    case 3, % digital
         handles.sync.is = true;
         handles.sync.isdigital = true;
         set(handles.DigitalsyncPanel, 'visible', 'on');
         set(handles.AnalogsyncPanel, 'visible', 'off');
+        handles.sync.analog.graph = zeros(100,100,3);
 end
+axes(handles.bottomBarGraph);
+imshow(handles.sync.analog.graph); 
 
 guidata(hObject,handles);
 

@@ -1,13 +1,37 @@
 Modificaciones por hacer:
 - Actualizar la tasa de refresco en tiempo de ejecucion, para evitrar pequeñas
 diferencias con el que se guarda en el SamplingInterface
+	En el modo ejecución usa la tasa de refresco de ese momento, no usa la guardada en el archivo de configuración
+
 - Agregar un sub-protocolo nuevo a Masked stimulus WN
+	ok
 - Agregar una secuancia de imagenes (caso generalizado) como mascara 
+	ok
 - En la señal digital dejar todo a 120 hz, no realizar cambios de 60 - 120 - 60 hz
+	...
 - Implementar varias perforaciones en los estimulos (generar una grilla) 
   que se puedan mover independientemente
+  	....
 - Generar la opcion de aleatorizar la lista de reproducciónleatorizar la lista de reproduccion
+	...
 
-- 
-Implementar funcion para imprimir los parametros de todos los SI file de un 
-protocolo
+- Implementar funcion para imprimir los parametros de todos los SI file de un protocolo
+	...
+
+
+Dudas:
+La definicion de semilla para la funcion rand es solo una, 
+	¿Qué hacer en el caso donde se usa tanto en el protocolo como en la mascara WN?
+		(usar el numero aleatorio uno por medio)
+Cuando se usa usa una mascara de WN, 
+	¿Qué hacer cuando hay repeticiones?	¿reiniciar siempre la semilla del rand para que todas sean iguales? (caso rep.bgnd)
+	¿o usar una sola semilla al comienzo ?
+
+guardar las imagenes del wn a 120 HZ
+
+-remover imagen negra en mask stimulus solid color protocol
+-modificar mascara rectangular para lograr el maximo tamaña en rotacion
+-revisar wn como protocolo y como mascara y ver como usan la semilla al inicio, si usan la misma semilla entonces deberia
+presentar el mismo wn, pero eso no ocurre actualmente.
+
+

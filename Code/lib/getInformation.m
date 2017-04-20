@@ -28,19 +28,19 @@ if strcmp('print',use)
                 num2str(handles.img.background.g) ',' num2str(handles.img.background.b) ']']);
             end
         end
-        if handles.bottomBar.is
-            if handles.bottomBar.useTrigger || strcmp(handles.mode,'White noise'),
+        if handles.sync.is
+            if strcmp(handles.sync.digital.mode,'On every frames') || strcmp(handles.mode,'White noise'),
                 inf = char(inf, 'Using digital output signal on every presented frame');
             else
                 inf = char(inf, 'Using digital output signal only on the initial frame');
             end
-%             inf = char(inf, ['Trigger enabled [' num2str(handles.bottomBar.r) ...
-%                 ',' num2str(handles.bottomBar.g) ',' num2str(handles.bottomBar.b) ...
-%                 '] position[' num2str(handles.bottomBar.posLeft) ',' ...
-%                 num2str(handles.bottomBar.posTop) ',' num2str(handles.bottomBar.posRight) ...
-%                 ',' num2str(handles.bottomBar.posBottom) '], base levels of ['...
-%                 num2str(handles.bottomBar.baseR) ',' num2str(handles.bottomBar.baseG) ',' ...
-%                 num2str(handles.bottomBar.baseB) '] and ' num2str(handles.bottomBar.division)...
+%             inf = char(inf, ['Trigger enabled [' num2str(handles.sync.analog.r) ...
+%                 ',' num2str(handles.sync.analog.g) ',' num2str(handles.sync.analog.b) ...
+%                 '] position[' num2str(handles.sync.analog.posLeft) ',' ...
+%                 num2str(handles.sync.analog.posTop) ',' num2str(handles.sync.analog.posRight) ...
+%                 ',' num2str(handles.sync.analog.posBottom) '], base levels of ['...
+%                 num2str(handles.sync.analog.baseR) ',' num2str(handles.sync.analog.baseG) ',' ...
+%                 num2str(handles.sync.analog.baseB) '] and ' num2str(handles.sync.analog.division)...
 %                 ' divisions']);
         else
             inf = char(inf, 'Has no bottom bar');
@@ -161,19 +161,6 @@ if strcmp('print',use)
         end
     end
 else
-%     inf.mode = handles.mode;
-%     inf.list = handles.list;
-%     inf.img = handles.img;
-%     inf.bottomBar = handles.bottomBar;
-%     inf.beforeStimulus = handles.beforeStimulus;
-%     inf.flicker = handles.flicker;
-%     inf.onlyStimulus = handles.onlyStimulus;
-%     inf.presentation = handles.presentation;
-%     inf.experiments = handles.experiments;
-%     inf.screens = handles.screens;
-%     inf.time = handles.time;
-%     inf.whitenoise = handles.whitenoise;
-%     inf.modify = handles.modify;
     inf = handles;
 end
 end
