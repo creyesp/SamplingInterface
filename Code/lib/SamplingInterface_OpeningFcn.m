@@ -76,7 +76,7 @@ Screen('Preference', 'VisualDebugLevel', oldLevel);
 
 handles.sync.is = false;
 handles.sync.isdigital = false;
-handles.sync.digital.mode = 'Start and end'; % use trigger -> 'Start and end' 'On every frames'
+handles.sync.digital.mode = 'On every frames'; % use trigger -> 'Start and end' 'On every frames'
 handles.sync.analog.r = 255;
 handles.sync.analog.baseR = 125;
 handles.sync.analog.g = 0;

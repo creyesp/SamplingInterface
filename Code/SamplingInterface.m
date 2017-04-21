@@ -22,7 +22,7 @@ function varargout = SamplingInterface(varargin)
 
 % Edit the above text to modify the response to help SamplingInterface
 
-% Last Modified by GUIDE v2.5 18-Apr-2017 10:37:33
+% Last Modified by GUIDE v2.5 21-Apr-2017 17:53:23
 
 % Begin initialization code - DO NOT EDIT
 addpath('lib');
@@ -7021,10 +7021,10 @@ switch type,
         top = floor(handles.sync.analog.posTop);
         bottom = floor(handles.sync.analog.posBottom);
         left = floor(handles.sync.analog.posLeft);
-        rigth = floor(handles.sync.analog.posRight);
-        handles.sync.analog.graph(top:bottom, left:rigth, 1) = handles.sync.analog.r;
-        handles.sync.analog.graph(top:bottom, left:rigth, 2) = handles.sync.analog.g;
-        handles.sync.analog.graph(top:bottom, left:rigth, 3) = handles.sync.analog.b;        
+        right = floor(handles.sync.analog.posRight);
+        handles.sync.analog.graph(top:bottom, left:right, 1) = handles.sync.analog.r;
+        handles.sync.analog.graph(top:bottom, left:right, 2) = handles.sync.analog.g;
+        handles.sync.analog.graph(top:bottom, left:right, 3) = handles.sync.analog.b;        
         
     case 3, % digital
         handles.sync.is = true;
@@ -7071,3 +7071,8 @@ function digitalSyncMode_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+
+
+% --------------------------------------------------------------------
+function newFile_ClickedCallback(hObject, eventdata, handles)
+SamplingInterface_OpeningFcn(hObject, eventdata, handles, []);

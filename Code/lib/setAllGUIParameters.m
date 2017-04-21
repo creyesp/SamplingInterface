@@ -87,33 +87,21 @@ if handles.sync.is,
         set(handles.TypeSynchronization,'value',2)
         set(handles.AnalogsyncPanel,'visible','on')
         set(handles.DigitalsyncPanel,'visible','off')        
-        % todo lo de la analog sync
+        
+        top = floor(handles.sync.analog.posTop);
+        bottom = floor(handles.sync.analog.posBottom);
+        left = floor(handles.sync.analog.posLeft);
+        right = floor(handles.sync.analog.posRight);
+        handles.sync.analog.graph(top:bottom, left:right, 1) = handles.sync.analog.r;
+        handles.sync.analog.graph(top:bottom, left:right, 2) = handles.sync.analog.g;
+        handles.sync.analog.graph(top:bottom, left:right, 3) = handles.sync.analog.b; 
     end
 else
     set(handles.AnalogsyncPanel,'visible','off')
     set(handles.DigitalsyncPanel,'visible','off')
     set(handles.TypeSynchronization,'value',1)
 end
-if handles.sync.is,
-    set(handles.insertBottomBar,'Value',1.0);
-    handles.sync.analog.graph(floor(handles.sync.analog.posTop): ...
-        floor(handles.sync.analog.posBottom),...
-        floor(handles.sync.analog.posLeft):...
-        floor(handles.sync.analog.posRight),1) = ...
-            handles.sync.analog.r/255.0 ;
-    handles.sync.analog.graph(floor(handles.sync.analog.posTop): ...
-        floor(handles.sync.analog.posBottom),...
-        floor(handles.sync.analog.posLeft):...
-        floor(handles.sync.analog.posRight),2) = ...
-            handles.sync.analog.g/255.0 ;
-    handles.sync.analog.graph(floor(handles.sync.analog.posTop): ...
-        floor(handles.sync.analog.posBottom),...
-        floor(handles.sync.analog.posLeft):...
-        floor(handles.sync.analog.posRight),3) = ...
-            handles.sync.analog.b/255.0 ;
-else
-    set(handles.insertBottomBar,'Value',0.0);
-end
+
 set(handles.bottomBarDivision,'String',handles.sync.analog.division);
 set(handles.imgDeltaX,'String',handles.img.deltaX);
 set(handles.imgDeltaY,'String',handles.img.deltaY);
