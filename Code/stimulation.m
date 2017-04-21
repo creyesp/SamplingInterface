@@ -604,6 +604,14 @@ while(kexp<length(data.experiments.file)),
                 Screen('Close',firstStimulusTexture);
             end
             
+            b = 0;
+            b_serial = 0;
+
+            if data.serial.is
+                IOPort('Write', serialCom, change);
+                b_serial = b_serial + 1;
+            end    
+            
             % Start Digital or Analog Synchronize
             % If use 120Hz and the trigger was select the projector 
             % mark all frame with digital pulse, if the trigger was not 
@@ -634,7 +642,8 @@ while(kexp<length(data.experiments.file)),
                         return
                     end
                 else
-                     Screen('FillRect', win,baseColorBar, positionBar);
+                    Screen('FillRect', win,baseColorBar + colorBar*mod(b,experiment(kexp).sync.analog.division),positionBar);
+                    b = b + 1;
                 end
             end
             
@@ -674,9 +683,9 @@ while(kexp<length(data.experiments.file)),
                     % Analog Synchronize
                     if experiment(kexp).sync.is && ~experiment(kexp).sync.isdigital,
                         % Bars are now only presented during images, 
-                        % then the level is now the middle of the previous
-                        % configuration: (j-1) -> (j-1)/2
-                        Screen('FillRect', win,baseColorBar + colorBar*mod((j-1)/2,experiment(kexp).sync.analog.division), positionBar);
+                        % hence b = b + 2;
+                        Screen('FillRect', win,baseColorBar + colorBar*mod(b,experiment(kexp).sync.analog.division), positionBar);
+                        b = b + 1;
                     end
                     
                     vbl = Screen('Flip', win, vbl + ...
@@ -1226,7 +1235,9 @@ while(kexp<length(data.experiments.file)),
                 
                 %%%% Set the initial MASK %%%%
                 [x, y] = meshgrid(-s1/2:1:s1/2-1, -s2/2:1:s2/2-1);
-                imgMask =  uint8(ones(s2, s1)*255);%check
+                ss = max([s1 s2]);
+                factor = 1.42;
+                imgMask =  uint8(ones(s2, s1)*255);
                 rotMask = deg2rad(angle);
                 % oval shape
                 if strcmp(maskShape,'oval')
@@ -1235,9 +1246,10 @@ while(kexp<length(data.experiments.file)),
                     mask = uint8((((x*cos(rotMask)-y*sin(rotMask))./width).^2+...
                         ((x*sin(rotMask)+y*cos(rotMask))./height).^2 >= 1)*white);
                 else % rect shape
-                    mask = ((abs(x) < width) & (abs(y) < height));
-                    mask = uint8((~imrotate(mask,angle))*255);
-
+                    [xr, yr] = meshgrid(-round(ss*factor/2):1:round(ss*factor/2)-1, -round(ss*factor/2):1:round(ss*factor/2)-1);
+                    imgMask =  uint8(ones(ss*factor, ss*factor)*255);                    
+                    mask = ((abs(xr) < width) & (abs(yr) < height));
+                    mask = uint8((~imrotate(mask,angle,'crop'))*255);
                     if shiftX >= 0 && shiftY >= 0, %move ^>
                         imgMask(shiftY+1:end,1:end-shiftX) = mask(1:end-shiftY,shiftX+1:end);
                     elseif shiftX >= 0 && shiftY <= 0, %move v>
@@ -1249,7 +1261,7 @@ while(kexp<length(data.experiments.file)),
                     else
                         imgMask = mask;
                     end
-                    mask = imgMask;
+                    mask = imgMask(round((ss-s2)/2)+1:round((ss+s2)/2), round((ss-s1)/2)+1:round((ss+s1)/2));
                 end
             end
             
@@ -1384,9 +1396,10 @@ while(kexp<length(data.experiments.file)),
                         mask = uint8((((x*cos(rotMask)-y*sin(rotMask))./width).^2+...
                             ((x*sin(rotMask)+y*cos(rotMask))./height).^2 >= 1)*255);
                     else %rect shape
-                        mask = ((abs(x) < width) & (abs(y) < height));
+                        [xr, yr] = meshgrid(-round(ss*factor/2):1:round(ss*factor/2)-1, -round(ss*factor/2):1:round(ss*factor/2)-1);
+                        mask = ((abs(xr) < width) & (abs(yr) < height));
                         mask = uint8((~imrotate(mask,angle,'crop'))*255);
-                        
+                        imgMask =  uint8(ones(ss*factor, ss*factor)*255);      
                         if shiftX >= 0 && shiftY >= 0, %move ^>
                             imgMask(shiftY+1:end,1:end-shiftX) = mask(1:end-shiftY,shiftX+1:end);
                         elseif shiftX >= 0 && shiftY <= 0, %move v>
@@ -1398,7 +1411,7 @@ while(kexp<length(data.experiments.file)),
                         else
                             imgMask = mask;
                         end
-                        mask = imgMask;
+                        mask = imgMask(round((ss*factor-s1)/2)+1:round((ss*factor+s1)/2), round((ss*factor-s2)/2)+1:round((ss*factor+s2)/2));
                     end                    
                 end
                 
