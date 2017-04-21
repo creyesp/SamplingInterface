@@ -2045,8 +2045,8 @@ while(kexp<length(data.experiments.file)),
                                     (nRefreshImg - 0.5) * refresh);
                             end
                         end
-                        Screen('FillRect',win,[0,0,0],experiment(kexp).position);
-                        vbl = Screen('Flip', win, vbl);
+%                         Screen('FillRect',win,[0,0,0],experiment(kexp).position);
+%                         vbl = Screen('Flip', win, vbl);
                     end
                 case 'White noise'
                     limit = experiment(kexp).maskStimulus.protocol.wn.frames/(2-use60);
@@ -2138,7 +2138,7 @@ while(kexp<length(data.experiments.file)),
                     end                          
             end
             Time(kexp).finish = WaitSecs((nRefreshImg - 0.5) * refresh);
-            
+            disp(['Time experiment: ' int2str(Time(kexp).finish-Time(kexp).start)])
             experiment(kexp).maskStimulus.mask.mask = mask;
            
             % End Digital Synchronize
