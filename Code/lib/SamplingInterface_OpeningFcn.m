@@ -59,24 +59,24 @@ Screen('Preference', 'VisualDebugLevel', oldLevel);
 
 
 % Set the parameters of <<<Sample format Panel subsection Digital Signal>>
-handles.bottomBar.is = false;
-handles.bottomBar.useTrigger = false;
-handles.bottomBar.r = 255;
-handles.bottomBar.baseR = 125;
-handles.bottomBar.g = 0;
-handles.bottomBar.baseG = 0;
-handles.bottomBar.b = 0;
-handles.bottomBar.baseB = 0;
-handles.bottomBar.posLeft = 1;
-handles.bottomBar.posTop = 85;
-handles.bottomBar.posRight = 100;
-handles.bottomBar.posBottom = 100;
-handles.bottomBar.division = 4;
-handles.bottomBar.graph = zeros(100,100,3);
+% handles.bottomBar.is = false;
+% handles.bottomBar.useTrigger = false;
+% handles.bottomBar.r = 255;
+% handles.bottomBar.baseR = 125;
+% handles.bottomBar.g = 0;
+% handles.bottomBar.baseG = 0;
+% handles.bottomBar.b = 0;
+% handles.bottomBar.baseB = 0;
+% handles.bottomBar.posLeft = 1;
+% handles.bottomBar.posTop = 85;
+% handles.bottomBar.posRight = 100;
+% handles.bottomBar.posBottom = 100;
+% handles.bottomBar.division = 4;
+% handles.bottomBar.graph = zeros(100,100,3);
 
 handles.sync.is = false;
 handles.sync.isdigital = false;
-handles.sync.digital.mode = 'Start and end'; % use trigger -> 'Start and end' 'On every frames'
+handles.sync.digital.mode = 'On every frames'; % use trigger -> 'Start and end' 'On every frames'
 handles.sync.analog.r = 255;
 handles.sync.analog.baseR = 125;
 handles.sync.analog.g = 0;

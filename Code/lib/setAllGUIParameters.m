@@ -72,7 +72,7 @@ set(handles.screenRefreshRateMs,'String',handles.screens.refreshRate);
 set(handles.totalTime,'String',datestr(datenum(0,0,0,0,0,handles.time),'HH:MM:SS.FFF'));
 
 % Set the parameters of <<<Sample format Panel subsection Digital Signal>>
-% handles.bottomBar.graph = zeros(100,100,3);
+% handles.sync.analog.graph = zeros(100,100,3);
 if handles.sync.is,
     if handles.sync.isdigital
         set(handles.TypeSynchronization,'value',3)
@@ -87,54 +87,42 @@ if handles.sync.is,
         set(handles.TypeSynchronization,'value',2)
         set(handles.AnalogsyncPanel,'visible','on')
         set(handles.DigitalsyncPanel,'visible','off')        
-        % todo lo de la analog sync
+        
+        top = floor(handles.sync.analog.posTop);
+        bottom = floor(handles.sync.analog.posBottom);
+        left = floor(handles.sync.analog.posLeft);
+        right = floor(handles.sync.analog.posRight);
+        handles.sync.analog.graph(top:bottom, left:right, 1) = handles.sync.analog.r;
+        handles.sync.analog.graph(top:bottom, left:right, 2) = handles.sync.analog.g;
+        handles.sync.analog.graph(top:bottom, left:right, 3) = handles.sync.analog.b; 
     end
 else
     set(handles.AnalogsyncPanel,'visible','off')
     set(handles.DigitalsyncPanel,'visible','off')
     set(handles.TypeSynchronization,'value',1)
 end
-if handles.bottomBar.is,
-    set(handles.insertBottomBar,'Value',1.0);
-    handles.bottomBar.graph(floor(handles.bottomBar.posTop): ...
-        floor(handles.bottomBar.posBottom),...
-        floor(handles.bottomBar.posLeft):...
-        floor(handles.bottomBar.posRight),1) = ...
-            handles.bottomBar.r/255.0 ;
-    handles.bottomBar.graph(floor(handles.bottomBar.posTop): ...
-        floor(handles.bottomBar.posBottom),...
-        floor(handles.bottomBar.posLeft):...
-        floor(handles.bottomBar.posRight),2) = ...
-            handles.bottomBar.g/255.0 ;
-    handles.bottomBar.graph(floor(handles.bottomBar.posTop): ...
-        floor(handles.bottomBar.posBottom),...
-        floor(handles.bottomBar.posLeft):...
-        floor(handles.bottomBar.posRight),3) = ...
-            handles.bottomBar.b/255.0 ;
-else
-    set(handles.insertBottomBar,'Value',0.0);
-end
-set(handles.bottomBarDivision,'String',handles.bottomBar.division);
+
+set(handles.bottomBarDivision,'String',handles.sync.analog.division);
 set(handles.imgDeltaX,'String',handles.img.deltaX);
 set(handles.imgDeltaY,'String',handles.img.deltaY);
-if handles.bottomBar.useTrigger,
-    set(handles.addTrigger,'Value',1.0);
-else
-    set(handles.addTrigger,'Value',0.0);
-end
+% if handles.bottomBar.useTrigger,
+%     set(handles.addTrigger,'Value',1.0);
+% else
+%     set(handles.addTrigger,'Value',0.0);
+% end
 
 axes(handles.bottomBarGraph);
-imshow(handles.bottomBar.graph);
-set(handles.stimulusBottomBarLevelR,'String',handles.bottomBar.baseR);
-set(handles.stimulusBottomBarLevelG,'String',handles.bottomBar.baseG);
-set(handles.stimulusBottomBarLevelB,'String',handles.bottomBar.baseB);
-set(handles.stimulusBottomBarCr,'String',handles.bottomBar.r);
-set(handles.stimulusBottomBarCg,'String',handles.bottomBar.g);
-set(handles.stimulusBottomBarCb,'String',handles.bottomBar.b);
-set(handles.stimulusBottomBarL,'String',handles.bottomBar.posLeft);
-set(handles.stimulusBottomBarT,'String',handles.bottomBar.posTop);
-set(handles.stimulusBottomBarR,'String',handles.bottomBar.posRight);
-set(handles.stimulusBottomBarB,'String',handles.bottomBar.posBottom);
+imshow(handles.sync.analog.graph);
+set(handles.stimulusBottomBarLevelR,'String',handles.sync.analog.baseR);
+set(handles.stimulusBottomBarLevelG,'String',handles.sync.analog.baseG);
+set(handles.stimulusBottomBarLevelB,'String',handles.sync.analog.baseB);
+set(handles.stimulusBottomBarCr,'String',handles.sync.analog.r);
+set(handles.stimulusBottomBarCg,'String',handles.sync.analog.g);
+set(handles.stimulusBottomBarCb,'String',handles.sync.analog.b);
+set(handles.stimulusBottomBarL,'String',handles.sync.analog.posLeft);
+set(handles.stimulusBottomBarT,'String',handles.sync.analog.posTop);
+set(handles.stimulusBottomBarR,'String',handles.sync.analog.posRight);
+set(handles.stimulusBottomBarB,'String',handles.sync.analog.posBottom);
 
 
 % Set the parameters of <<<Image before stimuling Panel>>

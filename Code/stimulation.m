@@ -139,15 +139,15 @@ for kexp=length(data.experiments.file)-1:-1:1,
             dataExp.img.charge = zeros(1,dataExp.img.files);
             dataExp.img.repeated = 0;
             % Adjustment Bar variables
-            if dataExp.bottomBar.is                    
-                dataExp.bottomBar.posLeft = (dataExp.bottomBar.posLeft-1)*wScreen/99.0;
-                dataExp.bottomBar.posTop = (dataExp.bottomBar.posTop-1)*hScreen/99.0;
-                dataExp.bottomBar.posRight = (dataExp.bottomBar.posRight-1)*wScreen/99.0;
-                dataExp.bottomBar.posBottom = (dataExp.bottomBar.posBottom-1)*hScreen/99.0;
+            if dataExp.sync.is && ~dataExp.sync.isdigital                     
+                dataExp.sync.analog.posLeft = (dataExp.sync.analog.posLeft-1)*wScreen/99.0;
+                dataExp.sync.analog.posTop = (dataExp.sync.analog.posTop-1)*hScreen/99.0;
+                dataExp.sync.analog.posRight = (dataExp.sync.analog.posRight-1)*wScreen/99.0;
+                dataExp.sync.analog.posBottom = (dataExp.sync.analog.posBottom-1)*hScreen/99.0;
 %Revisar la resta del baseColor        
-                dataExp.bottomBar.r = (dataExp.bottomBar.r-dataExp.bottomBar.baseR)/(dataExp.bottomBar.division-1); 
-                dataExp.bottomBar.g = (dataExp.bottomBar.g-dataExp.bottomBar.baseG)/(dataExp.bottomBar.division-1); 
-                dataExp.bottomBar.b = (dataExp.bottomBar.b-dataExp.bottomBar.baseB)/(dataExp.bottomBar.division-1); 
+                dataExp.sync.analog.r = (dataExp.sync.analog.r-dataExp.sync.analog.baseR)/(dataExp.sync.analog.division-1); 
+                dataExp.sync.analog.g = (dataExp.sync.analog.g-dataExp.sync.analog.baseG)/(dataExp.sync.analog.division-1); 
+                dataExp.sync.analog.b= (dataExp.sync.analog.b-dataExp.sync.analog.baseB)/(dataExp.sync.analog.division-1); 
             end
             if dataExp.beforeStimulus.is && dataExp.beforeStimulus.bar.is
                 dataExp.beforeStimulus.bar.posLeft = (dataExp.beforeStimulus.bar.posLeft-1)*wScreen/99.0;
@@ -309,7 +309,7 @@ for kexp=1:length(data.experiments.file)-1,
                 end
                 % if protocols use Trigger mean that is is displayed over 60 hz 
                 % over 60 hz the images are compress using a binary shift 
-                if experiment(kexp).bottomBar.useTrigger,
+                if strcmp(experiment(kexp).sync.digital.mode,'On every frames'),
                     tmp = bitshift(tmp,-4);
                     tmp = tmp + bitshift(tmp,4);
                 end
@@ -358,7 +358,7 @@ for kexp=1:length(data.experiments.file)-1,
                     end
                     % if protocols use Trigger mean that is is displayed over 60 hz 
                     % over 60 hz the images are compress using a binary shift 
-                    if experiment(kexp).bottomBar.useTrigger,
+                    if strcmp(experiment(kexp).sync.digital.mode,'On every frames'),
                         tmp = bitshift(tmp,-4);
                         tmp = tmp + bitshift(tmp,4);
                     end
@@ -527,18 +527,18 @@ while(kexp<length(data.experiments.file)),
         backgroundImgColor = [experiment(kexp).img.background.r ...
             experiment(kexp).img.background.g experiment(kexp).img.background.b];
 
-        baseColorBar = [experiment(kexp).bottomBar.baseR ...
-            experiment(kexp).bottomBar.baseG...
-            experiment(kexp).bottomBar.baseB];
+        baseColorBar = [experiment(kexp).sync.analog.baseR ...
+            experiment(kexp).sync.analog.baseG...
+            experiment(kexp).sync.analog.baseB];
 
-        colorBar =  [experiment(kexp).bottomBar.r ...
-        experiment(kexp).bottomBar.g ...
-        experiment(kexp).bottomBar.b];
+        colorBar =  [experiment(kexp).sync.analog.r ...
+        experiment(kexp).sync.analog.g ...
+        experiment(kexp).sync.analog.b];
 
-        positionBar = [experiment(kexp).bottomBar.posLeft ...
-            experiment(kexp).bottomBar.posTop ...
-            experiment(kexp).bottomBar.posRight ...
-            experiment(kexp).bottomBar.posBottom];
+        positionBar = [experiment(kexp).sync.analog.posLeft ...
+            experiment(kexp).sync.analog.posTop ...
+            experiment(kexp).sync.analog.posRight ...
+            experiment(kexp).sync.analog.posBottom];
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %%%%%%%%%%%%%%%%%%%%%%% FLICKER  MODE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -604,15 +604,23 @@ while(kexp<length(data.experiments.file)),
                 Screen('Close',firstStimulusTexture);
             end
             
+            b = 0;
+            b_serial = 0;
+
+            if data.serial.is
+                IOPort('Write', serialCom, change);
+                b_serial = b_serial + 1;
+            end    
+            
             % Start Digital or Analog Synchronize
             % If use 120Hz and the trigger was select the projector 
             % mark all frame with digital pulse, if the trigger was not 
             % select then mark only for 18[ms] before stimulus. Otherwise
             % show the analog synchronize
-            if experiment(kexp).bottomBar.is
-                if useProjector,
+            if experiment(kexp).sync.is
+                if experiment(kexp).sync.isdigital,
                     try
-                        if experiment(kexp).bottomBar.useTrigger, 
+                        if strcmp(experiment(kexp).sync.digital.mode,'On every frames'), 
                             error = setProjector(FPS_120HZ);
                             error = error || setTrigger(TRIGGER_TIME_UP); 
                         else
@@ -634,7 +642,8 @@ while(kexp<length(data.experiments.file)),
                         return
                     end
                 else
-                     Screen('FillRect', win,baseColorBar, positionBar);
+                    Screen('FillRect', win,baseColorBar + colorBar*mod(b,experiment(kexp).sync.analog.division),positionBar);
+                    b = b + 1;
                 end
             end
             
@@ -672,11 +681,11 @@ while(kexp<length(data.experiments.file)),
                     end
                     
                     % Analog Synchronize
-                    if experiment(kexp).bottomBar.is
+                    if experiment(kexp).sync.is && ~experiment(kexp).sync.isdigital,
                         % Bars are now only presented during images, 
-                        % then the level is now the middle of the previous
-                        % configuration: (j-1) -> (j-1)/2
-                        Screen('FillRect', win,baseColorBar + colorBar*mod((j-1)/2,experiment(kexp).bottomBar.division), positionBar);
+                        % hence b = b + 2;
+                        Screen('FillRect', win,baseColorBar + colorBar*mod(b,experiment(kexp).sync.analog.division), positionBar);
+                        b = b + 1;
                     end
                     
                     vbl = Screen('Flip', win, vbl + ...
@@ -709,9 +718,9 @@ while(kexp<length(data.experiments.file)),
             % If the trigger was select (120 hz) the projector 
             % return to normal state  (60 hz) and with these end the trigger state.
             % Otherwise mark end for 18 [ms] with the trigger signal 
-            if experiment(kexp).bottomBar.is && useProjector,
+            if experiment(kexp).sync.is && experiment(kexp).sync.isdigital,
                 try  
-                    if experiment(kexp).bottomBar.useTrigger,
+                    if strcmp(experiment(kexp).sync.digital.mode,'On every frames'),
                         error = setProjector(FPS_60HZ); 
                     else
                         error = setProjector(FPS_120HZ); 
@@ -792,10 +801,10 @@ while(kexp<length(data.experiments.file)),
             % mark all frame with digital pulse, if the trigger was not 
             % select then mark only for 18[ms] before stimulus. Otherwise
             % show the analog synchronize
-            if experiment(kexp).bottomBar.is
-                if useProjector, % Digital synchronize
+            if experiment(kexp).sync.is
+                if experiment(kexp).sync.isdigital, % Digital synchronize
                     try
-                        if experiment(kexp).bottomBar.useTrigger, 
+                        if strcmp(experiment(kexp).sync.digital.mode,'On every frames'), 
                             error = setProjector(FPS_120HZ);
                             error = error || setTrigger(TRIGGER_TIME_UP); 
                         else
@@ -817,7 +826,7 @@ while(kexp<length(data.experiments.file)),
                         return
                     end
                 else % Analog synchronize
-                    Screen('FillRect', win,baseColorBar + colorBar*mod(b,experiment(kexp).bottomBar.division),positionBar);
+                    Screen('FillRect', win,baseColorBar + colorBar*mod(b,experiment(kexp).sync.analog.division),positionBar);
                     b = b + 1;
                 end
             end
@@ -852,13 +861,13 @@ while(kexp<length(data.experiments.file)),
                     % Digital Synchronize 
                     % For repetition without prev. background and use projector and not use
                     % trigger, it's mark for 18[ms] the start of repetition.
-                    if experiment(kexp).bottomBar.is && useProjector && ~experiment(kexp).bottomBar.useTrigger,
+                    if experiment(kexp).sync.is && experiment(kexp).sync.isdigital && ~strcmp(experiment(kexp).sync.digital.mode,'On every frames'),
                         try
                             error = setProjector(FPS_120HZ);
                             error = error || setTrigger(TRIGGER_TIME_UP); 
                             WaitSecs(WAIT_TIME_SIGNAL); 
                             error = error || setProjector(FPS_60HZ); 
-%                     if useProjector && ~experiment(kexp).bottomBar.useTrigger,
+%                     if useProjector && ~strcmp(experiment(kexp).sync.digital.mode,'On every frames'),
 %                         try
 %                             %send trigger when start repetition
 %                             error = setTrigger(800);
@@ -894,8 +903,8 @@ while(kexp<length(data.experiments.file)),
                    
                     % Analog Syncronize
                     % draw botton bar
-                    if experiment(kexp).bottomBar.is && ~useProjector
-                        Screen('FillRect', win,baseColorBar + colorBar*mod(b,experiment(kexp).bottomBar.division), positionBar);
+                    if experiment(kexp).sync.is && ~experiment(kexp).sync.isdigital,
+                        Screen('FillRect', win,baseColorBar + colorBar*mod(b,experiment(kexp).sync.analog.division), positionBar);
                         b = b + 1;
                     end
                     
@@ -918,9 +927,9 @@ while(kexp<length(data.experiments.file)),
                 % If the trigger was select (120 hz) the projector 
                 % return to normal state  (60 hz) and with these end the trigger state.
                 % Otherwise mark end for 18 [ms] with the trigger signal 
-                if experiment(kexp).bottomBar.is && useProjector,
+                if experiment(kexp).sync.is && experiment(kexp).sync.isdigital,
                     try  
-                        if experiment(kexp).bottomBar.useTrigger,
+                        if strcmp(experiment(kexp).sync.digital.mode,'On every frames'),
                             error = setProjector(FPS_60HZ); 
                         else
                             error = setProjector(FPS_120HZ); 
@@ -1068,8 +1077,8 @@ while(kexp<length(data.experiments.file)),
                 % If use 120Hz and the trigger was select the projector 
                 % mark all frame with digital pulse, otherwise
                 % show the analog synchronize
-                if experiment(kexp).bottomBar.is
-                    if useProjector && (j == 1), 
+                if experiment(kexp).sync.is
+                    if experiment(kexp).sync.isdigital && (j == 1), 
                         display('Setting trigger for projector')
                         try
                             error = setProjector(FPS_120HZ);
@@ -1087,7 +1096,7 @@ while(kexp<length(data.experiments.file)),
                             return
                         end
                     else
-                        Screen('FillRect', win,baseColorBar + colorBar*mod(b,experiment(kexp).bottomBar.division), positionBar);
+                        Screen('FillRect', win,baseColorBar + colorBar*mod(b,experiment(kexp).sync.analog.division), positionBar);
                         b = b + 1;
                     end
                 end
@@ -1110,7 +1119,7 @@ while(kexp<length(data.experiments.file)),
 
             % End Digital Synchronize, down the 120[hz] to 60[hz]
             % and finish the trigger
-            if experiment(kexp).bottomBar.is && useProjector,
+            if experiment(kexp).sync.is && experiment(kexp).sync.isdigital,
                 try  
                     error = setProjector(FPS_60HZ);
                 catch exceptions
@@ -1216,6 +1225,7 @@ while(kexp<length(data.experiments.file)),
                 nloop = 0;
                 delta = 2; % min pixel inside mask image 
                 maskShape = 'oval';
+                nflickerImg = 1;
               
 
                 % Find the color values which correspond to white and black.
@@ -1225,7 +1235,9 @@ while(kexp<length(data.experiments.file)),
                 
                 %%%% Set the initial MASK %%%%
                 [x, y] = meshgrid(-s1/2:1:s1/2-1, -s2/2:1:s2/2-1);
-                imgMask =  uint8(ones(s2, s1)*255);%check
+                ss = max([s1 s2]);
+                factor = 1.42;
+                imgMask =  uint8(ones(s2, s1)*255);
                 rotMask = deg2rad(angle);
                 % oval shape
                 if strcmp(maskShape,'oval')
@@ -1234,9 +1246,10 @@ while(kexp<length(data.experiments.file)),
                     mask = uint8((((x*cos(rotMask)-y*sin(rotMask))./width).^2+...
                         ((x*sin(rotMask)+y*cos(rotMask))./height).^2 >= 1)*white);
                 else % rect shape
-                    mask = ((abs(x) < width) & (abs(y) < height));
-                    mask = uint8((~imrotate(mask,angle))*255);
-
+                    [xr, yr] = meshgrid(-round(ss*factor/2):1:round(ss*factor/2)-1, -round(ss*factor/2):1:round(ss*factor/2)-1);
+                    imgMask =  uint8(ones(ss*factor, ss*factor)*255);                    
+                    mask = ((abs(xr) < width) & (abs(yr) < height));
+                    mask = uint8((~imrotate(mask,angle,'crop'))*255);
                     if shiftX >= 0 && shiftY >= 0, %move ^>
                         imgMask(shiftY+1:end,1:end-shiftX) = mask(1:end-shiftY,shiftX+1:end);
                     elseif shiftX >= 0 && shiftY <= 0, %move v>
@@ -1248,7 +1261,7 @@ while(kexp<length(data.experiments.file)),
                     else
                         imgMask = mask;
                     end
-                    mask = imgMask;
+                    mask = imgMask(round((ss-s2)/2)+1:round((ss+s2)/2), round((ss-s1)/2)+1:round((ss+s1)/2));
                 end
             end
             
@@ -1383,9 +1396,10 @@ while(kexp<length(data.experiments.file)),
                         mask = uint8((((x*cos(rotMask)-y*sin(rotMask))./width).^2+...
                             ((x*sin(rotMask)+y*cos(rotMask))./height).^2 >= 1)*255);
                     else %rect shape
-                        mask = ((abs(x) < width) & (abs(y) < height));
+                        [xr, yr] = meshgrid(-round(ss*factor/2):1:round(ss*factor/2)-1, -round(ss*factor/2):1:round(ss*factor/2)-1);
+                        mask = ((abs(xr) < width) & (abs(yr) < height));
                         mask = uint8((~imrotate(mask,angle,'crop'))*255);
-                        
+                        imgMask =  uint8(ones(ss*factor, ss*factor)*255);      
                         if shiftX >= 0 && shiftY >= 0, %move ^>
                             imgMask(shiftY+1:end,1:end-shiftX) = mask(1:end-shiftY,shiftX+1:end);
                         elseif shiftX >= 0 && shiftY <= 0, %move v>
@@ -1397,7 +1411,7 @@ while(kexp<length(data.experiments.file)),
                         else
                             imgMask = mask;
                         end
-                        mask = imgMask;
+                        mask = imgMask(round((ss*factor-s1)/2)+1:round((ss*factor+s1)/2), round((ss*factor-s2)/2)+1:round((ss*factor+s2)/2));
                     end                    
                 end
                 
@@ -1431,7 +1445,10 @@ while(kexp<length(data.experiments.file)),
                 switch experiment(kexp).maskStimulus.protocol.type
                     case 'Flicker',
                         if mod(nloop, nperiod) < nflicker
-                            Screen('DrawTexture', win, experiment(kexp).img.charge(1),[],experiment(kexp).position);
+                            if mod(nloop, nperiod) == 0,
+                                nflickerImg = mod(nflickerImg, experiment(kexp).img.files)+1;
+                            end
+                            Screen('DrawTexture', win, experiment(kexp).img.charge(nflickerImg),[],experiment(kexp).position);
                         else
                             if experiment(kexp).maskStimulus.protocol.flicker.bg.isImg 
                                 Screen('FillRect',win,[0 0 0]);
@@ -1483,8 +1500,10 @@ while(kexp<length(data.experiments.file)),
                 if keyCode(escapeKey)
 %                     exitDemo = true;
                     settingMaskMode = false;
-                    for kimg = 1:experiment(kexp).img.files,
-                       Screen('Close',experiment(kexp).img.charge(kimg));
+                    if experiment(kexp).protocol.useImages,
+                        for kimg = 1:experiment(kexp).img.files,
+                           Screen('Close',experiment(kexp).img.charge(kimg));
+                        end
                     end
 %                     if kexp < length(data.experiments.file)-1 ,
 %                         kexp = kexp +1;
@@ -1537,7 +1556,7 @@ while(kexp<length(data.experiments.file)),
                     end
                     % if protocols use Trigger mean that is is displayed over 60 hz 
                     % over 60 hz the images are compress using a binary shift 
-                    if experiment(kexp).bottomBar.useTrigger,%
+                    if strcmp(experiment(kexp).sync.digital.mode,'On every frames'),%
                         tmp = bitshift(tmp,-4);
                         tmp = tmp + bitshift(tmp,4);
                     end
@@ -1701,10 +1720,10 @@ while(kexp<length(data.experiments.file)),
             % mark all frame with digital pulse, if the trigger was not 
             % select then mark only for 18[ms] before stimulus. Otherwise
             % show the analog synchronize
-            if experiment(kexp).bottomBar.is
-                if useProjector,% digital synchronize
+            if experiment(kexp).sync.is
+                if experiment(kexp).sync.isdigital,% digital synchronize
                     try
-                        if experiment(kexp).bottomBar.useTrigger, 
+                        if strcmp(experiment(kexp).sync.digital.mode,'On every frames'), 
                             error = setProjector(FPS_120HZ);
                             error = error || setTrigger(TRIGGER_TIME_UP); 
                         else
@@ -1726,7 +1745,7 @@ while(kexp<length(data.experiments.file)),
                         return
                     end
                 else % analog synchronize
-                    Screen('FillRect', win,baseColorBar + colorBar*mod(b,experiment(kexp).bottomBar.division), positionBar);
+                    Screen('FillRect', win,baseColorBar + colorBar*mod(b,experiment(kexp).sync.analog.division), positionBar);
                     b = b + 1;
                 end
             end
@@ -1760,7 +1779,7 @@ while(kexp<length(data.experiments.file)),
                         else
                             tmp = nInit; 
 
-%                             if useProjector && ~experiment(kexp).bottomBar.useTrigger,
+%                             if useProjector && ~strcmp(experiment(kexp).sync.digital.mode,'On every frames'),
 %                                 try
 %                                     error = setTrigger(800);
 %                                     WaitSecs(.018);
@@ -1769,18 +1788,19 @@ while(kexp<length(data.experiments.file)),
                                 % Digital Synchronize 
                                 % For repetition without prev. background and use projector and not use
                                 % trigger, it's mark for 18[ms] the start of repetition.
-                                if experiment(kexp).bottomBar.is && useProjector && ~experiment(kexp).bottomBar.useTrigger,
-                                        try
-                                            error = setProjector(FPS_120HZ);
-                                            error = error || setTrigger(TRIGGER_TIME_UP); 
-                                            WaitSecs(WAIT_TIME_SIGNAL); 
-                                            error = error || setProjector(FPS_60HZ); 
+                            if experiment(kexp).sync.is && experiment(kexp).sync.isdigital && ~strcmp(experiment(kexp).sync.digital.mode,'On every frames'),
+                                try
+                                    error = setProjector(FPS_120HZ);
+                                    error = error || setTrigger(TRIGGER_TIME_UP); 
+                                    WaitSecs(WAIT_TIME_SIGNAL); 
+                                    error = error || setProjector(FPS_60HZ); 
                                 catch exceptions
                                     display(['Error communicating with the projector: setting trigger. ' exceptions.message]); Stack  = dbstack; Stack.line
                                     Screen('Close')
                                     Screen('CloseAll')
                                     return
                                 end
+
                                 if error,
                                     display('Error communicating with the projector: setting trigger')
                                     Screen('Close')
@@ -1789,6 +1809,7 @@ while(kexp<length(data.experiments.file)),
                                 end
                             end
                         end
+                        
                         %loop images of protocol
                         for kimg= tmp:nInit+experiment(kexp).img.files -1,
                             % set the background
@@ -1824,8 +1845,8 @@ while(kexp<length(data.experiments.file)),
       
                             %draw botton bar
                             % Analog Sychronize
-                            if experiment(kexp).bottomBar.is,
-                                Screen('FillRect', win,baseColorBar + colorBar*mod(b,experiment(kexp).bottomBar.division), positionBar);
+                            if experiment(kexp).sync.is && ~experiment(kexp).sync.isdigital,
+                                Screen('FillRect', win,baseColorBar + colorBar*mod(b,experiment(kexp).sync.analog.division), positionBar);
                                 b = b + 1;
                             end
 
@@ -1856,7 +1877,7 @@ while(kexp<length(data.experiments.file)),
                             tmp = nInitMask+1; 
                         else
                             tmp = nInitMask; 
-%                             if useProjector && ~experiment(kexp).bottomBar.useTrigger,
+%                             if useProjector && ~strcmp(experiment(kexp).sync.digital.mode,'On every frames'),
 %                                 try
 %                                     error = setTrigger(800);
 %                                     WaitSecs(.018);
@@ -1864,7 +1885,7 @@ while(kexp<length(data.experiments.file)),
                             % Digital Synchronize 
                             % For repetition without prev. background and use projector and not use
                             % trigger, it's mark for 18[ms] the start of repetition.
-                            if experiment(kexp).bottomBar.is && useProjector && ~experiment(kexp).bottomBar.useTrigger,
+                            if experiment(kexp).sync.is && experiment(kexp).sync.isdigital && ~strcmp(experiment(kexp).sync.digital.mode,'On every frames'),
                                 try
                                     error = setProjector(FPS_120HZ);
                                     error = error || setTrigger(TRIGGER_TIME_UP); 
@@ -1920,8 +1941,8 @@ while(kexp<length(data.experiments.file)),
                                 
                                 % draw botton bar
                                 % Analog Synchronize
-                                if experiment(kexp).bottomBar.is,
-                                    Screen('FillRect', win,baseColorBar + colorBar*mod(b,experiment(kexp).bottomBar.division), positionBar);
+                                if experiment(kexp).sync.is && ~experiment(kexp).sync.isdigital,
+                                    Screen('FillRect', win,baseColorBar + colorBar*mod(b,experiment(kexp).sync.analog.division), positionBar);
                                     b = b + 1;
                                 end
 
@@ -1966,7 +1987,7 @@ while(kexp<length(data.experiments.file)),
                             % Digital Synchronize 
                             % For repetition without prev. background and use projector and not use
                             % trigger, it's mark for 18[ms] the start of repetition.
-                            if experiment(kexp).bottomBar.is && useProjector && ~experiment(kexp).bottomBar.useTrigger,
+                            if experiment(kexp).sync.is && experiment(kexp).sync.isdigital && ~strcmp(experiment(kexp).sync.digital.mode,'On every frames'),
                                 try
                                     error = setProjector(FPS_120HZ);
                                     error = error || setTrigger(TRIGGER_TIME_UP); 
@@ -2020,8 +2041,8 @@ while(kexp<length(data.experiments.file)),
                             
                             %draw botton bar
                             % Analog Synchronize
-                            if experiment(kexp).bottomBar.is,
-                                Screen('FillRect', win,baseColorBar + colorBar*mod(b,experiment(kexp).bottomBar.division), positionBar);
+                            if experiment(kexp).sync.is && ~experiment(kexp).sync.isdigital,
+                                Screen('FillRect', win,baseColorBar + colorBar*mod(b,experiment(kexp).sync.analog.division), positionBar);
                                 b = b + 1;
                             end
 
@@ -2037,8 +2058,8 @@ while(kexp<length(data.experiments.file)),
                                     (nRefreshImg - 0.5) * refresh);
                             end
                         end
-                        Screen('FillRect',win,[0,0,0],experiment(kexp).position);
-                        vbl = Screen('Flip', win, vbl);
+%                         Screen('FillRect',win,[0,0,0],experiment(kexp).position);
+%                         vbl = Screen('Flip', win, vbl);
                     end
                 case 'White noise'
                     limit = experiment(kexp).maskStimulus.protocol.wn.frames/(2-use60);
@@ -2110,8 +2131,8 @@ while(kexp<length(data.experiments.file)),
                         Screen('Close',textureMask);
                         
                         % Analog Synchronize
-                        if experiment(kexp).bottomBar.is && ~useProjector
-                            Screen('FillRect', win,baseColorBar + colorBar*mod(b,experiment(kexp).bottomBar.division), positionBar);
+                        if experiment(kexp).sync.is && ~experiment(kexp).sync.isdigital,
+                            Screen('FillRect', win,baseColorBar + colorBar*mod(b,experiment(kexp).sync.analog.division), positionBar);
                                 b = b + 1;
                         end
 
@@ -2130,16 +2151,16 @@ while(kexp<length(data.experiments.file)),
                     end                          
             end
             Time(kexp).finish = WaitSecs((nRefreshImg - 0.5) * refresh);
-            
+            disp(['Time experiment: ' int2str(Time(kexp).finish-Time(kexp).start)])
             experiment(kexp).maskStimulus.mask.mask = mask;
            
             % End Digital Synchronize
             % If the trigger was select (120 hz) the projector 
             % return to normal state  (60 hz) and with these end the trigger state.
             % Otherwise mark end for 18 [ms] with the trigger signal 
-            if experiment(kexp).bottomBar.is && useProjector,
+            if experiment(kexp).sync.is && experiment(kexp).sync.isdigital,
                 try  
-                    if experiment(kexp).bottomBar.useTrigger,
+                    if strcmp(experiment(kexp).sync.digital.mode,'On every frames'),
                         error = setProjector(FPS_60HZ); 
                     else
                         error = setProjector(FPS_120HZ); 
