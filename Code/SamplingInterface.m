@@ -2224,32 +2224,40 @@ if handles.img.files~=0 ...
     handles.experiments.file = [handles.experiments.file handles.experiments.number];
 %     save(['Exp' sprintf('%03d',handles.experiments.number) '.si'],'-struct','handles');
     saveInformation(['Exp' sprintf('%03d',handles.experiments.number) '.si'],handles);
-    if strcmp(handles.mode,'Flicker')
+    if strcmp(handles.mode,'Flicker'),
         newExp = ['Fl - ' get(handles.nFiles,'String') ' file(s) - ' ...
             num2str(handles.flicker.fps,3) ' [Hz] - ' ...
              num2str(handles.flicker.dutyCicle) '% dutyCicle - ' ...
              num2str(handles.flicker.time,4) ' [s]' ];
          if get(handles.flickerRepWithBackground,'Value') && length(handles.experiments.file)>1
-%             inf = getInformation(['Exp' sprintf('%03d',handles.experiments.file(end-1)) '.si']);
-            inf = getInformation(['Exp' sprintf('%03d',handles.experiments.file(end-1)) '.si']);
-            if strcmp(inf.mode,'Presentation')
-                handles.time = handles.time + (inf.presentation.time/1000)*handles.flicker.repetitions +...
-                    handles.flicker.time*(handles.flicker.repetitions+1);
-            end
+            if exist(['Exp' sprintf('%03d',handles.experiments.file(end-1)) '.si'],'file'),
+                inf = getInformation(['Exp' sprintf('%03d',handles.experiments.file(end-1)) '.si']);
+                if strcmp(inf.mode,'Presentation')
+                    handles.time = handles.time + (inf.presentation.time/1000)*handles.flicker.repetitions +...
+                        handles.flicker.time*(handles.flicker.repetitions+1);
+                end
+            else
+                errordlg('You are trying to add an experiment with prev. background but you not added a previous background stimulus','Error');
+                return            
+            end                                        
          else
             handles.time = handles.time + handles.flicker.time;
          end
-    elseif strcmp(handles.mode,'Only stimulus (fps)')
+    elseif strcmp(handles.mode,'Only stimulus (fps)'),
         newExp = ['OS - ' get(handles.nFiles,'String') ' file(s) - ' ...
             num2str(handles.onlyStimulus.fps,3) ' [fps] - '];
              newExp = [newExp num2str(handles.onlyStimulus.time,4) ' [s]' ];
          if get(handles.onlyStimulusRepWithBackground,'Value') && length(handles.experiments.file)>1
-%             inf = getInformation(['Exp' sprintf('%03d',handles.experiments.file(end-1)) '.si']);
-            inf = getInformation(['Exp' sprintf('%03d',handles.experiments.file(end-1)) '.si']);
-            if strcmp(inf.mode,'Presentation')
-                handles.time = handles.time + (inf.presentation.time/1000)*handles.onlyStimulus.repetitions +...
-                    handles.onlyStimulus.time*(handles.onlyStimulus.repetitions+1);
-            end
+            if exist(['Exp' sprintf('%03d',handles.experiments.file(end-1)) '.si'],'file'),
+                inf = getInformation(['Exp' sprintf('%03d',handles.experiments.file(end-1)) '.si']);
+                if strcmp(inf.mode,'Presentation')
+                    handles.time = handles.time + (inf.presentation.time/1000)*handles.onlyStimulus.repetitions +...
+                        handles.onlyStimulus.time*(handles.onlyStimulus.repetitions+1);
+                end
+            else
+                errordlg('You are trying to add an experiment with prev. background but you not added a previous background stimulus','Error');
+                return            
+            end                    
          else
             handles.time = handles.time + handles.onlyStimulus.time;
          end
@@ -2297,17 +2305,21 @@ if handles.img.files~=0 ...
         newExp = [newExp num2str(handles.maskStimulus.time,5) ' [s]' ];
 
         if get(handles.maskStimulusRepWithBackground,'Value') && length(handles.experiments.file)>1
-            inf = getInformation(['Exp' sprintf('%03d',handles.experiments.file(end-1)) '.si']);
-            if strcmp(inf.mode,'Presentation')
-                handles.time = handles.time + (inf.presentation.time/1000)*...
-                  handles.maskStimulus.repetitions+...
-                  (handles.maskStimulus.repetitions+1)*...
-                  handles.maskStimulus.time; 
+            if exist(['Exp' sprintf('%03d',handles.experiments.file(end-1)) '.si'],'file'),
+                inf = getInformation(['Exp' sprintf('%03d',handles.experiments.file(end-1)) '.si']);
+                if strcmp(inf.mode,'Presentation')
+                    handles.time = handles.time + (inf.presentation.time/1000)*...
+                      handles.maskStimulus.repetitions+...
+                      (handles.maskStimulus.repetitions+1)*...
+                      handles.maskStimulus.time; 
+                else
+                    errordlg('You are trying to add an experiment with prev. background but you not added a previous background stimulus','Error');
+                    return
+                end
             else
                 errordlg('You are trying to add an experiment with prev. background but you not added a previous background stimulus','Error');
                 return
             end
-            
         else
             handles.time = handles.time + handles.maskStimulus.time;
         end
