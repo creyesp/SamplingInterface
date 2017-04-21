@@ -29,9 +29,7 @@ Cuando se usa usa una mascara de WN,
 
 guardar las imagenes del wn a 120 HZ
 
--remover imagen negra en mask stimulus solid color protocol
+
 -modificar mascara rectangular para lograr el maximo tamaña en rotacion
 -revisar wn como protocolo y como mascara y ver como usan la semilla al inicio, si usan la misma semilla entonces deberia
 presentar el mismo wn, pero eso no ocurre actualmente.
-
-
