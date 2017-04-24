@@ -144,7 +144,6 @@ for kexp=length(data.experiments.file)-1:-1:1,
                 dataExp.sync.analog.posTop = (dataExp.sync.analog.posTop-1)*hScreen/99.0;
                 dataExp.sync.analog.posRight = (dataExp.sync.analog.posRight-1)*wScreen/99.0;
                 dataExp.sync.analog.posBottom = (dataExp.sync.analog.posBottom-1)*hScreen/99.0;
-%Revisar la resta del baseColor        
                 dataExp.sync.analog.r = (dataExp.sync.analog.r-dataExp.sync.analog.baseR)/(dataExp.sync.analog.division-1); 
                 dataExp.sync.analog.g = (dataExp.sync.analog.g-dataExp.sync.analog.baseG)/(dataExp.sync.analog.division-1); 
                 dataExp.sync.analog.b= (dataExp.sync.analog.b-dataExp.sync.analog.baseB)/(dataExp.sync.analog.division-1); 
@@ -161,52 +160,12 @@ for kexp=length(data.experiments.file)-1:-1:1,
                     dataExp.noiseimg] = setWNimg(dataExp.whitenoise);            
             end
             % Adjustment of stimulus position variables
-%             if strcmp(dataExp.mode,'White noise'),
-%                 l1 = dataExp.whitenoise.blocks*dataExp.whitenoise.pxX;
-%                 l2 = dataExp.whitenoise.blocks*dataExp.whitenoise.pxY;
-%                 [dataExp.noise, dataExp.whitenoise.imgToComp,... 
-%                     dataExp.noiseimg] = setWNimg(dataExp.whitenoise); 
-%             elseif strcmp(dataExp.maskStimulus.protocol.type,'Solid color'),
-%                 l1 = dataExp.maskStimulus.protocol.solidColor.width;
-%                 l2 = dataExp.maskStimulus.protocol.solidColor.height;
-%                 dataExp.img.size.width = l1;
-%                 dataExp.img.size.height = l2;
-%             else
-%                 l1 = dataExp.img.size.width;
-%                 l2 = dataExp.img.size.height;
-%             end          
-%             dataExp.position = [(wScreen-l1)/2+dataExp.img.deltaX ...
-%                 (hScreen-l2)/2+dataExp.img.deltaY ...
-%                 (wScreen+l1)/2+dataExp.img.deltaX ...
-%                 (hScreen+l2)/2+dataExp.img.deltaY];
             dataExp.position = [(wScreen-dataExp.protocol.width)/2+dataExp.img.deltaX ...
                 (hScreen-dataExp.protocol.height)/2+dataExp.img.deltaY ...
                 (wScreen+dataExp.protocol.width)/2+dataExp.img.deltaX ...
                 (hScreen+dataExp.protocol.height)/2+dataExp.img.deltaY];
             
            % Adjustment of position variables of the mask
-%            if strcmp(dataExp.maskStimulus.mask.type,'White noise')
-%                 l1 = dataExp.maskStimulus.mask.wn.blocks*dataExp.maskStimulus.mask.wn.pxX;
-%                 l2 = dataExp.maskStimulus.mask.wn.blocks*dataExp.maskStimulus.mask.wn.pxY;
-%             elseif strcmp(dataExp.maskStimulus.mask.type,'Img')
-%                 if exist(dataExp.maskStimulus.mask.img.name,'file'),
-%                     imageInfo = imfinfo(dataExp.maskStimulus.mask.img.name);
-%                     l1 = imageInfo.Width;
-%                     l2 = imageInfo.Height;
-%                 else
-%                     disp(['Not exist ' dataExp.maskStimulus.mask.img.name ' file, check the image and retry.'])
-%                     return;
-%                 end
-%             elseif strcmp(dataExp.maskStimulus.mask.type,'Solid color')
-%                 l1 = dataExp.img.size.width;
-%                 l2 = dataExp.img.size.height;
-%             end
-%             dataExp.maskStimulus.mask.width = l1;
-%             dataExp.maskStimulus.mask.height = l2;
-%             dataExp.positionMask = [(wScreen-l1)/2+dataExp.img.deltaX ...
-%                     (hScreen-l2)/2+dataExp.img.deltaY ...
-%                     (wScreen+l1)/2+dataExp.img.deltaX ...
-%                     (hScreen+l2)/2+dataExp.img.deltaY];   
             dataExp.positionMask = [(wScreen-dataExp.maskStimulus.mask.width)/2+dataExp.img.deltaX ...
                     (hScreen-dataExp.maskStimulus.mask.height)/2+dataExp.img.deltaY ...
                     (wScreen+dataExp.maskStimulus.mask.width)/2+dataExp.img.deltaX ...
@@ -1498,27 +1457,19 @@ while(kexp<length(data.experiments.file)),
                 end
                 
                 if keyCode(escapeKey)
-%                     exitDemo = true;
                     settingMaskMode = false;
                     if experiment(kexp).protocol.useImages,
                         for kimg = 1:experiment(kexp).img.files,
                            Screen('Close',experiment(kexp).img.charge(kimg));
                         end
                     end
-%                     if kexp < length(data.experiments.file)-1 ,
-%                         kexp = kexp +1;
-%                     end
                     continue;
                 end
             end
             
             %%%%%%%%%%%%%%%%%%%%%%% Run the Final Protocol %%%%%%%%%%%%%%%%
-%             % When exit of the Loop for fit mask and the next protocol not 
-%             % is Mask stimulus then finalize this loop and run the 
-%             % corresponding protocol
-%             if ~strcmp( experiment( kexp).mode,'Mask stimulus'), 
-%                 continue;
-%             end
+            % When exit of the Loop for fit mask continue with the next
+            % protocol
             if ~presentationMaskMode,
                 presentationMaskMode = true;
                 kexp = kexp + 1;
@@ -1565,40 +1516,6 @@ while(kexp<length(data.experiments.file)),
                 end
             end
             
-%             %Set Flicker background image as a texture           
-%             if experiment(kexp).maskStimulus.protocol.flicker.bg.isImg
-%                 imgName = experiment(kexp).maskStimulus.protocol.flicker.bg.name;
-%                 if exist(imgName,'file'),
-%                     tmp = imread(imgName)*intensity;
-%                     MSflickerBackground = Screen('MakeTexture', win,tmp);
-%                     clear tmp;
-%                 else
-%                     imgFilesNotCharged = true;
-%                     break;
-%                 end
-%             end
-%             
-%             % Set seed for random number for White noise MASK
-%             if strcmp(experiment(kexp).maskStimulus.mask.type,'White noise'),
-%                 rng(experiment(kexp).maskStimulus.mask.wn.seed);
-%                 % create the images to the white noise
-%                 [experiment(kexp).maskStimulus.mask.wn.noise, ...
-%                  experiment(kexp).maskStimulus.mask.wn.imgToComp, ...
-%                  experiment(kexp).maskStimulus.mask.wn.noiseimg] ...
-%                     =  setWNimg(experiment(kexp).maskStimulus.mask.wn);                
-%             end
-%             
-%              % Set seed for random number for White noise sub-Protocol
-%             if strcmp(experiment(kexp).maskStimulus.protocol.type,'White noise'),
-%                 rng(experiment(kexp).maskStimulus.protocol.wn.seed);
-%                 % create the images to the white noise
-%                 [experiment(kexp).maskStimulus.protocol.wn.noise, ...
-%                  experiment(kexp).maskStimulus.protocol.wn.imgToComp, ...
-%                  experiment(kexp).maskStimulus.protocol.wn.noiseimg] ...
-%                     =  setWNimg(experiment(kexp).maskStimulus.protocol.wn);                
-%             end
-            
-            
             % Get the Mask
             s1 = experiment(kexp).maskStimulus.mask.width;
             s2 = experiment(kexp).maskStimulus.mask.height;
@@ -1640,13 +1557,6 @@ while(kexp<length(data.experiments.file)),
                 Time(kexp).start = Screen('Flip', win, vbl);
                 vbl = WaitSecs(round(experiment(kexp).beforeStimulus.time/(refresh*1000.0))*refresh-0.5*refresh);
             end
-            
-%             % Draw background Texture
-%             if experiment(kexp).img.background.isImg
-%                 Screen('DrawTexture',win,background);
-%             else
-%                 Screen('FillRect', win, backgroundImgColor);
-%             end
                         
             % Get Mask Image for texture ('White noise' 'Img' 'Solid color' black)
             imgmask = getMaskImg( experiment(kexp).maskStimulus.mask, mask, 1);
@@ -1778,15 +1688,8 @@ while(kexp<length(data.experiments.file)),
                             tmp = nInit+1; 
                         else
                             tmp = nInit; 
-
-%                             if useProjector && ~strcmp(experiment(kexp).sync.digital.mode,'On every frames'),
-%                                 try
-%                                     error = setTrigger(800);
-%                                     WaitSecs(.018);
-%                                     error = error || setTrigger(0);
-
                                 % Digital Synchronize 
-                                % For repetition without prev. background and use projector and not use
+                                % For repetition without prev. background and use 120HZ and not use
                                 % trigger, it's mark for 18[ms] the start of repetition.
                             if experiment(kexp).sync.is && experiment(kexp).sync.isdigital && ~strcmp(experiment(kexp).sync.digital.mode,'On every frames'),
                                 try
@@ -1824,8 +1727,10 @@ while(kexp<length(data.experiments.file)),
                             % MASK type
                             imgmask = getMaskImg( experiment(kexp).maskStimulus.mask, mask, kimg-nInit+1 );
 %Revisar, que imagenes del wn se guardaran 
-% usar nloop o kimg
-                             if strcmp(experiment(kexp).maskStimulus.mask.type,'White noise')
+% usar nloop (guarda solo al principio) 
+% o kimg (que guarda al principio de casa repeticion)
+
+                             if strcmp(experiment(kexp).maskStimulus.mask.type,'White noise') && repProto == 1,
                                 if experiment(kexp).maskStimulus.mask.wn.saveImages >= nloop,
                                     if strcmp(experiment(kexp).maskStimulus.mask.wn.type,'BW')
                                         experiment(kexp).maskStimulus.mask.wn.imgToComp(:,:,nloop)...
@@ -1877,11 +1782,6 @@ while(kexp<length(data.experiments.file)),
                             tmp = nInitMask+1; 
                         else
                             tmp = nInitMask; 
-%                             if useProjector && ~strcmp(experiment(kexp).sync.digital.mode,'On every frames'),
-%                                 try
-%                                     error = setTrigger(800);
-%                                     WaitSecs(.018);
-%                                     error = error || setTrigger(0);
                             % Digital Synchronize 
                             % For repetition without prev. background and use projector and not use
                             % trigger, it's mark for 18[ms] the start of repetition.
