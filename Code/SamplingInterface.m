@@ -7032,6 +7032,13 @@ switch type,
         set(handles.DigitalsyncPanel, 'visible', 'on');
         set(handles.AnalogsyncPanel, 'visible', 'off');
         handles.sync.analog.graph = zeros(100,100,3);
+    case 4; % Serial
+        handles.sync.is = true;
+        handles.sync.isdigital = false;
+        
+        set(handles.DigitalsyncPanel, 'visible', 'off');
+        set(handles.AnalogsyncPanel, 'visible', 'off');
+        handles.sync.analog.graph = zeros(100,100,3);
 end
 axes(handles.bottomBarGraph);
 imshow(handles.sync.analog.graph); 

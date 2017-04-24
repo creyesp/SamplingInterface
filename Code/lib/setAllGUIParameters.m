@@ -83,6 +83,12 @@ if handles.sync.is,
         else % 'On every frames'
             set(handles.digitalSyncMode,'value',2);
         end
+        handles.sync.analog.graph = zeros(100,100,3);
+    elseif handles.sync.isSerial,
+        set(handles.TypeSynchronization,'value',4)
+        set(handles.AnalogsyncPanel,'visible','off')
+        set(handles.DigitalsyncPanel,'visible','off') 
+        handles.sync.analog.graph = zeros(100,100,3);
     else
         set(handles.TypeSynchronization,'value',2)
         set(handles.AnalogsyncPanel,'visible','on')
@@ -101,6 +107,9 @@ else
     set(handles.DigitalsyncPanel,'visible','off')
     set(handles.TypeSynchronization,'value',1)
 end
+
+axes(handles.bottomBarGraph);
+imshow(handles.sync.analog.graph); 
 
 set(handles.bottomBarDivision,'String',handles.sync.analog.division);
 set(handles.imgDeltaX,'String',handles.img.deltaX);

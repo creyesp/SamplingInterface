@@ -343,17 +343,16 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%% SERIAL COMUNICATION %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % data.serial is another way for save the digital signal 
-% it's implemented but not used
 %Serial COM
 down = uint8(0);
 up = uint8(1);
 change = uint8(2);
 
-data.serial.is = 0;
-data.serial.com = '/dev/tty.SLAB_USBtoUART';
-data.serial.baudrate = 115200;
+% data.serial.is = 0;
+% data.serial.com = '/dev/tty.SLAB_USBtoUART';
+% data.serial.baudrate = 115200;
 
-if data.serial.is
+if data.sync.isSerial
 %Using PTB IOPort commands
     IOPort('CloseAll')
     configString = 'ReceiverEnable=1 BaudRate=115200 StartBits=1 DataBits=8 StopBits=1 Parity=No RTS=0 DTR=1';
@@ -566,7 +565,7 @@ while(kexp<length(data.experiments.file)),
             b = 0;
             b_serial = 0;
 
-            if data.serial.is
+            if data.sync.isSerial
                 IOPort('Write', serialCom, change);
                 b_serial = b_serial + 1;
             end    
@@ -790,7 +789,7 @@ while(kexp<length(data.experiments.file)),
                 end
             end
 
-            if data.serial.is
+            if data.sync.isSerial
                 IOPort('Write', serialCom, change);
                 b_serial = b_serial + 1;
             end
@@ -867,7 +866,7 @@ while(kexp<length(data.experiments.file)),
                         b = b + 1;
                     end
                     
-                    if data.serial.is
+                    if data.sync.isSerial
                         IOPort('Write', serialCom, change);
                         b_serial = b_serial + 1;
                     end
@@ -913,7 +912,7 @@ while(kexp<length(data.experiments.file)),
 
 
 
-            if data.serial.is
+            if data.sync.isSerial
                 IOPort('Write', serialCom, down);
             end
             
@@ -974,7 +973,7 @@ while(kexp<length(data.experiments.file)),
             b = 0;
             b_serial = 0;
             
-            if data.serial.is
+            if data.sync.isSerial
                 IOPort('Write', serialCom, change);
                 b_serial = b_serial + 1;
             end
@@ -1060,7 +1059,7 @@ while(kexp<length(data.experiments.file)),
                     end
                 end
                 
-                if data.serial.is
+                if data.sync.isSerial
                     % fwrite(serialCom,change);
                     IOPort('Write', serialCom, change);
                     b_serial = b_serial + 1;
@@ -1095,7 +1094,7 @@ while(kexp<length(data.experiments.file)),
                 end
             end
             
-            if data.serial.is
+            if data.sync.isSerial
                 IOPort('Write', serialCom, down);
             end
             
@@ -1184,7 +1183,7 @@ while(kexp<length(data.experiments.file)),
                 nloop = 0;
                 delta = 2; % min pixel inside mask image 
                 maskShape = 'oval';
-                nflickerImg = 1;
+                npresentedflicker = 0;
               
 
                 % Find the color values which correspond to white and black.
@@ -1386,26 +1385,14 @@ while(kexp<length(data.experiments.file)),
                     '\n alpha : ' num2str(intensity)];
                 
                 %%%%%%%%%%%%%%%%%% SET TEXTURE TO SCREEN %%%%%%%%%%%%%%%%%%  
-                % Get the image of mask depending on the mask type
-                imgmask = getMaskImg( experiment(kexp).maskStimulus.mask, mask, nloop );
-                if strcmp(experiment(kexp).maskStimulus.mask.type,'White noise')
-                    if experiment(kexp).maskStimulus.mask.wn.saveImages >= nloop,
-                        if strcmp(experiment(kexp).maskStimulus.mask.wn.type,'BW')
-                            experiment(kexp).maskStimulus.mask.wn.imgToComp(:,:,nloop)...
-                                = imgmask(:,:,1);   
-                        else
-                            experiment(kexp).maskStimulus.mask.wn.imgToComp(:,:,:,nloop)...
-                                = imgmask(:,:,1:3);
-                        end
-                    end
-                end                                            
-                textureMask = Screen('MakeTexture', win, imgmask);  
+
                 % Draw texture according to mask 
                 switch experiment(kexp).maskStimulus.protocol.type
                     case 'Flicker',
                         if mod(nloop, nperiod) < nflicker
                             if mod(nloop, nperiod) == 0,
-                                nflickerImg = mod(nflickerImg, experiment(kexp).img.files)+1;
+                                npresentedflicker = npresentedflicker+1;
+                                nflickerImg = mod(npresentedflicker-1, experiment(kexp).img.files)+1;
                             end
                             Screen('DrawTexture', win, experiment(kexp).img.charge(nflickerImg),[],experiment(kexp).position);
                         else
@@ -1413,36 +1400,58 @@ while(kexp<length(data.experiments.file)),
                                 Screen('FillRect',win,[0 0 0]);
                                 Screen('DrawTexture', win, MSflickerBackground);
                             else
-                                Screen('FillRect', win, [experiment(kexp).maskStimulus.protocol.flicker.bg.r ...
-                                experiment(kexp).maskStimulus.protocol.flicker.bg.g experiment(kexp).maskStimulus.protocol.flicker.bg.b],...
-                                experiment(kexp).position);
+                                bgnColor = [experiment(kexp).maskStimulus.protocol.flicker.bg.r ...
+                                    experiment(kexp).maskStimulus.protocol.flicker.bg.g experiment(kexp).maskStimulus.protocol.flicker.bg.b];
+                                if experiment(kexp).sync.is && experiment(kexp).sync.isdigital && strcmp(experiment(kexp).sync.digital.mode,'On every frames'),
+                                    bgnColor = bitshift(bgnColor,-4)+bitshift(bitshift(bgnColor,-4),4);	
+                                end
+                                Screen('FillRect', win, bgnColor, experiment(kexp).position);
                             end     
                         end
                     case 'Images',
                             kimages = mod(nloop,experiment(kexp).img.files);
                             Screen('DrawTexture', win, experiment(kexp).img.charge(kimages+1),[],experiment(kexp).position);
                     case 'Solid color',
-                        pColor = experiment(kexp).maskStimulus.protocol.solidColor;
+                        if experiment(kexp).sync.is && experiment(kexp).sync.isdigital && strcmp(experiment(kexp).sync.digital.mode,'On every frames'),
+                            pColor = bitshift(experiment(kexp).maskStimulus.protocol.solidColor,-4)+bitshift(bitshift(experiment(kexp).maskStimulus.protocol.solidColor,-4),4);	
+                        else
+                            pColor = experiment(kexp).maskStimulus.protocol.solidColor;
+                        end
                         Screen('FillRect',win,[pColor.r, pColor.g, pColor.b]*intensity, experiment(kexp).position)
                     case 'White noise',
-                        finalImage = uint8(0*experiment(kexp).maskStimulus.protocol.wn.noise);
-                        for imageCombination = 1:2;  
-                            if ~(use60 && imageCombination==2),
-                                [~, noiseimg] ...
-                                        = getRandWNimg(experiment(kexp).maskStimulus.protocol.wn);
+                        protocolImage = uint8(0*experiment(kexp).maskStimulus.protocol.wn.noise);
+                        if experiment(kexp).sync.is && experiment(kexp).sync.isdigital && strcmp(experiment(kexp).sync.digital.mode,'On every frames'),
+                            for imageCombination = 1:2; 
+                                [~, noiseimg] = getRandWNimg(experiment(kexp).maskStimulus.protocol.wn);
+                                protocolImage = protocolImage + bitshift(bitshift(noiseimg,-4),4*(imageCombination-1));	
                             end
-                            if use60,
-                                finalImage = noiseimg;                                
-                            else
-                                finalImage = finalImage + bitshift(bitshift(noiseimg,-4),4*(imageCombination-1));
-                            end
+                        else
+                            [~, noiseimg] = getRandWNimg(experiment(kexp).maskStimulus.protocol.wn);
+                            protocolImage = noiseimg;	
                         end
-                        noisetxt = Screen('MakeTexture',win,finalImage);
-                        % draw Texture Protocol
+
+                        noisetxt = Screen('MakeTexture',win,protocolImage);
                         Screen('DrawTexture', win, noisetxt,[],experiment(kexp).position);
                         Screen('Close',noisetxt);
                 end
-                % Draw Texture 
+                
+                % Get the masked image depending on the mask type
+                if strcmp(experiment(kexp).maskStimulus.mask.type,'White noise'),
+                    maskImage = getMaskImg( experiment(kexp).maskStimulus.mask, mask, nloop );                                           
+                else
+                    maskImage = uint8(0*experiment(kexp).maskStimulus.mask.wn.noise);
+                    if experiment(kexp).sync.is && experiment(kexp).sync.isdigital && strcmp(experiment(kexp).sync.digital.mode,'On every frames'),
+                        for imageCombination = 1:2; 
+                            saveIndex = (j-1)*2 + imageCombination;
+                            imgmaskTemp = getMaskImg( experiment(kexp).maskStimulus.mask, mask, saveIndex );		
+                            maskImage = maskImage + bitshift(bitshift(imgmaskTemp,-4),4*(imageCombination-1));		
+                        end
+                    else
+                        imgmaskTemp = getMaskImg( experiment(kexp).maskStimulus.mask, mask, j );
+                        maskImage = imgmaskTemp;
+                    end                    
+                end
+                textureMask = Screen('MakeTexture', win, maskImage);  
                 Screen('DrawTextures', win, textureMask, [], experiment(kexp).positionMask);
                 Screen('Close',textureMask);
                 % Draw Text
@@ -1660,7 +1669,7 @@ while(kexp<length(data.experiments.file)),
                 end
             end
 
-            if data.serial.is
+            if data.sync.isSerial
                 IOPort('Write', serialCom, change);
                 b_serial = b_serial + 1;
             end            
@@ -1682,12 +1691,11 @@ while(kexp<length(data.experiments.file)),
             %loop repetition protocol
             switch experiment(kexp).maskStimulus.protocol.type
                 case 'Images'
-                    nloop = 1;
                     for repProto = 1:rep+1,
                         if repProto==1, 
-                            tmp = nInit+1; 
+                            tmp = 2; 
                         else
-                            tmp = nInit; 
+                            tmp = 1; 
                                 % Digital Synchronize 
                                 % For repetition without prev. background and use 120HZ and not use
                                 % trigger, it's mark for 18[ms] the start of repetition.
@@ -1714,7 +1722,7 @@ while(kexp<length(data.experiments.file)),
                         end
                         
                         %loop images of protocol
-                        for kimg= tmp:nInit+experiment(kexp).img.files -1,
+                        for kimg= tmp:experiment(kexp).img.files,
                             % set the background
                             if experiment(kexp).img.background.isImg
                                 Screen('FillRect',win,[0 0 0]);
@@ -1722,21 +1730,20 @@ while(kexp<length(data.experiments.file)),
                             else
                                 Screen('FillRect', win, backgroundImgColor);
                             end
-                            nloop = nloop+1;
 
                             % MASK type
-                            imgmask = getMaskImg( experiment(kexp).maskStimulus.mask, mask, kimg-nInit+1 );
+                            imgmask = getMaskImg( experiment(kexp).maskStimulus.mask, mask, kimg );
 %Revisar, que imagenes del wn se guardaran 
 % usar nloop (guarda solo al principio) 
 % o kimg (que guarda al principio de casa repeticion)
 
                              if strcmp(experiment(kexp).maskStimulus.mask.type,'White noise') && repProto == 1,
-                                if experiment(kexp).maskStimulus.mask.wn.saveImages >= nloop,
+                                if experiment(kexp).maskStimulus.mask.wn.saveImages >= kimg,
                                     if strcmp(experiment(kexp).maskStimulus.mask.wn.type,'BW')
-                                        experiment(kexp).maskStimulus.mask.wn.imgToComp(:,:,nloop)...
+                                        experiment(kexp).maskStimulus.mask.wn.imgToComp(:,:,kimg)...
                                             = imgmask(:,:,1);   
                                     else
-                                        experiment(kexp).maskStimulus.mask.wn.imgToComp(:,:,:,nloop)...
+                                        experiment(kexp).maskStimulus.mask.wn.imgToComp(:,:,:,kimg)...
                                             = imgmask(:,:,1:3);
                                     end
                                 end
@@ -1744,7 +1751,7 @@ while(kexp<length(data.experiments.file)),
                             textureMask = Screen('MakeTexture', win, imgmask);
 
                             % draw Texture 
-                            Screen('DrawTexture', win, experiment(kexp).img.charge(kimg-nInit+1),[],experiment(kexp).position); %img, [], experiment(kexp).position);
+                            Screen('DrawTexture', win, experiment(kexp).img.charge(kimg),[],experiment(kexp).position); %img, [], experiment(kexp).position);
                             Screen('DrawTextures', win, textureMask, [], experiment(kexp).positionMask);
                             Screen('Close',textureMask);
       
@@ -1755,7 +1762,7 @@ while(kexp<length(data.experiments.file)),
                                 b = b + 1;
                             end
 
-                            if data.serial.is
+                            if data.sync.isSerial
                                 IOPort('Write', serialCom, change);
                                 b_serial = b_serial + 1;
                             end
@@ -1773,15 +1780,11 @@ while(kexp<length(data.experiments.file)),
                         end
                     end
                 case 'Flicker'
-% Revisar nInit para dejar con el 
-% correcto indice
-                    nInitMask = experiment(kexp).maskStimulus.mask.img.nInitialPos;
-                    nloop = 0;
                     for repProto = 1:(rep+1)*experiment(kexp).img.files,
                         if repProto==1, 
-                            tmp = nInitMask+1; 
+                            tmp = 2; 
                         else
-                            tmp = nInitMask; 
+                            tmp = 1; 
                             % Digital Synchronize 
                             % For repetition without prev. background and use projector and not use
                             % trigger, it's mark for 18[ms] the start of repetition.
@@ -1805,6 +1808,9 @@ while(kexp<length(data.experiments.file)),
                                 end
                             end
                         end
+                        % index for images presentation
+                        indexImg =  mod(repProto-1,experiment(kexp).img.files)+1;
+                        
                         %loop images of protocol
                         for kframe = tmp:nperiod,
                             % set the background
@@ -1814,43 +1820,38 @@ while(kexp<length(data.experiments.file)),
                             else
                                 Screen('FillRect', win, backgroundImgColor);
                             end
-                            nloop = nloop+1;
 
                             % MASK type
                             imgmask = getMaskImg( experiment(kexp).maskStimulus.mask, mask, kframe );
                             textureMask = Screen('MakeTexture', win, imgmask);
                             if strcmp(experiment(kexp).maskStimulus.mask.type,'White noise')
-                                if experiment(kexp).maskStimulus.mask.wn.saveImages >= nloop,
+                                if experiment(kexp).maskStimulus.mask.wn.saveImages >= kframe,
                                     if strcmp(experiment(kexp).maskStimulus.mask.wn.type,'BW')
-                                        experiment(kexp).maskStimulus.mask.wn.imgToComp(:,:,nloop)...
+                                        experiment(kexp).maskStimulus.mask.wn.imgToComp(:,:,kframe)...
                                             = imgmask(:,:,1);   
                                     else
-                                        experiment(kexp).maskStimulus.mask.wn.imgToComp(:,:,:,nloop)...
+                                        experiment(kexp).maskStimulus.mask.wn.imgToComp(:,:,:,kframe)...
                                             = imgmask(:,:,1:3);
                                     end
                                 end
                             end
-% Revisar para el correcto despliege
-% de varias imagenes en flicker
-                            if mod(nloop, nperiod)+1 <= nflicker,
-                                % draw Texture 
-                                indexImg = ceil(repProto/(experiment(kexp).maskStimulus.repetitions+1));
+                            if kframe <= nflicker,
+                                % draw the ON period
                                 Screen('DrawTexture', win, experiment(kexp).img.charge(indexImg),[],experiment(kexp).position); 
                                 Screen('DrawTextures', win, textureMask, [], experiment(kexp).positionMask);
                                 Screen('Close',textureMask);
                                 
-                                % draw botton bar
                                 % Analog Synchronize
                                 if experiment(kexp).sync.is && ~experiment(kexp).sync.isdigital,
                                     Screen('FillRect', win,baseColorBar + colorBar*mod(b,experiment(kexp).sync.analog.division), positionBar);
                                     b = b + 1;
                                 end
 
-                                if data.serial.is
+                                if data.sync.isSerial
                                     IOPort('Write', serialCom, change);
                                     b_serial = b_serial + 1;
                                 end    
-                            else
+                            else % draw the OFF period
                                 if experiment(kexp).maskStimulus.protocol.flicker.bg.isImg 
                                     Screen('FillRect',win,[0 0 0]);
                                     Screen('DrawTexture', win, MSflickerBackground);
@@ -1871,14 +1872,9 @@ while(kexp<length(data.experiments.file)),
                                 vbl = Screen('Flip', win, vbl + ...
                                     (nRefreshImg - 0.5) * refresh);
                             end
-
-%                             if repProto == experiment(kexp).maskStimulus.repetitions+1,
-%                                 Screen('Close',experiment(kexp).img.charge(kframe-nInit+1));
-%                             end
                         end
                     end
                 case 'Solid color'                
-                    nloop = 1;
                     for repProto = 1:rep+1,
                         if repProto==1, 
                             tmp = 2; 
@@ -1916,18 +1912,17 @@ while(kexp<length(data.experiments.file)),
                             else
                                 Screen('FillRect', win, backgroundImgColor);
                             end
-                            nloop = nloop+1;
 
                             % MASK type
                             imgmask = getMaskImg( experiment(kexp).maskStimulus.mask, mask, kimg );
                             textureMask = Screen('MakeTexture', win, imgmask);
                             if strcmp(experiment(kexp).maskStimulus.mask.type,'White noise')
-                                if experiment(kexp).maskStimulus.mask.wn.saveImages >= nloop,
+                                if experiment(kexp).maskStimulus.mask.wn.saveImages >= kimg,
                                     if strcmp(experiment(kexp).maskStimulus.mask.wn.type,'BW')
-                                        experiment(kexp).maskStimulus.mask.wn.imgToComp(:,:,nloop)...
+                                        experiment(kexp).maskStimulus.mask.wn.imgToComp(:,:,kimg)...
                                             = imgmask(:,:,1);   
                                     else
-                                        experiment(kexp).maskStimulus.mask.wn.imgToComp(:,:,:,nloop)...
+                                        experiment(kexp).maskStimulus.mask.wn.imgToComp(:,:,:,kimg)...
                                             = imgmask(:,:,1:3);
                                     end
                                 end
@@ -1946,7 +1941,7 @@ while(kexp<length(data.experiments.file)),
                                 b = b + 1;
                             end
 
-                            if data.serial.is
+                            if data.sync.isSerial
                                 IOPort('Write', serialCom, change);
                                 b_serial = b_serial + 1;
                             end
@@ -1958,97 +1953,144 @@ while(kexp<length(data.experiments.file)),
                                     (nRefreshImg - 0.5) * refresh);
                             end
                         end
-%                         Screen('FillRect',win,[0,0,0],experiment(kexp).position);
-%                         vbl = Screen('Flip', win, vbl);
                     end
                 case 'White noise'
-                    limit = experiment(kexp).maskStimulus.protocol.wn.frames/(2-use60);
-                    for j=2:limit,
-                        % Set the background
-                        if experiment(kexp).img.background.isImg
-                            Screen('FillRect',win,[0 0 0]);
-                            Screen('DrawTexture',win,background);
+                    for repProto = 1:rep+1,
+                        if repProto==1, 
+                            tmp = 2; 
                         else
-                            Screen('FillRect', win, backgroundImgColor);
+                            tmp = 1; 
+                            % Digital Synchronize 
+                            % For repetition without prev. background and use projector and not use
+                            % trigger, it's mark for 18[ms] the start of repetition.
+                            if experiment(kexp).sync.is && experiment(kexp).sync.isdigital && ~strcmp(experiment(kexp).sync.digital.mode,'On every frames'),
+                                try
+                                    error = setProjector(FPS_120HZ);
+                                    error = error || setTrigger(TRIGGER_TIME_UP); 
+                                    WaitSecs(WAIT_TIME_SIGNAL); 
+                                    error = error || setProjector(FPS_60HZ); 
+                                catch exceptions
+                                    display(['Error communicating with the projector: setting trigger. ' exceptions.message]); Stack  = dbstack; Stack.line
+                                    Screen('Close')
+                                    Screen('CloseAll')
+                                    return
+                                end
+                                if error,
+                                    display('Error communicating with the projector: setting trigger')
+                                    Screen('Close')
+                                    Screen('CloseAll')
+                                    return
+                                end
+                            end
+                        end          
+                        
+                        if experiment(kexp).sync.is && strcmp(experiment(kexp).sync.digital.mode,'On every frames'),
+                            limit = experiment(kexp).maskStimulus.protocol.wn.frames/2;
+                        else
+                            limit = experiment(kexp).maskStimulus.protocol.wn.frames;
                         end
 
-                        if ~mod(j,1000),
-                            disp(['Rep: ' num2str(j) '/' num2str(limit)]);
-                        end
-                        %% new code UV
-                        % Get the random White Noise image
-                        % compress img if run to 120 hz
-                        finalImage = uint8(0*experiment(kexp).maskStimulus.protocol.wn.noise);
-                        for imageCombination = 1:2;  
-                            if ~(use60 && imageCombination==2),
-                                [~, noiseimg] ...
-                                        = getRandWNimg(experiment(kexp).maskStimulus.protocol.wn);
-                                % Save the fist images of WN
-                                if use60,
-                                    saveIndex = j;
-                                else
+                        for j=tmp:limit,
+                            % Set the background
+                            if experiment(kexp).img.background.isImg
+                                Screen('FillRect',win,[0 0 0]);
+                                Screen('DrawTexture',win,background);
+                            else
+                                Screen('FillRect', win, backgroundImgColor);
+                            end
+
+                            if ~mod(j,1000),
+                                disp(['Rep: ' num2str(j) '/' num2str(limit)]);
+                            end
+
+                            protocolImage = uint8(0*experiment(kexp).maskStimulus.protocol.wn.noise);
+                            maskImage = uint8(0*experiment(kexp).maskStimulus.mask.wn.noise);
+                            if experiment(kexp).sync.is && experiment(kexp).sync.isdigital && strcmp(experiment(kexp).sync.digital.mode,'On every frames'),
+                                for imageCombination = 1:2; 
+                                    [~, noiseimg] = getRandWNimg(experiment(kexp).maskStimulus.protocol.wn);
                                     saveIndex = (j-1)*2 + imageCombination;
+                                    if saveIndex<=experiment(kexp).maskStimulus.protocol.wn.saveImages,
+                                        if strcmp(experiment(kexp).maskStimulus.protocol.wn.type,'BW')
+                                            experiment(kexp).maskStimulus.protocol.wn.imgToComp(:,:,saveIndex)...
+                                                = noiseimg;
+                                        else
+                                            experiment(kexp).maskStimulus.protocol.wn.imgToComp(:,:,:,saveIndex)...
+                                                = noiseimg;
+                                        end
+                                    end
+                                    protocolImage = protocolImage + bitshift(bitshift(noiseimg,-4),4*(imageCombination-1));
+
+                                    imgmaskTemp = getMaskImg( experiment(kexp).maskStimulus.mask, mask, saveIndex );		
+                                    if strcmp(experiment(kexp).maskStimulus.mask.type,'White noise')
+                                        if experiment(kexp).maskStimulus.mask.wn.saveImages >= saveIndex,
+                                            if strcmp(experiment(kexp).maskStimulus.mask.wn.type,'BW')
+                                                experiment(kexp).maskStimulus.mask.wn.imgToComp(:,:,saveIndex)...
+                                                    = imgmaskTemp(:,:,1);   
+                                            else
+                                                experiment(kexp).maskStimulus.mask.wn.imgToComp(:,:,:,saveIndex)...
+                                                    = imgmaskTemp(:,:,1:3);
+                                            end
+                                        end
+                                    end
+                                    maskImage = maskImage + bitshift(bitshift(imgmaskTemp,-4),4*(imageCombination-1));		
                                 end
-                                if saveIndex<=experiment(kexp).maskStimulus.protocol.wn.saveImages,
+                            else
+                                [~, noiseimg] = getRandWNimg(experiment(kexp).maskStimulus.protocol.wn);
+                                if j<=experiment(kexp).maskStimulus.protocol.wn.saveImages,
                                     if strcmp(experiment(kexp).maskStimulus.protocol.wn.type,'BW')
-                                        experiment(kexp).maskStimulus.protocol.wn.imgToComp(:,:,saveIndex)...
+                                        experiment(kexp).maskStimulus.protocol.wn.imgToComp(:,:,j)...
                                             = noiseimg;
                                     else
-                                        experiment(kexp).maskStimulus.protocol.wn.imgToComp(:,:,:,saveIndex)...
+                                        experiment(kexp).maskStimulus.protocol.wn.imgToComp(:,:,:,j)...
                                             = noiseimg;
                                     end
                                 end
+                                protocolImage = noiseimg;	
+
+                                imgmaskTemp = getMaskImg( experiment(kexp).maskStimulus.mask, mask, j );
+                                if strcmp(experiment(kexp).maskStimulus.mask.type,'White noise'),
+                                    if experiment(kexp).maskStimulus.mask.wn.saveImages >= j,
+                                        if strcmp(experiment(kexp).maskStimulus.mask.wn.type,'BW')
+                                            experiment(kexp).maskStimulus.mask.wn.imgToComp(:,:,j)...
+                                                = imgmaskTemp(:,:,1);   
+                                        else
+                                            experiment(kexp).maskStimulus.mask.wn.imgToComp(:,:,:,j)...
+                                                = imgmaskTemp(:,:,1:3);
+                                        end
+                                    end
+                                end	
+                                maskImage = imgmaskTemp;
                             end
-                            if use60,
-                                finalImage = noiseimg;                                
+
+                            noisetxt = Screen('MakeTexture',win,protocolImage);
+                            Screen('DrawTexture', win, noisetxt,[],experiment(kexp).position);
+                            Screen('Close',noisetxt);
+
+                            textureMask = Screen('MakeTexture', win, maskImage);                        
+                            Screen('DrawTextures', win, textureMask, [], experiment(kexp).positionMask);
+                            Screen('Close',textureMask);                        
+
+
+                            % Analog Synchronize
+                            if experiment(kexp).sync.is && ~experiment(kexp).sync.isdigital,
+                                Screen('FillRect', win,baseColorBar + colorBar*mod(b,experiment(kexp).sync.analog.division), positionBar);
+                                    b = b + 1;
+                            end
+                            % Serial Synchronize
+                            if data.sync.isSerial
+                                % fwrite(serialCom,change);
+                                IOPort('Write', serialCom, change);
+                                b_serial = b_serial + 1;
+                            end
+
+                            if nRefreshImg == 1,
+                                vbl = Screen('Flip', win, vbl);
                             else
-                                finalImage = finalImage + bitshift(bitshift(noiseimg,-4),4*(imageCombination-1));
+                                vbl = Screen('Flip', win, vbl + ...
+                                    (nRefreshImg - 0.5) * refresh);
                             end
-                        end 
-
-                        noisetxt = Screen('MakeTexture',win,finalImage);
-                        % draw Texture 
-                        Screen('DrawTexture', win, noisetxt,[],experiment(kexp).position);
-                        Screen('Close',noisetxt);
-                        
-                        % MASK type
-                        imgmask = getMaskImg( experiment(kexp).maskStimulus.mask, mask, j );
-%Revisar, que imagenes del wn se guardaran 
-% usar nloop o kimg
-                         if strcmp(experiment(kexp).maskStimulus.mask.type,'White noise')
-                            if experiment(kexp).maskStimulus.mask.wn.saveImages >= j,
-                                if strcmp(experiment(kexp).maskStimulus.mask.wn.type,'BW')
-                                    experiment(kexp).maskStimulus.mask.wn.imgToComp(:,:,j)...
-                                        = imgmask(:,:,1);   
-                                else
-                                    experiment(kexp).maskStimulus.mask.wn.imgToComp(:,:,:,j)...
-                                        = imgmask(:,:,1:3);
-                                end
-                            end
-                        end
-                        textureMask = Screen('MakeTexture', win, imgmask);                        
-                        Screen('DrawTextures', win, textureMask, [], experiment(kexp).positionMask);
-                        Screen('Close',textureMask);
-                        
-                        % Analog Synchronize
-                        if experiment(kexp).sync.is && ~experiment(kexp).sync.isdigital,
-                            Screen('FillRect', win,baseColorBar + colorBar*mod(b,experiment(kexp).sync.analog.division), positionBar);
-                                b = b + 1;
-                        end
-
-                        if data.serial.is
-                            % fwrite(serialCom,change);
-                            IOPort('Write', serialCom, change);
-                            b_serial = b_serial + 1;
-                        end
-
-                        if nRefreshImg == 1,
-                            vbl = Screen('Flip', win, vbl);
-                        else
-                            vbl = Screen('Flip', win, vbl + ...
-                                (nRefreshImg - 0.5) * refresh);
-                        end
-                    end                          
+                        end     
+                    end
             end
             Time(kexp).finish = WaitSecs((nRefreshImg - 0.5) * refresh);
             disp(['Time experiment: ' int2str(Time(kexp).finish-Time(kexp).start)])
@@ -2084,7 +2126,7 @@ while(kexp<length(data.experiments.file)),
             
             
 
-            if data.serial.is, Port('Write', serialCom, down); end
+            if data.sync.isSerial, Port('Write', serialCom, down); end
             
             if experiment(kexp).img.background.isImg
                 Screen('Close',background);
@@ -2128,7 +2170,7 @@ data.finishedTime = round(clock);
 % Screen('Preference', 'SkipSyncTests',oldSkip);
 % Screen('Preference', 'VisualDebugLevel', oldLevel);
 
-if data.serial.is, IOPort('CloseAll');end
+if data.sync.isSerial, IOPort('CloseAll');end
 
 % Process aborted because there is a missing file
 if imgFilesNotCharged
