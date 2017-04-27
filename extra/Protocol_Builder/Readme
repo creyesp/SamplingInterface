@@ -1,4 +1,5 @@
-SlantedBarBuilder
+SlantedBar Builder
+==================
 
 This code create a images secuence with slanted bar to used in SamplingInterface.
 
@@ -17,8 +18,8 @@ rotation : 	Image rotation (0 90 180 270) degree | default=0
 x0 : 			Bar initial position in x axis | default=0
 xn : 			Bar final position in x axis | default=400
 y0 : 			Bar initial position in y axis | default=200
-backgroundColor : Background color | default=(0,0,0)
-stimColor : 	Stimulus fill color | default=(0,255,255)
+backgroundColor : Background color | default=[0,0,0]
+stimColor : 	Stimulus fill color | default=[0,255,255]
 velocity : 		Temporal velocity [pixels/frame]  | default=1
 
 

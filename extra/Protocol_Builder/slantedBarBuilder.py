@@ -22,8 +22,8 @@ parser.add_argument('--rotation',help='Image rotation (0 90 180 270) degree',typ
 parser.add_argument('--x0',help='Bar initial position in x axis',type=int, default=0, required=False)
 parser.add_argument('--xn',help='Bar final position in x axis',type=int, default=400, required=False)
 parser.add_argument('--y0',help='Bar initial position in y axis',type=int, default=200, required=False)
-parser.add_argument('--backgroundColor',help='Background color',nargs='+', type=int, default=(0,0,0), required=False)
-parser.add_argument('--stimColor',help='Stimulus fill color',nargs='+', type=int, default=(0,255,255), required=False)
+parser.add_argument('--backgroundColor',help='Background color',nargs='+', type=int, default=[0,0,0], required=False)
+parser.add_argument('--stimColor',help='Stimulus fill color',nargs='+', type=int, default=[0,255,255], required=False)
 parser.add_argument('--velocity',help='Temporal velocity [pixels/frame] ',type=int, default=5, required=False)
 args = parser.parse_args()
 
