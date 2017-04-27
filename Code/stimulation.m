@@ -6,12 +6,16 @@ function stimulation(compressData)
 addpath(genpath('lib'))
 
 Stack  = dbstack; Stack.line
-Screen('Preference', 'ConserveVRAM', 64);
-Screen('Preference', 'SkipSyncTests', 1);
-% CAMBAI EN LA VERSION FINAL!!!!!! linea 1261 tb
+if isunix,
+    Screen('Preference', 'ConserveVRAM', 64);
+    Screen('Preference', 'SkipSyncTests', 1);
+end
+git CAMBAI EN LA VERSION FINAL!!!!!! linea 1261 tb
 oldLevel = Screen('Preference', 'VisualDebugLevel', 1);
-% oldSkip = Screen('Preference', 'SkipSyncTests',0);
-% CAMBIAR useProjector = true EN LA VERSION FINAL!!!!
+if ismac,
+    oldSkip = Screen('Preference', 'SkipSyncTests',0);
+end
+
 
 % if useProjector is true then the projector run to 120 [Hz]
 useProjector = false;
@@ -1436,18 +1440,18 @@ while(kexp<length(data.experiments.file)),
                 end
                 
                 % Get the masked image depending on the mask type
-                if strcmp(experiment(kexp).maskStimulus.mask.type,'White noise'),
+                if ~strcmp(experiment(kexp).maskStimulus.mask.type,'White noise'),
                     maskImage = getMaskImg( experiment(kexp).maskStimulus.mask, mask, nloop );                                           
                 else
                     maskImage = uint8(0*experiment(kexp).maskStimulus.mask.wn.noise);
                     if experiment(kexp).sync.is && experiment(kexp).sync.isdigital && strcmp(experiment(kexp).sync.digital.mode,'On every frames'),
                         for imageCombination = 1:2; 
-                            saveIndex = (j-1)*2 + imageCombination;
+                            saveIndex = (nloop-1)*2 + imageCombination;
                             imgmaskTemp = getMaskImg( experiment(kexp).maskStimulus.mask, mask, saveIndex );		
                             maskImage = maskImage + bitshift(bitshift(imgmaskTemp,-4),4*(imageCombination-1));		
                         end
                     else
-                        imgmaskTemp = getMaskImg( experiment(kexp).maskStimulus.mask, mask, j );
+                        imgmaskTemp = getMaskImg( experiment(kexp).maskStimulus.mask, mask, nloop );
                         maskImage = imgmaskTemp;
                     end                    
                 end
@@ -1567,20 +1571,45 @@ while(kexp<length(data.experiments.file)),
                 vbl = WaitSecs(round(experiment(kexp).beforeStimulus.time/(refresh*1000.0))*refresh-0.5*refresh);
             end
                         
-            % Get Mask Image for texture ('White noise' 'Img' 'Solid color' black)
-            imgmask = getMaskImg( experiment(kexp).maskStimulus.mask, mask, 1);
-            if strcmp(experiment(kexp).maskStimulus.mask.type,'White noise')
-                if experiment(kexp).maskStimulus.mask.wn.saveImages >= 1,
-                    if strcmp(experiment(kexp).maskStimulus.mask.wn.type,'BW')
-                        experiment(kexp).maskStimulus.mask.wn.imgToComp(:,:,1)...
-                            = imgmask(:,:,1);   
-                    else
-                        experiment(kexp).maskStimulus.mask.wn.imgToComp(:,:,:,1)...
-                            = imgmask(:,:,1:3);
+%             % Get Mask Image for texture ('White noise' 'Img' 'Solid color' black)
+%             imgmask = getMaskImg( experiment(kexp).maskStimulus.mask, mask, 1);
+            % Get the masked image depending on the mask type
+            j=1;
+            if ~strcmp(experiment(kexp).maskStimulus.mask.type,'White noise'),
+                maskImage = getMaskImg( experiment(kexp).maskStimulus.mask, mask, j );                                           
+            else
+                maskImage = uint8(0*experiment(kexp).maskStimulus.mask.wn.noise);
+                if experiment(kexp).sync.is && experiment(kexp).sync.isdigital && strcmp(experiment(kexp).sync.digital.mode,'On every frames'),
+                    for imageCombination = 1:2; 
+                        saveIndex = (j-1)*2 + imageCombination;
+                        imgmaskTemp = getMaskImg( experiment(kexp).maskStimulus.mask, mask, saveIndex );		
+                        maskImage = maskImage + bitshift(bitshift(imgmaskTemp,-4),4*(imageCombination-1));
+                        if experiment(kexp).maskStimulus.mask.wn.saveImages >= saveIndex,
+                            if strcmp(experiment(kexp).maskStimulus.mask.wn.type,'BW')
+                                experiment(kexp).maskStimulus.mask.wn.imgToComp(:,:,saveIndex)...
+                                    = imgmaskTemp(:,:,1);   
+                            else
+                                experiment(kexp).maskStimulus.mask.wn.imgToComp(:,:,:,saveIndex)...
+                                    = imgmaskTemp(:,:,1:3);
+                            end
+                        end
                     end
-                end
+                else
+                    imgmaskTemp = getMaskImg( experiment(kexp).maskStimulus.mask, mask, j );
+                    maskImage = imgmaskTemp;
+                    if experiment(kexp).maskStimulus.mask.wn.saveImages >= j,
+                        if strcmp(experiment(kexp).maskStimulus.mask.wn.type,'BW')
+                            experiment(kexp).maskStimulus.mask.wn.imgToComp(:,:,j)...
+                                = imgmaskTemp(:,:,1);   
+                        else
+                            experiment(kexp).maskStimulus.mask.wn.imgToComp(:,:,:,j)...
+                                = imgmaskTemp(:,:,1:3);
+                        end
+                    end
+                end                    
             end
-            textureMask = Screen('MakeTexture', win, imgmask);
+
+            textureMask = Screen('MakeTexture', win, maskImage);
             
             % Get the first image for white noise protocol
             if strcmp(experiment(kexp).maskStimulus.protocol.type,'White noise')
@@ -1731,24 +1760,49 @@ while(kexp<length(data.experiments.file)),
                                 Screen('FillRect', win, backgroundImgColor);
                             end
 
-                            % MASK type
-                            imgmask = getMaskImg( experiment(kexp).maskStimulus.mask, mask, kimg );
+%                             % MASK type
+%                             imgmask = getMaskImg( experiment(kexp).maskStimulus.mask, mask, kimg );
+
+                            % Get the masked image depending on the mask type
+                            if strcmp(experiment(kexp).maskStimulus.mask.type,'White noise'),
+                                maskImage = uint8(0*experiment(kexp).maskStimulus.mask.wn.noise);
+                                if experiment(kexp).sync.is && experiment(kexp).sync.isdigital && strcmp(experiment(kexp).sync.digital.mode,'On every frames'),
+                                    for imageCombination = 1:2; 
+                                        saveIndex = (kimg-1)*2 + imageCombination;
+                                        imgmaskTemp = getMaskImg( experiment(kexp).maskStimulus.mask, mask, saveIndex );		
+                                        maskImage = maskImage + bitshift(bitshift(imgmaskTemp,-4),4*(imageCombination-1));
+                                        if experiment(kexp).maskStimulus.mask.wn.saveImages >= saveIndex  && repProto == 1,
+                                            if strcmp(experiment(kexp).maskStimulus.mask.wn.type,'BW')
+                                                experiment(kexp).maskStimulus.mask.wn.imgToComp(:,:,saveIndex)...
+                                                    = imgmaskTemp(:,:,1);   
+                                            else
+                                                experiment(kexp).maskStimulus.mask.wn.imgToComp(:,:,:,saveIndex)...
+                                                    = imgmaskTemp(:,:,1:3);
+                                            end
+                                        end
+                                    end
+                                else
+                                    imgmaskTemp = getMaskImg( experiment(kexp).maskStimulus.mask, mask, kimg );
+                                    maskImage = imgmaskTemp;
+                                    if experiment(kexp).maskStimulus.mask.wn.saveImages >= kimg  && repProto == 1,
+                                        if strcmp(experiment(kexp).maskStimulus.mask.wn.type,'BW')
+                                            experiment(kexp).maskStimulus.mask.wn.imgToComp(:,:,kimg)...
+                                                = imgmaskTemp(:,:,1);   
+                                        else
+                                            experiment(kexp).maskStimulus.mask.wn.imgToComp(:,:,:,kimg)...
+                                                = imgmaskTemp(:,:,1:3);
+                                        end
+                                    end
+                                end                    
+                            else
+                                maskImage = getMaskImg( experiment(kexp).maskStimulus.mask, mask, kimg );                                               
+                            end
+                            textureMask = Screen('MakeTexture', win, maskImage);
+
 %Revisar, que imagenes del wn se guardaran 
 % usar nloop (guarda solo al principio) 
 % o kimg (que guarda al principio de casa repeticion)
 
-                             if strcmp(experiment(kexp).maskStimulus.mask.type,'White noise') && repProto == 1,
-                                if experiment(kexp).maskStimulus.mask.wn.saveImages >= kimg,
-                                    if strcmp(experiment(kexp).maskStimulus.mask.wn.type,'BW')
-                                        experiment(kexp).maskStimulus.mask.wn.imgToComp(:,:,kimg)...
-                                            = imgmask(:,:,1);   
-                                    else
-                                        experiment(kexp).maskStimulus.mask.wn.imgToComp(:,:,:,kimg)...
-                                            = imgmask(:,:,1:3);
-                                    end
-                                end
-                            end
-                            textureMask = Screen('MakeTexture', win, imgmask);
 
                             % draw Texture 
                             Screen('DrawTexture', win, experiment(kexp).img.charge(kimg),[],experiment(kexp).position); %img, [], experiment(kexp).position);
@@ -1821,9 +1875,45 @@ while(kexp<length(data.experiments.file)),
                                 Screen('FillRect', win, backgroundImgColor);
                             end
 
-                            % MASK type
-                            imgmask = getMaskImg( experiment(kexp).maskStimulus.mask, mask, kframe );
-                            textureMask = Screen('MakeTexture', win, imgmask);
+%                             % MASK type
+%                             imgmask = getMaskImg( experiment(kexp).maskStimulus.mask, mask, kframe );
+
+                            % Get the masked image depending on the mask type
+                            if strcmp(experiment(kexp).maskStimulus.mask.type,'White noise'),
+                                maskImage = uint8(0*experiment(kexp).maskStimulus.mask.wn.noise);
+                                if experiment(kexp).sync.is && experiment(kexp).sync.isdigital && strcmp(experiment(kexp).sync.digital.mode,'On every frames'),
+                                    for imageCombination = 1:2; 
+                                        saveIndex = (kimg-1)*2 + imageCombination;
+                                        imgmaskTemp = getMaskImg( experiment(kexp).maskStimulus.mask, mask, saveIndex );        
+                                        maskImage = maskImage + bitshift(bitshift(imgmaskTemp,-4),4*(imageCombination-1));
+                                        if experiment(kexp).maskStimulus.mask.wn.saveImages >= saveIndex  && repProto == 1,
+                                            if strcmp(experiment(kexp).maskStimulus.mask.wn.type,'BW')
+                                                experiment(kexp).maskStimulus.mask.wn.imgToComp(:,:,saveIndex)...
+                                                    = imgmaskTemp(:,:,1);   
+                                            else
+                                                experiment(kexp).maskStimulus.mask.wn.imgToComp(:,:,:,saveIndex)...
+                                                    = imgmaskTemp(:,:,1:3);
+                                            end
+                                        end
+                                    end
+                                else
+                                    imgmaskTemp = getMaskImg( experiment(kexp).maskStimulus.mask, mask, kimg );
+                                    maskImage = imgmaskTemp;
+                                    if experiment(kexp).maskStimulus.mask.wn.saveImages >= kimg  && repProto == 1,
+                                        if strcmp(experiment(kexp).maskStimulus.mask.wn.type,'BW')
+                                            experiment(kexp).maskStimulus.mask.wn.imgToComp(:,:,kimg)...
+                                                = imgmaskTemp(:,:,1);   
+                                        else
+                                            experiment(kexp).maskStimulus.mask.wn.imgToComp(:,:,:,kimg)...
+                                                = imgmaskTemp(:,:,1:3);
+                                        end
+                                    end
+                                end                    
+                            else
+                                maskImage = getMaskImg( experiment(kexp).maskStimulus.mask, mask, kimg );                                               
+                            end
+                            textureMask = Screen('MakeTexture', win, maskImage);
+                            
                             if strcmp(experiment(kexp).maskStimulus.mask.type,'White noise')
                                 if experiment(kexp).maskStimulus.mask.wn.saveImages >= kframe,
                                     if strcmp(experiment(kexp).maskStimulus.mask.wn.type,'BW')
@@ -1913,9 +2003,45 @@ while(kexp<length(data.experiments.file)),
                                 Screen('FillRect', win, backgroundImgColor);
                             end
 
-                            % MASK type
-                            imgmask = getMaskImg( experiment(kexp).maskStimulus.mask, mask, kimg );
-                            textureMask = Screen('MakeTexture', win, imgmask);
+%                             % MASK type
+%                             imgmask = getMaskImg( experiment(kexp).maskStimulus.mask, mask, kimg );
+                            
+                            % Get the masked image depending on the mask type
+                            if strcmp(experiment(kexp).maskStimulus.mask.type,'White noise'),
+                                maskImage = uint8(0*experiment(kexp).maskStimulus.mask.wn.noise);
+                                if experiment(kexp).sync.is && experiment(kexp).sync.isdigital && strcmp(experiment(kexp).sync.digital.mode,'On every frames'),
+                                    for imageCombination = 1:2; 
+                                        saveIndex = (kimg-1)*2 + imageCombination;
+                                        imgmaskTemp = getMaskImg( experiment(kexp).maskStimulus.mask, mask, saveIndex );        
+                                        maskImage = maskImage + bitshift(bitshift(imgmaskTemp,-4),4*(imageCombination-1));
+                                        if experiment(kexp).maskStimulus.mask.wn.saveImages >= saveIndex  && repProto == 1,
+                                            if strcmp(experiment(kexp).maskStimulus.mask.wn.type,'BW')
+                                                experiment(kexp).maskStimulus.mask.wn.imgToComp(:,:,saveIndex)...
+                                                    = imgmaskTemp(:,:,1);   
+                                            else
+                                                experiment(kexp).maskStimulus.mask.wn.imgToComp(:,:,:,saveIndex)...
+                                                    = imgmaskTemp(:,:,1:3);
+                                            end
+                                        end
+                                    end
+                                else
+                                    imgmaskTemp = getMaskImg( experiment(kexp).maskStimulus.mask, mask, kimg );
+                                    maskImage = imgmaskTemp;
+                                    if experiment(kexp).maskStimulus.mask.wn.saveImages >= kimg  && repProto == 1,
+                                        if strcmp(experiment(kexp).maskStimulus.mask.wn.type,'BW')
+                                            experiment(kexp).maskStimulus.mask.wn.imgToComp(:,:,kimg)...
+                                                = imgmaskTemp(:,:,1);   
+                                        else
+                                            experiment(kexp).maskStimulus.mask.wn.imgToComp(:,:,:,kimg)...
+                                                = imgmaskTemp(:,:,1:3);
+                                        end
+                                    end
+                                end                    
+                            else
+                                maskImage = getMaskImg( experiment(kexp).maskStimulus.mask, mask, kimg );                                               
+                            end
+                            textureMask = Screen('MakeTexture', win, maskImage);
+                            
                             if strcmp(experiment(kexp).maskStimulus.mask.type,'White noise')
                                 if experiment(kexp).maskStimulus.mask.wn.saveImages >= kimg,
                                     if strcmp(experiment(kexp).maskStimulus.mask.wn.type,'BW')
@@ -2004,7 +2130,6 @@ while(kexp<length(data.experiments.file)),
                             end
 
                             protocolImage = uint8(0*experiment(kexp).maskStimulus.protocol.wn.noise);
-                            maskImage = uint8(0*experiment(kexp).maskStimulus.mask.wn.noise);
                             if experiment(kexp).sync.is && experiment(kexp).sync.isdigital && strcmp(experiment(kexp).sync.digital.mode,'On every frames'),
                                 for imageCombination = 1:2; 
                                     [~, noiseimg] = getRandWNimg(experiment(kexp).maskStimulus.protocol.wn);
@@ -2019,20 +2144,6 @@ while(kexp<length(data.experiments.file)),
                                         end
                                     end
                                     protocolImage = protocolImage + bitshift(bitshift(noiseimg,-4),4*(imageCombination-1));
-
-                                    imgmaskTemp = getMaskImg( experiment(kexp).maskStimulus.mask, mask, saveIndex );		
-                                    if strcmp(experiment(kexp).maskStimulus.mask.type,'White noise')
-                                        if experiment(kexp).maskStimulus.mask.wn.saveImages >= saveIndex,
-                                            if strcmp(experiment(kexp).maskStimulus.mask.wn.type,'BW')
-                                                experiment(kexp).maskStimulus.mask.wn.imgToComp(:,:,saveIndex)...
-                                                    = imgmaskTemp(:,:,1);   
-                                            else
-                                                experiment(kexp).maskStimulus.mask.wn.imgToComp(:,:,:,saveIndex)...
-                                                    = imgmaskTemp(:,:,1:3);
-                                            end
-                                        end
-                                    end
-                                    maskImage = maskImage + bitshift(bitshift(imgmaskTemp,-4),4*(imageCombination-1));		
                                 end
                             else
                                 [~, noiseimg] = getRandWNimg(experiment(kexp).maskStimulus.protocol.wn);
@@ -2046,20 +2157,6 @@ while(kexp<length(data.experiments.file)),
                                     end
                                 end
                                 protocolImage = noiseimg;	
-
-                                imgmaskTemp = getMaskImg( experiment(kexp).maskStimulus.mask, mask, j );
-                                if strcmp(experiment(kexp).maskStimulus.mask.type,'White noise'),
-                                    if experiment(kexp).maskStimulus.mask.wn.saveImages >= j,
-                                        if strcmp(experiment(kexp).maskStimulus.mask.wn.type,'BW')
-                                            experiment(kexp).maskStimulus.mask.wn.imgToComp(:,:,j)...
-                                                = imgmaskTemp(:,:,1);   
-                                        else
-                                            experiment(kexp).maskStimulus.mask.wn.imgToComp(:,:,:,j)...
-                                                = imgmaskTemp(:,:,1:3);
-                                        end
-                                    end
-                                end	
-                                maskImage = imgmaskTemp;
                             end
 
                             noisetxt = Screen('MakeTexture',win,protocolImage);
@@ -2167,8 +2264,10 @@ Priority(0);
 ShowCursor();
 data.finishedTime = round(clock);
 % Descomentar version final
-% Screen('Preference', 'SkipSyncTests',oldSkip);
-% Screen('Preference', 'VisualDebugLevel', oldLevel);
+if ismac,
+    Screen('Preference', 'SkipSyncTests',oldSkip);
+    Screen('Preference', 'VisualDebugLevel', oldLevel);
+end
 
 if data.sync.isSerial, IOPort('CloseAll');end
 
