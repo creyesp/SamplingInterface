@@ -12,10 +12,10 @@ import os
 import argparse        #argument parsing
 
 parser = argparse.ArgumentParser(prog='slantedBarBuilder.py',description='Bar prototocls builder',formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-parser.add_argument('--outputFolder',help='Output folder',type=str, default='.', required=False)
+parser.add_argument('--outputFolder',help='Output folder',type=str, default='stim/', required=False)
 parser.add_argument('--imgWith',help='Image width',type=int, default=400, required=False)
 parser.add_argument('--imgHeight',help='Image height',type=int, default=400, required=False)
-parser.add_argument('--slant',help='Slant bar in degree', type=int, default=-45, required=False)
+parser.add_argument('--slant',help='Slant bar (in degree) respect to y axis', type=int, default=-45, required=False)
 parser.add_argument('--width',help='Bar width',type=int, default=50, required=False)
 parser.add_argument('--height',help='Bar height',type=int, default=100, required=False)
 parser.add_argument('--rotation',help='Image rotation (0 90 180 270) degree',type=int, default=0, required=False)
@@ -27,9 +27,7 @@ parser.add_argument('--stimColor',help='Stimulus fill color',nargs='+', type=int
 parser.add_argument('--velocity',help='Temporal velocity [pixels/frame] ',type=int, default=5, required=False)
 args = parser.parse_args()
 
-outputFolder = args.outputFolder
-if outputFolder == '.':
-    outputFolder = os.getcwd()+'/stim/'
+outputFolder = os.path.realpath(args.outputFolder)
 
 if outputFolder[-1] != '/':
 	outputFolder = outputFolder + '/'
@@ -50,7 +48,7 @@ height = args.height
 x0 = args.x0 - width
 xn = args.xn
 y0 = args.y0 - height/2
-deltaW = int(height/np.tan(slant))
+deltaW = int(height*np.tan(slant))
 backgroundColor = tuple(args.backgroundColor)
 stimColor = tuple(args.stimColor)
 velocity =  args.velocity #in pixels/frame
