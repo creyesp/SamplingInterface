@@ -19,7 +19,6 @@ end
 
 % if useProjector is true then the projector run to 120 [Hz]
 useProjector = false;
-use60        = true;
 
 % constant for digital synchronize
 FPS_60HZ = 8;
@@ -30,8 +29,6 @@ WAIT_TIME_SIGNAL = 0.018; % 18[ms] to mark the start o end of a protocol
 
 % PROJECTOR
 if useProjector,
-    dirName = sprintf('../Log/Exp__%04d_%02d_%02d-%02d.%02d.%02d',round(clock));
-    mkdir(dirName)
     try
         which setProjector
         error = setProjector(FPS_60HZ);
@@ -96,6 +93,7 @@ presentationMaskMode = false;
 imgFilesNotCharged =  false;
 s1=0;s2=0;
 abort = 0;
+digitalSync = false;
 
 
 
@@ -179,9 +177,30 @@ for kexp=length(data.experiments.file)-1:-1:1,
             dataExp.positionMask = [0,0,wScreen,hScreen];
         end
         experiment(kexp) = dataExp;
+        if experiment(kexp).sync.is && experiment(kexp).sync.isdigital
+            digitalSync = true;
+        end
      else
         siFilesNotCharged = true;
      end
+end
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%% Begin comunitation to projector with digitl sync %%%%%%%%%%%%%%
+if digitalSync,
+    try
+        which setProjector
+        error = setProjector(FPS_60HZ);
+    catch exceptions
+        display(['Error communicating with the projector: setting projector. ' exceptions.message]); Stack  = dbstack; Stack.line
+        Screen('Close')
+        Screen('CloseAll')
+        return
+    end
+    if(error)
+        display('Error communicating with the projector (setting part')
+        return
+    end
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -189,16 +208,23 @@ end
 
 lengthProtocols = length(data.experiments.file)-1;
 
-for kexp=1:length(data.experiments.file)-1,
+for kexp=1:lengthProtocols,
+    
+    useDigitalProjector = experiment(kexp).sync.is && experiment(kexp).sync.isdigital && strcmp(experiment(kexp).sync.digital.mode,'On every frames');
     % charge the image for presentation mode and sets the shift in the 
     % presentation position depending on the previous or next experiment
     if strcmp(experiment(kexp).mode,'Presentation')
         try
             if experiment(kexp).presentation.img.is,
                 imgPresentation = imread(experiment(kexp).presentation.img.path);
-                if islogical(imgPresentation),
+                if islogical(imgPresentation) || useDigitalProjector,
                     imgPresentation = uint8(imgPresentation);
                 end
+                
+                if useDigitalProjector,
+                    imgPresentation = bitshift(imgPresentation,-4) + bitshift(bitshift(imgPresentation,-4),4);
+                end
+                
                 experiment(kexp).img.charge(1) = Screen('MakeTexture',win,imgPresentation);
                 switch experiment(kexp).presentation.img.shift,
                     case 0, % no shift
@@ -241,42 +267,50 @@ for kexp=1:length(data.experiments.file)-1,
         end
     end
     
-    % Load the images of expetiment and fix these as a texture before of the presentation 
-    % If it have images for display, get name, ext, initial number, final
-    % number
-    if experiment(kexp).img.files == 1,
-        num = [];
-        name = experiment(kexp).img.nInitial;
-        ext = [];
-        nInit = 1;
-    elseif experiment(kexp).img.files > 1
-        difference=find((experiment(kexp).img.nInitial==experiment(kexp).img.nFinal)==0);
-        nExt = find(experiment(kexp).img.nInitial=='.');
-        ext = experiment(kexp).img.nInitial(nExt(end):end);% name of img extension 
-        name = experiment(kexp).img.nInitial(1:difference(1)-1);% name of img
-        nInit = str2double(experiment(kexp).img.nInitial(difference(1):nExt(end)-1));% initial number of images name
-        ns = ['%0' num2str(nExt(end)-difference(1)) 'd'];
-    end
     %%% The next code has the goal to charge in memmory the function imread and
     %%% (if they are separate files) the functions to use of Screen.
     if experiment(kexp).protocol.useImages && experiment(kexp).img.files > 0,
+        % Load the images of expetiment and fix these as a texture before of the presentation 
+        % If it have images for display, get name, ext, initial number, final
+        % number
+        if experiment(kexp).img.files == 1,
+            num = [];
+            name = experiment(kexp).img.nInitial;
+            ext = [];
+            nInit = 1;
+        elseif experiment(kexp).img.files > 1
+            difference=find((experiment(kexp).img.nInitial==experiment(kexp).img.nFinal)==0);
+            nExt = find(experiment(kexp).img.nInitial=='.');
+            ext = experiment(kexp).img.nInitial(nExt(end):end);% name of img extension 
+            name = experiment(kexp).img.nInitial(1:difference(1)-1);% name of img
+            nInit = str2double(experiment(kexp).img.nInitial(difference(1):nExt(end)-1));% initial number of images name
+            ns = ['%0' num2str(nExt(end)-difference(1)) 'd'];
+        end
+        
         for j=nInit:experiment(kexp).img.files+nInit-1,
             if experiment(kexp).img.files > 1,
                 num = sprintf(ns,j);
             end
             imgName = fullfile(experiment(kexp).img.directory,strcat(name,num,ext)); 
             if exist(imgName,'file'),
-                tmp = imread(imgName);
-                if islogical(tmp) || useProjector,
-                    tmp = uint8(tmp);
+                loadedImg = imread(imgName);
+                if islogical(loadedImg) || useDigitalProjector,
+                    loadedImg = uint8(loadedImg);
                 end
-                % if protocols use Trigger mean that is is displayed over 60 hz 
-                % over 60 hz the images are compress using a binary shift 
-                if strcmp(experiment(kexp).sync.digital.mode,'On every frames'),
-                    tmp = bitshift(tmp,-4);
-                    tmp = tmp + bitshift(tmp,4);
+                % over 60 hz (useDigitalProjector) the images are compressed using a binary shift
+                if useDigitalProjector,
+                    if mod(j-nInit,2),
+                        loadedImg2 = loadedImg1 + bitshift(bitshift(loadedImg,-4),4);
+                        Screen('Close',experiment(kexp).img.charge(j-nInit));
+                        experiment(kexp).img.charge((j-nInit-1)/2) = Screen('MakeTexture',win,loadedImg2); 
+                    else
+                        loadedImg1 = bitshift(loadedImg,-4);
+                        experiment(kexp).img.charge((j-nInit)/2+1) = Screen('MakeTexture',win,loadedImg); 
+                    end
+                else
+                    experiment(kexp).img.charge(j-nInit+1) = Screen('MakeTexture',win,loadedImg); 
                 end
-                experiment(kexp).img.charge(j-nInit+1) = Screen('MakeTexture',win,tmp); 
+                
                 if ~mod(j,100)
                     Screen('DrawText', win,['Charging experiment ' num2str(kexp) ' img ' num2str(j-nInit+1) ],...
                         wScreen/2-170, kexp*hScreen/(lengthProtocols+1), [150, 150, 0]);
@@ -288,6 +322,10 @@ for kexp=1:length(data.experiments.file)-1,
                 return;
             end
         end
+    end
+    
+    if useDigitalProjector,
+        experiment(kexp).img.files = ceil(experiment(kexp).img.files/2);
     end
 
     % If it have images for display in masked stimulus, get name, ext, initial number, final
@@ -308,25 +346,32 @@ for kexp=1:length(data.experiments.file)-1,
         end    
         % Load the image for the mask if this mask type is img
         if strcmp(experiment(kexp).maskStimulus.mask.type,'Img') &&...
-                exist( experiment(kexp).maskStimulus.mask.img.directory , 'dir' ),
+                experiment(kexp).maskStimulus.mask.img.files > 0,
             for j=nInitMask:experiment(kexp).maskStimulus.mask.img.files+nInitMask-1,
                 if experiment(kexp).maskStimulus.mask.img.files > 1,
                     numMask = sprintf(nsMask,j);
                 end
                 imgNameMask = fullfile(experiment(kexp).maskStimulus.mask.img.directory,strcat(nameMask,numMask,extMask)); 
                 if exist(imgNameMask,'file'),
-                    tmp = imread(imgNameMask);
-                    if islogical(tmp) || useProjector,
-                        tmp = uint8(tmp);
+                    loadedImgMask = imread(imgNameMask);
+                    if islogical(loadedImgMask) || useDigitalProjector,
+                        loadedImgMask = uint8(loadedImgMask);
                     end
-                    % if protocols use Trigger mean that is is displayed over 60 hz 
-                    % over 60 hz the images are compress using a binary shift 
-                    if strcmp(experiment(kexp).sync.digital.mode,'On every frames'),
-                        tmp = bitshift(tmp,-4);
-                        tmp = tmp + bitshift(tmp,4);
+                    % over 60 hz (useDigitalProjector) the images are compressed using a binary shift
+                    if useDigitalProjector,
+                        if mod(j-nInitMask,2),
+                            loadedImgMask2 = loadedImgMask1 + bitshift(bitshift(loadedImgMask,-4),4);
+                            Screen('Close',experiment(kexp).maskStimulus.mask.img.imgpreloaded{j-nInitMask});
+                            experiment(kexp).maskStimulus.mask.img.imgpreloaded{(j-nInit-1)/2} = Screen('MakeTexture',win,loadedImgMask2); 
+                        else
+                            loadedImgMask1 = bitshift(loadedImgMask,-4);
+                            experiment(kexp).maskStimulus.mask.img.imgpreloaded{j-nInitMask+1} = Screen('MakeTexture',win,loadedImgMask); 
+                        end
+                    else
+                        experiment(kexp).maskStimulus.mask.img.imgpreloaded{(j-nInit)/2+1} = Screen('MakeTexture',win,loadedImgMask); 
                     end
+                    
                     disp(j-nInitMask+1)
-                    experiment(kexp).maskStimulus.mask.img.imgpreloaded{j-nInitMask+1} = tmp; 
                     if ~mod(j,100)
                         Screen('DrawText', win,['Charging experiment ' num2str(kexp) ' mask img ' num2str(j-nInitMask+1) ],...
                             wScreen/2-170, kexp*hScreen/(lengthProtocols+1), [150, 150, 0]);
@@ -339,6 +384,9 @@ for kexp=1:length(data.experiments.file)-1,
                 end
             end
         end
+    end
+    if useDigitalProjector,
+        experiment(kexp).maskStimulus.mask.img.files = ceil(experiment(kexp).maskStimulus.mask.img.files/2);
     end
     clearvars tmp;
 end
@@ -421,6 +469,8 @@ while(kexp<length(data.experiments.file)),
     if siFilesNotCharged 
         break;
     end
+    useDigitalProjector = experiment(kexp).sync.is && experiment(kexp).sync.isdigital && strcmp(experiment(kexp).sync.digital.mode,'On every frames');
+    
     display(['Running experiment ' num2str(kexp) '/' num2str(length(data.experiments.file)-1)...
         ' (some repetitions might be not considered )']);
     
@@ -456,6 +506,10 @@ while(kexp<length(data.experiments.file)),
             if exist(imgName,'file'),
                 [tmp,tmpMap] = imread(imgName);
                 if isempty(tmpMap)
+                    if useDigitalProjector,
+                        tmp = uint8(tmp);
+                        tmp = bitshift(tmp,-4) + bitshift(bitshift(tmp,-4),4);
+                    end                    
                     background = Screen('MakeTexture',win,tmp);
                     clear tmp;
                 else % it's index color frame and not RGB color
@@ -549,12 +603,19 @@ while(kexp<length(data.experiments.file)),
             if experiment(kexp).flicker.img.is
                 imgName = experiment(kexp).flicker.img.name;
                 if exist(imgName,'file'),
-                    tmp = imread(imgName);
-                    flickerBackground = Screen('MakeTexture', win,tmp);
-                    clear tmp;
+                    [tmp,tmpMap] = imread(imgName);
+                    if isempty(tmpMap)
+                        if useDigitalProjector,
+                            tmp = uint8(tmp);
+                            tmp = bitshift(tmp,-4) + bitshift(bitshift(tmp,-4),4);
+                        end                    
+                        flickerBackground = Screen('MakeTexture',win,tmp);
+                        clear tmp;
+                    else % it's index color frame and not RGB color
+                        indexColorFrame = 1; break;
+                    end
                 else
-                    imgFilesNotCharged = true;
-                    break;
+                    imgFilesNotCharged = true; break;
                 end
             end
             
@@ -829,12 +890,6 @@ while(kexp<length(data.experiments.file)),
                             error = error || setTrigger(TRIGGER_TIME_UP); 
                             WaitSecs(WAIT_TIME_SIGNAL); 
                             error = error || setProjector(FPS_60HZ); 
-%                     if useProjector && ~strcmp(experiment(kexp).sync.digital.mode,'On every frames'),
-%                         try
-%                             %send trigger when start repetition
-%                             error = setTrigger(800);
-%                             WaitSecs(.018);
-%                             error = error || setTrigger(0);
                         catch exceptions
                             display(['Error communicating with the projector: setting trigger. ' exceptions.message]); Stack  = dbstack; Stack.line
                             Screen('Close')
@@ -938,9 +993,9 @@ while(kexp<length(data.experiments.file)),
         elseif strcmp(experiment(kexp).mode,'White noise'),
             rng(experiment(kexp).whitenoise.seed);
             % Create the array for run WN stimulus
-            [experiment(kexp).noise, ...
+            [experiment(kexp).whitenoise.noise, ...
               experiment(kexp).whitenoise.imgToComp,... 
-              experiment(kexp).noiseimg] ...
+              experiment(kexp).whitenoise.noiseimg] ...
                 = setWNimg(experiment(kexp).whitenoise);
             
             nRefreshImg = round(1/(experiment(kexp).whitenoise.fps*refresh));
@@ -986,7 +1041,11 @@ while(kexp<length(data.experiments.file)),
                 Time(kexp).start = vbl;
             end
             
-            limit = experiment(kexp).whitenoise.frames/(2-use60);
+            if experiment(kexp).sync.is && strcmp(experiment(kexp).sync.digital.mode,'On every frames'),
+                limit = experiment(kexp).whitenoise.frames/2;
+            else
+                limit = experiment(kexp).whitenoise.frames;
+            end
             for j=1:limit,
                 % Set the background
                 if experiment(kexp).img.background.isImg
@@ -999,42 +1058,40 @@ while(kexp<length(data.experiments.file)),
                 if ~mod(j,1000),
                     disp(['Rep: ' num2str(j) '/' num2str(limit)]);
                 end
-                %% new code UV
-                % Get the random White Noise image
-                % compress img if run to 120 hz
-                finalImage = uint8(0*experiment(kexp).noiseimg);
-                for imageCombination = 1:2;  
-                    if ~(use60 && imageCombination==2),
-                        [experiment(kexp).noise, experiment(kexp).noiseimg] ...
-                                = getRandWNimg(experiment(kexp).whitenoise);
-                        % Save the fist images of WN
-                        if use60,
-                            saveIndex = j;
-                        else
-                            saveIndex = (j-1)*2 + imageCombination;
-                        end
+               
+                protocolImage = uint8(0*experiment(kexp).whitenoise.noiseimg);
+                if experiment(kexp).sync.is && experiment(kexp).sync.isdigital && strcmp(experiment(kexp).sync.digital.mode,'On every frames'),
+                    for imageCombination = 1:2; 
+                        [~, noiseimg] = getRandWNimg(experiment(kexp).whitenoise);
+                        saveIndex = (j-1)*2 + imageCombination;
                         if saveIndex<=experiment(kexp).whitenoise.saveImages,
                             if strcmp(experiment(kexp).whitenoise.type,'BW')
                                 experiment(kexp).whitenoise.imgToComp(:,:,saveIndex)...
-                                    = experiment(kexp).noiseimg;
+                                    = noiseimg;
                             else
                                 experiment(kexp).whitenoise.imgToComp(:,:,:,saveIndex)...
-                                    = experiment(kexp).noiseimg;
+                                    = noiseimg;
                             end
                         end
+                        protocolImage = protocolImage + bitshift(bitshift(noiseimg,-4),4*(imageCombination-1));	
                     end
-                    if ~use60,
-                        finalImage = finalImage + bitshift(bitshift(experiment(kexp).noiseimg,-4),4*(imageCombination-1));
-                    else
-                        finalImage = experiment(kexp).noiseimg;
+                else
+                    [~, noiseimg] = getRandWNimg(experiment(kexp).whitenoise);
+                    if j<=experiment(kexp).whitenoise.saveImages,
+                        if strcmp(experiment(kexp).whitenoise.type,'BW')
+                            experiment(kexp).whitenoise.imgToComp(:,:,j)...
+                                = noiseimg;
+                        else
+                            experiment(kexp).whitenoise.imgToComp(:,:,:,j)...
+                                = noiseimg;
+                        end
                     end
+                    protocolImage = noiseimg;	
                 end
-                
-                noisetxt = Screen('MakeTexture',win,finalImage);
-                % draw Texture 
+
+                noisetxt = Screen('MakeTexture',win,protocolImage);
                 Screen('DrawTexture', win, noisetxt,[],experiment(kexp).position);
-                Screen('Close',noisetxt);
-                
+                Screen('Close',noisetxt);                
                 % Start Digital or Analog Synchronize
                 % If use 120Hz and the trigger was select the projector 
                 % mark all frame with digital pulse, otherwise
@@ -1132,13 +1189,20 @@ while(kexp<length(data.experiments.file)),
             if experiment(kexp).maskStimulus.protocol.flicker.bg.isImg
                 imgName = experiment(kexp).maskStimulus.protocol.flicker.bg.name;
                 if exist(imgName,'file'),
-                    tmp = imread(imgName)*intensity;
-                    MSflickerBackground = Screen('MakeTexture', win,tmp);
-                    clear tmp;
+                    [tmp,tmpMap] = imread(imgName)*intensity;
+                    if isempty(tmpMap)
+                        if useDigitalProjector,
+                        tmp = uint8(tmp);
+                            tmp = bitshift(tmp,-4) + bitshift(bitshift(tmp,-4),4);
+                        end                    
+                        MSflickerBackground = Screen('MakeTexture', win,tmp);
+                        clear tmp;
+                    else % it's index color frame and not RGB color
+                        indexColorFrame = 1; break;
+                    end
                 else
-                    imgFilesNotCharged = true;
-                    break;
-                end
+                    imgFilesNotCharged = true; break;
+                end                
             end
             
             % Set seed for random number for White noise MASK
@@ -1233,18 +1297,6 @@ while(kexp<length(data.experiments.file)),
                 Screen('DrawTexture',win,background);
             else
                 Screen('FillRect', win, backgroundImgColor);
-            end
-            
-            if experiment(kexp).maskStimulus.protocol.flicker.bg.isImg
-                imgName = experiment(kexp).maskStimulus.protocol.flicker.bg.name;
-                if exist(imgName,'file'),
-                    tmp = imread(imgName);
-                    MSflickerBackground = Screen('MakeTexture', win,tmp);
-                    clear tmp;
-                else
-                    imgFilesNotCharged = true;
-                    break;
-                end
             end
             
             % Loop for fit mask
@@ -1495,7 +1547,7 @@ while(kexp<length(data.experiments.file)),
             
             % Load the images and fix these as a texture 
             % before of the presentation
-            if intensity ~= 0 && experiment(kexp).protocol.useImages, 
+            if intensity ~= 0 && experiment(kexp).protocol.useImages && experiment(kexp).img.files > 0, 
                 if experiment(kexp).img.files == 1,
                     num = [];
                     name = experiment(kexp).img.nInitial;
@@ -1514,18 +1566,38 @@ while(kexp<length(data.experiments.file)),
                     if experiment(kexp).img.files > 1,
                         num = sprintf(ns,j);
                     end
-                    tmp = uint8(imread(fullfile(experiment(kexp).img.directory,strcat(name,num,ext)))*intensity);
-                    if islogical(tmp) || useProjector,
-                        tmp = uint8(tmp);
+                    
+                    imgName = fullfile(experiment(kexp).img.directory,strcat(name,num,ext)); 
+                    if exist(imgName,'file'),
+                        loadedImg = imread(imgName)*intensity;
+                        if islogical(loadedImg) || useDigitalProjector,
+                            loadedImg = uint8(loadedImg);
+                        end
+                        % over 60 hz (useDigitalProjector) the images are compressed using a binary shift
+                        if useDigitalProjector,
+                            if mod(j-nInit,2),
+                                loadedImg2 = loadedImg1 + bitshift(bitshift(loadedImg,-4),4);
+                                Screen('Close',experiment(kexp).img.charge(j-nInit));
+                                experiment(kexp).img.charge((j-nInit-1)/2) = Screen('MakeTexture',win,loadedImg2); 
+                            else
+                                loadedImg1 = bitshift(loadedImg,-4);
+                                experiment(kexp).img.charge((j-nInit)/2+1) = Screen('MakeTexture',win,loadedImg); 
+                            end                            
+                        else
+                            Screen('Close',experiment(kexp).img.charge(j-nInit+1));
+                            experiment(kexp).img.charge(j-nInit+1) = Screen('MakeTexture',win,loadedImg); 
+                        end
+
+                        if ~mod(j,100)
+                            Screen('DrawText', win,['Charging experiment ' num2str(kexp) ' img ' num2str(j-nInit+1) ],...
+                                wScreen/2-170, kexp*hScreen/(lengthProtocols+1), [150, 150, 0]);
+                            display(['Charging experiment ' num2str(kexp) ' img ' num2str(j-nInit+1) ])
+                            Screen('Flip',win);
+                        end
+                    else
+                        disp(['Not exist ' imgName ' file, check the image and retry.'])
+                        return;
                     end
-                    % if protocols use Trigger mean that is is displayed over 60 hz 
-                    % over 60 hz the images are compress using a binary shift 
-                    if strcmp(experiment(kexp).sync.digital.mode,'On every frames'),%
-                        tmp = bitshift(tmp,-4);
-                        tmp = tmp + bitshift(tmp,4);
-                    end
-                    Screen('Close',experiment(kexp).img.charge(j-nInit+1));
-                    experiment(kexp).img.charge(j-nInit+1) = Screen('MakeTexture',win,tmp); 
                 end
             end
             
@@ -1571,8 +1643,6 @@ while(kexp<length(data.experiments.file)),
                 vbl = WaitSecs(round(experiment(kexp).beforeStimulus.time/(refresh*1000.0))*refresh-0.5*refresh);
             end
                         
-%             % Get Mask Image for texture ('White noise' 'Img' 'Solid color' black)
-%             imgmask = getMaskImg( experiment(kexp).maskStimulus.mask, mask, 1);
             % Get the masked image depending on the mask type
             j=1;
             if ~strcmp(experiment(kexp).maskStimulus.mask.type,'White noise'),
@@ -1613,18 +1683,11 @@ while(kexp<length(data.experiments.file)),
             
             % Get the first image for white noise protocol
             if strcmp(experiment(kexp).maskStimulus.protocol.type,'White noise')
-                finalImage = uint8(0*experiment(kexp).maskStimulus.protocol.wn.noise);
-                j=1;
-                for imageCombination = 1:2;  
-                    if ~(use60 && imageCombination==2),
-                        [~, noiseimg] ...
-                                = getRandWNimg(experiment(kexp).maskStimulus.protocol.wn);
-                        % Save the fist images of WN
-                        if use60,
-                            saveIndex = j;
-                        else
-                            saveIndex = (j-1)*2 + imageCombination;
-                        end
+                protocolImage = uint8(0*experiment(kexp).maskStimulus.protocol.wn.noiseimg);
+                if experiment(kexp).sync.is && experiment(kexp).sync.isdigital && strcmp(experiment(kexp).sync.digital.mode,'On every frames'),
+                    for imageCombination = 1:2; 
+                        [~, noiseimg] = getRandWNimg(experiment(kexp).maskStimulus.protocol.wn);
+                        saveIndex = (j-1)*2 + imageCombination;
                         if saveIndex<=experiment(kexp).maskStimulus.protocol.wn.saveImages,
                             if strcmp(experiment(kexp).maskStimulus.protocol.wn.type,'BW')
                                 experiment(kexp).maskStimulus.protocol.wn.imgToComp(:,:,saveIndex)...
@@ -1634,12 +1697,20 @@ while(kexp<length(data.experiments.file)),
                                     = noiseimg;
                             end
                         end
+                        protocolImage = protocolImage + bitshift(bitshift(noiseimg,-4),4*(imageCombination-1));	
                     end
-                    if use60,
-                        finalImage = noiseimg;                                
-                    else
-                        finalImage = finalImage + bitshift(bitshift(noiseimg,-4),4*(imageCombination-1));
+                else
+                    [~, noiseimg] = getRandWNimg(experiment(kexp).maskStimulus.protocol.wn);
+                    if j<=experiment(kexp).maskStimulus.protocol.wn.saveImages,
+                        if strcmp(experiment(kexp).maskStimulus.protocol.wn.type,'BW')
+                            experiment(kexp).maskStimulus.protocol.wn.imgToComp(:,:,j)...
+                                = noiseimg;
+                        else
+                            experiment(kexp).maskStimulus.protocol.wn.imgToComp(:,:,:,j)...
+                                = noiseimg;
+                        end
                     end
+                    protocolImage = noiseimg;	
                 end            
             end            
        
@@ -1650,7 +1721,7 @@ while(kexp<length(data.experiments.file)),
                 firstStimulusTexture = experiment(kexp).img.charge(1);
                 Screen('DrawTexture', win, firstStimulusTexture,[],experiment(kexp).position);
             elseif strcmp(experiment(kexp).maskStimulus.protocol.type,'White noise'),
-                firstStimulusTexture = Screen('MakeTexture',win,finalImage); 
+                firstStimulusTexture = Screen('MakeTexture',win,protocolImage); 
                 Screen('DrawTexture', win, firstStimulusTexture,[],experiment(kexp).position);
             elseif strcmp(experiment(kexp).maskStimulus.protocol.type,'Solid color'),
                 colorSC = [experiment(kexp).maskStimulus.protocol.solidColor.r,...
