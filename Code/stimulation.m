@@ -1252,6 +1252,8 @@ while(kexp<length(data.experiments.file)),
                 delta = 2; % min pixel inside mask image 
                 maskShape = 'oval';
                 npresentedflicker = 0;
+                nflickerImg = 1;
+                disp(nflickerImg);
               
 
                 % Find the color values which correspond to white and black.

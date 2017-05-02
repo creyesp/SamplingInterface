@@ -37,4 +37,4 @@ presentar el mismo wn, pero eso no ocurre actualmente.
 - revisar que todos los parametros RGB, al usar 120 hz hagan el corrimiento 
 - revisar que al cargar als imagenes al principio como en la mascara tengan el corrimiento para 120 hz (linea 307)
 - revisar que todos los protocolos tengan en consideracion los 120  hz
-
+- revisar en img mask porque al final de la repeticion agrega un frame rojo
