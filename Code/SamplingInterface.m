@@ -5690,18 +5690,36 @@ imgFiles = {['*.bmp;*.gif;*.hdf;*.jpeg;*.jpg;*.jp2;*.jpf;*.jpx;*.j2c;*.j2k'...
 [fileName,fileDirection] = uigetfile(imgFiles,'Select image to use as background');
 if fileName ~= 0
     handles.maskStimulus.protocol.flicker.bg.name = fullfile(fileDirection,fileName);
+    imageInfo = imfinfo(handles.maskStimulus.protocol.flicker.bg.name);
+    handles.maskStimulus.protocol.flicker.bg.width = imageInfo.Width;
+    handles.maskStimulus.protocol.flicker.bg.height = imageInfo.Height;    
     set(handles.maskStimulusFlickerImgFile,'String',handles.maskStimulus.protocol.flicker.bg.name);
 end
 guidata(hObject,handles);
 
 
 function maskStimulusFlickerImgFile_Callback(hObject, eventdata, handles)
-% hObject    handle to maskStimulusFlickerImgFile (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of maskStimulusFlickerImgFile as text
-%        str2double(get(hObject,'String')) returns contents of maskStimulusFlickerImgFile as a double
+if ~handles.modify
+    return
+end
+imgpath = get(hObject,'String');
+if exist(imgpath,'file');
+    try
+        imageInfo = imfinfo(imgpath);
+    catch
+      errordlg('Input must be a image file', 'Error')
+      set(handles.maskStimulusFlickerImgFile,'String',handles.maskStimulus.protocol.flicker.bg.name);
+      return
+    end
+    handles.maskStimulus.protocol.flicker.bg.name = imgpath;
+    handles.maskStimulus.protocol.flicker.bg.width = imageInfo.Width;
+    handles.maskStimulus.protocol.flicker.bg.height = imageInfo.Height;    
+    set(handles.maskStimulusFlickerImgFile,'String',handles.maskStimulus.protocol.flicker.bg.name);
+else
+    errordlg('Input must be a image file', 'Error')
+    set(handles.maskStimulusFlickerImgFile,'String',handles.maskStimulus.protocol.flicker.bg.name);
+end
+guidata(hObject,handles);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -5739,6 +5757,9 @@ if get(hObject,'Value')==1.0
             handles.maskStimulus.protocol.flicker.bg.isImg = false;
         else
             handles.maskStimulus.protocol.flicker.bg.name = fullfile(fileDirection,fileName);
+            imageInfo = imfinfo(handles.maskStimulus.protocol.flicker.bg.name);
+            handles.maskStimulus.protocol.flicker.bg.width = imageInfo.Width;
+            handles.maskStimulus.protocol.flicker.bg.height = imageInfo.Height;
             set(handles.maskStimulusFlickerImgFile,'String',handles.maskStimulus.protocol.flicker.bg.name);
         end
     end

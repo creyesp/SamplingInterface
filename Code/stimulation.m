@@ -6,16 +6,17 @@ function stimulation(compressData)
 addpath(genpath('lib'))
 
 Stack  = dbstack; Stack.line
-% if isunix,
-%     Screen('Preference', 'ConserveVRAM', 64);
-%     Screen('Preference', 'SkipSyncTests', 1);
-% %     Screen('Preference', 'SkipSyncTests', 0); 
-%     oldLevel = Screen('Preference', 'VisualDebugLevel', 1);
-% end
+if isunix,
+    Screen('Preference', 'ConserveVRAM', 64);
+    Screen('Preference', 'SkipSyncTests', 1);
+%     Screen('Preference', 'SkipSyncTests', 0); 
+    oldLevel = Screen('Preference', 'VisualDebugLevel', 1);
+end
 %CAMBAI EN LA VERSION FINAL!!!!!! linea 1261 tb
+if ismac,
 oldLevel = Screen('Preference', 'VisualDebugLevel', 0);
 oldSkip = Screen('Preference', 'SkipSyncTests',0);
-
+end
 
 % if useProjector is true then the projector run to 120 [Hz]
 useProjector = false;
@@ -173,7 +174,16 @@ for kexp=length(data.experiments.file)-1:-1:1,
             dataExp.positionMask = [(wScreen-dataExp.maskStimulus.mask.width)/2+dataExp.img.deltaX ...
                     (hScreen-dataExp.maskStimulus.mask.height)/2+dataExp.img.deltaY ...
                     (wScreen+dataExp.maskStimulus.mask.width)/2+dataExp.img.deltaX ...
-                    (hScreen+dataExp.maskStimulus.mask.height)/2+dataExp.img.deltaY];   
+                    (hScreen+dataExp.maskStimulus.mask.height)/2+dataExp.img.deltaY];  
+            if strcmp(dataExp.mode,'Mask stimulus') && strcmp(dataExp.maskStimulus.protocol.type,'Flicker') && dataExp.maskStimulus.protocol.flicker.bg.isImg,
+                dataExp.maskStimulus.protocol.flicker.bg.position = ...
+                    [(wScreen-dataExp.maskStimulus.protocol.flicker.bg.width)/2+dataExp.img.deltaX ...
+                    (hScreen-dataExp.maskStimulus.protocol.flicker.bg.height)/2+dataExp.img.deltaY ...
+                    (wScreen+dataExp.maskStimulus.protocol.flicker.bg.width)/2+dataExp.img.deltaX ...
+                    (hScreen+dataExp.maskStimulus.protocol.flicker.bg.height)/2+dataExp.img.deltaY];  
+            else
+                dataExp.maskStimulus.protocol.flicker.bg.position = [0 0 0 0];
+            end
         else
             dataExp.position  = [0,0,wScreen,hScreen];
             dataExp.positionMask = [0,0,wScreen,hScreen];
@@ -1189,7 +1199,7 @@ while(kexp<length(data.experiments.file)),
             if experiment(kexp).maskStimulus.protocol.flicker.bg.isImg
                 imgName = experiment(kexp).maskStimulus.protocol.flicker.bg.name;
                 if exist(imgName,'file'),
-                    [tmp,tmpMap] = imread(imgName)*intensity;
+                    [tmp,tmpMap] = imread(imgName);
                     if isempty(tmpMap)
                         if useDigitalProjector,
                         tmp = uint8(tmp);
@@ -1456,7 +1466,7 @@ while(kexp<length(data.experiments.file)),
                         else
                             if experiment(kexp).maskStimulus.protocol.flicker.bg.isImg 
                                 Screen('FillRect',win,[0 0 0]);
-                                Screen('DrawTexture', win, MSflickerBackground);
+                                Screen('DrawTexture', win, MSflickerBackground,[],experiment(kexp).maskStimulus.protocol.flicker.bg.position);
                             else
                                 bgnColor = [experiment(kexp).maskStimulus.protocol.flicker.bg.r ...
                                     experiment(kexp).maskStimulus.protocol.flicker.bg.g experiment(kexp).maskStimulus.protocol.flicker.bg.b];
@@ -1601,6 +1611,26 @@ while(kexp<length(data.experiments.file)),
                         return;
                     end
                 end
+            end
+            
+           %Set Flicker background image as a texture           
+            if experiment(kexp).maskStimulus.protocol.flicker.bg.isImg
+                imgName = experiment(kexp).maskStimulus.protocol.flicker.bg.name;
+                if exist(imgName,'file'),
+                    [tmp,tmpMap] = imread(imgName);
+                    if isempty(tmpMap)
+                        if useDigitalProjector,
+                        tmp = uint8(tmp*intensity);
+                        tmp = bitshift(tmp,-4) + bitshift(bitshift(tmp,-4),4);
+                        end                    
+                        MSflickerBackground = Screen('MakeTexture', win,tmp);
+                        clear tmp;
+                    else % it's index color frame and not RGB color
+                        indexColorFrame = 1; break;
+                    end
+                else
+                    imgFilesNotCharged = true; break;
+                end                
             end
             
             % Get the Mask
@@ -1990,10 +2020,10 @@ while(kexp<length(data.experiments.file)),
                                 if experiment(kexp).maskStimulus.mask.wn.saveImages >= kframe,
                                     if strcmp(experiment(kexp).maskStimulus.mask.wn.type,'BW')
                                         experiment(kexp).maskStimulus.mask.wn.imgToComp(:,:,kframe)...
-                                            = imgmask(:,:,1);   
+                                            = maskImage(:,:,1);   
                                     else
                                         experiment(kexp).maskStimulus.mask.wn.imgToComp(:,:,:,kframe)...
-                                            = imgmask(:,:,1:3);
+                                            = maskImage(:,:,1:3);
                                     end
                                 end
                             end
@@ -2016,7 +2046,7 @@ while(kexp<length(data.experiments.file)),
                             else % draw the OFF period
                                 if experiment(kexp).maskStimulus.protocol.flicker.bg.isImg 
                                     Screen('FillRect',win,[0 0 0]);
-                                    Screen('DrawTexture', win, MSflickerBackground);
+                                    Screen('DrawTexture', win, MSflickerBackground,[],experiment(kexp).maskStimulus.protocol.flicker.bg.position);
                                     Screen('DrawTextures', win, textureMask, [], experiment(kexp).positionMask);  
                                     Screen('Close',textureMask);
                                 else
@@ -2118,10 +2148,10 @@ while(kexp<length(data.experiments.file)),
                                 if experiment(kexp).maskStimulus.mask.wn.saveImages >= kimg,
                                     if strcmp(experiment(kexp).maskStimulus.mask.wn.type,'BW')
                                         experiment(kexp).maskStimulus.mask.wn.imgToComp(:,:,kimg)...
-                                            = imgmask(:,:,1);   
+                                            = maskImage(:,:,1);   
                                     else
                                         experiment(kexp).maskStimulus.mask.wn.imgToComp(:,:,:,kimg)...
-                                            = imgmask(:,:,1:3);
+                                            = maskImage(:,:,1:3);
                                     end
                                 end
                             end                            
@@ -2230,7 +2260,42 @@ while(kexp<length(data.experiments.file)),
                                 end
                                 protocolImage = noiseimg;	
                             end
-
+                            
+                            % Get the masked image depending on the mask type
+                            if strcmp(experiment(kexp).maskStimulus.mask.type,'White noise'),
+                                maskImage = uint8(0*experiment(kexp).maskStimulus.mask.wn.noise);
+                                if experiment(kexp).sync.is && experiment(kexp).sync.isdigital && strcmp(experiment(kexp).sync.digital.mode,'On every frames'),
+                                    for imageCombination = 1:2; 
+                                        saveIndex = (j-1)*2 + imageCombination;
+                                        imgmaskTemp = getMaskImg( experiment(kexp).maskStimulus.mask, mask, saveIndex );        
+                                        maskImage = maskImage + bitshift(bitshift(imgmaskTemp,-4),4*(imageCombination-1));
+                                        if experiment(kexp).maskStimulus.mask.wn.saveImages >= saveIndex  && repProto == 1,
+                                            if strcmp(experiment(kexp).maskStimulus.mask.wn.type,'BW')
+                                                experiment(kexp).maskStimulus.mask.wn.imgToComp(:,:,saveIndex)...
+                                                    = imgmaskTemp(:,:,1);   
+                                            else
+                                                experiment(kexp).maskStimulus.mask.wn.imgToComp(:,:,:,saveIndex)...
+                                                    = imgmaskTemp(:,:,1:3);
+                                            end
+                                        end
+                                    end
+                                else
+                                    imgmaskTemp = getMaskImg( experiment(kexp).maskStimulus.mask, mask, j );
+                                    maskImage = imgmaskTemp;
+                                    if experiment(kexp).maskStimulus.mask.wn.saveImages >= j  && repProto == 1,
+                                        if strcmp(experiment(kexp).maskStimulus.mask.wn.type,'BW')
+                                            experiment(kexp).maskStimulus.mask.wn.imgToComp(:,:,j)...
+                                                = imgmaskTemp(:,:,1);   
+                                        else
+                                            experiment(kexp).maskStimulus.mask.wn.imgToComp(:,:,:,j)...
+                                                = imgmaskTemp(:,:,1:3);
+                                        end
+                                    end
+                                end                    
+                            else
+                                maskImage = getMaskImg( experiment(kexp).maskStimulus.mask, mask, j );                                               
+                            end
+                            
                             noisetxt = Screen('MakeTexture',win,protocolImage);
                             Screen('DrawTexture', win, noisetxt,[],experiment(kexp).position);
                             Screen('Close',noisetxt);
@@ -2337,9 +2402,10 @@ Priority(0);
 ShowCursor();
 data.finishedTime = round(clock);
 % Descomentar version final
+if ismac,
 Screen('Preference', 'SkipSyncTests',oldSkip);
 Screen('Preference', 'VisualDebugLevel', oldLevel);
-
+end
 if data.sync.isSerial, IOPort('CloseAll');end
 
 % Process aborted because there is a missing file
