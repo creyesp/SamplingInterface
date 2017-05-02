@@ -1,10 +1,12 @@
 function [refresh,h,w]=identifyScreen(screen)
+screen= 0 ;
 try
+    disp(['screen number: ' int2str(screen)])
     HideCursor();
     oldLevel = Screen('Preference', 'VisualDebugLevel', 0);
     oldSkip = Screen('Preference', 'SkipSyncTests',0);
-    [w,h]=Screen('WindowSize',screen);
     win=Screen('OpenWindow', screen);
+    [w,h]=Screen('WindowSize',screen);
     refresh = Screen('GetFlipInterval', win);
     Screen('FillRect', win,[0,0,0]);
     Screen('TextFont',win, 'Courier New');

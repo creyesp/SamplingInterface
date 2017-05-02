@@ -6,16 +6,15 @@ function stimulation(compressData)
 addpath(genpath('lib'))
 
 Stack  = dbstack; Stack.line
-if isunix,
-    Screen('Preference', 'ConserveVRAM', 64);
-    Screen('Preference', 'SkipSyncTests', 1);
-%     Screen('Preference', 'SkipSyncTests', 0);    
-end
+% if isunix,
+%     Screen('Preference', 'ConserveVRAM', 64);
+%     Screen('Preference', 'SkipSyncTests', 1);
+% %     Screen('Preference', 'SkipSyncTests', 0); 
+%     oldLevel = Screen('Preference', 'VisualDebugLevel', 1);
+% end
 %CAMBAI EN LA VERSION FINAL!!!!!! linea 1261 tb
-oldLevel = Screen('Preference', 'VisualDebugLevel', 1);
-if ismac,
-    oldSkip = Screen('Preference', 'SkipSyncTests',0);
-end
+oldLevel = Screen('Preference', 'VisualDebugLevel', 0);
+oldSkip = Screen('Preference', 'SkipSyncTests',0);
 
 
 % if useProjector is true then the projector run to 120 [Hz]
@@ -74,6 +73,8 @@ end
 
 data.startedTime = round(clock);
 % Creating window
+disp(['screen:'])
+disp(data.screens.selected);
 % win=Screen('OpenWindow',data.screens.selected,0);
 win=Screen('OpenWindow',0,0);
 priorityLevel=MaxPriority(win);
@@ -1360,8 +1361,8 @@ while(kexp<length(data.experiments.file)),
                     % Set BOUNDS to make sure the mask doesn't go completely off of
                     % the screen with margin of delta pixels
                     %[0 0 s2 s1]
-                    widthLim = abs(width*cos(degtorad(angle)))+abs(height*sin(degtorad(angle)));
-                    heightLim = abs(width*sin(degtorad(angle)))+abs(height*cos(degtorad(angle)));
+                    widthLim = abs(width*cos(deg2rad(angle)))+abs(height*sin(deg2rad(angle)));
+                    heightLim = abs(width*sin(deg2rad(angle)))+abs(height*cos(deg2rad(angle)));
                     if shiftX < -(RectWidth(experiment(kexp).position)/2 + widthLim) + delta
                       shiftX = -(RectWidth(experiment(kexp).position)/2 + widthLim) + delta;
                     elseif shiftX > (RectWidth(experiment(kexp).position)/2 + widthLim) - delta
@@ -2334,10 +2335,8 @@ Priority(0);
 ShowCursor();
 data.finishedTime = round(clock);
 % Descomentar version final
-if ismac,
-    Screen('Preference', 'SkipSyncTests',oldSkip);
-    Screen('Preference', 'VisualDebugLevel', oldLevel);
-end
+Screen('Preference', 'SkipSyncTests',oldSkip);
+Screen('Preference', 'VisualDebugLevel', oldLevel);
 
 if data.sync.isSerial, IOPort('CloseAll');end
 
