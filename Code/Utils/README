@@ -35,6 +35,6 @@ presentar el mismo wn, pero eso no ocurre actualmente.
 - total time cambia la borra un protocolo de la lista de reproduccion
 - img img mask no cambia tiempo local con el cambio en prev background
 - revisar que todos los parametros RGB, al usar 120 hz hagan el corrimiento 
-- revisar que al cargar als imagenes al principio como en la mascara tengan el corrimiento para 120 hz
+- revisar que al cargar als imagenes al principio como en la mascara tengan el corrimiento para 120 hz (linea 307)
 - revisar que todos los protocolos tengan en consideracion los 120  hz
 

@@ -9,8 +9,9 @@ Stack  = dbstack; Stack.line
 if isunix,
     Screen('Preference', 'ConserveVRAM', 64);
     Screen('Preference', 'SkipSyncTests', 1);
+%     Screen('Preference', 'SkipSyncTests', 0);    
 end
-git CAMBAI EN LA VERSION FINAL!!!!!! linea 1261 tb
+%CAMBAI EN LA VERSION FINAL!!!!!! linea 1261 tb
 oldLevel = Screen('Preference', 'VisualDebugLevel', 1);
 if ismac,
     oldSkip = Screen('Preference', 'SkipSyncTests',0);
@@ -355,23 +356,21 @@ for kexp=1:lengthProtocols,
                 if exist(imgNameMask,'file'),
                     loadedImgMask = imread(imgNameMask);
                     if islogical(loadedImgMask) || useDigitalProjector,
+%                         loadedImgMask = uint8(loadedImgMask);
                         loadedImgMask = uint8(loadedImgMask);
                     end
                     % over 60 hz (useDigitalProjector) the images are compressed using a binary shift
                     if useDigitalProjector,
                         if mod(j-nInitMask,2),
                             loadedImgMask2 = loadedImgMask1 + bitshift(bitshift(loadedImgMask,-4),4);
-                            Screen('Close',experiment(kexp).maskStimulus.mask.img.imgpreloaded{j-nInitMask});
-                            experiment(kexp).maskStimulus.mask.img.imgpreloaded{(j-nInit-1)/2} = Screen('MakeTexture',win,loadedImgMask2); 
+                            experiment(kexp).maskStimulus.mask.img.imgpreloaded{(j-nInit-1)/2} = loadedImgMask2; 
                         else
                             loadedImgMask1 = bitshift(loadedImgMask,-4);
-                            experiment(kexp).maskStimulus.mask.img.imgpreloaded{j-nInitMask+1} = Screen('MakeTexture',win,loadedImgMask); 
+                            experiment(kexp).maskStimulus.mask.img.imgpreloaded{(j-nInit)/2+1} = loadedImgMask; 
                         end
                     else
-                        experiment(kexp).maskStimulus.mask.img.imgpreloaded{(j-nInit)/2+1} = Screen('MakeTexture',win,loadedImgMask); 
+                        experiment(kexp).maskStimulus.mask.img.imgpreloaded{j-nInitMask+1} = loadedImgMask; 
                     end
-                    
-                    disp(j-nInitMask+1)
                     if ~mod(j,100)
                         Screen('DrawText', win,['Charging experiment ' num2str(kexp) ' mask img ' num2str(j-nInitMask+1) ],...
                             wScreen/2-170, kexp*hScreen/(lengthProtocols+1), [150, 150, 0]);
@@ -379,7 +378,7 @@ for kexp=1:lengthProtocols,
                         Screen('Flip',win);
                     end
                 else
-                    disp(['Not exist ' imgName ' file, check the image and retry.'])
+                    disp(['Not exist ' imgNameMask ' file, check the image and retry.'])
                     return;
                 end
             end
@@ -1873,10 +1872,9 @@ while(kexp<length(data.experiments.file)),
 %Revisar, que imagenes del wn se guardaran 
 % usar nloop (guarda solo al principio) 
 % o kimg (que guarda al principio de casa repeticion)
-
-
                             % draw Texture 
-                            Screen('DrawTexture', win, experiment(kexp).img.charge(kimg),[],experiment(kexp).position); %img, [], experiment(kexp).position);
+                            disp(kimg)
+                            Screen('DrawTexture', win, experiment(kexp).img.charge(kimg),[],experiment(kexp).position); 
                             Screen('DrawTextures', win, textureMask, [], experiment(kexp).positionMask);
                             Screen('Close',textureMask);
       
@@ -2310,6 +2308,7 @@ while(kexp<length(data.experiments.file)),
             disp('Error, the mode nor exist')
         end % end if-else flicker-fps
     end % end if-else presentation
+    disp([kexp Time(kexp).start Time(kexp).finish])
     kexp = kexp + 1;
 end % end for(experiments)
 

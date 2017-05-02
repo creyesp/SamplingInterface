@@ -1,2 +1,6 @@
 # SamplingInterface
-The SamplingInterface is a ...
+SamplingInterface is a ...
+
+Features
+Installation
+Using Clipster

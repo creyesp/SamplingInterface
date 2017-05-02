@@ -2457,7 +2457,14 @@ end
 in = get(hObject,'Value');
 if in == handles.experiments.selected && in ~=1 ,
     inputH = ['Exp' sprintf('%03d',handles.experiments.file(in)) '.si'];
+    inputHprev = ['Exp' sprintf('%03d',handles.experiments.file(in-1)) '.si'];
     expInformation = getInformation(inputH,'print');
+    if exist(inputHprev,'file'),
+        hprev = getInformation(inputHprev);
+        if strcmp(hprev.mode,'Presentation'),
+            tprev = hprev.presentation.time;
+        end
+    end
     h = getInformation(inputH);
     title = ['Experiment ' num2str(in-1) ' information (' inputH ')'];
     q = questdlg(expInformation,title,'Ok','Delete','Ok');
@@ -2476,8 +2483,23 @@ if in == handles.experiments.selected && in ~=1 ,
         handles.experiments.selected = in-1;
         switch h.mode 
             case 'Flicker'
-                handles.time = handles.time - h.flicker.time;
-                handles.img.totalFiles = handles.img.totalFiles - handles.img.files;
+                if h.flicker.repeatBackground,
+                    if exist(inputHprev,'file'),
+                        hprev = getInformation(inputHprev);
+                        if strcmp(hprev.mode,'Presentation'),
+                            tprev = hprev.presentation.time;
+                        else
+                            %error
+                            return;
+                            
+                        end
+                    end                    
+                    handles.time = handles.time - (h.flicker.time+tprev)*h.flicker.repetitions;
+                    handles.img.totalFiles = handles.img.totalFiles - handles.img.files;
+                else
+                    handles.time = handles.time - h.flicker.time;
+                    handles.img.totalFiles = handles.img.totalFiles - handles.img.files;                    
+                end
             case 'Only stimulus (fps)'
                 handles.time = handles.time - h.onlyStimulus.time;
                 handles.img.totalFiles = handles.img.totalFiles - handles.img.files;
