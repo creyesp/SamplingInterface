@@ -18,9 +18,6 @@ oldLevel = Screen('Preference', 'VisualDebugLevel', 0);
 oldSkip = Screen('Preference', 'SkipSyncTests',0);
 end
 
-% if useProjector is true then the projector run to 120 [Hz]
-useProjector = false;
-
 % constant for digital synchronize
 FPS_60HZ = 8;
 FPS_120HZ = 4;
@@ -28,22 +25,7 @@ TRIGGER_TIME_UP = 800;
 TRIGGER_TIME_ZERO = 0;
 WAIT_TIME_SIGNAL = 0.018; % 18[ms] to mark the start o end of a protocol
 
-% PROJECTOR
-if useProjector,
-    try
-        which setProjector
-        error = setProjector(FPS_60HZ);
-    catch exceptions
-        display(['Error communicating with the projector: setting projector. ' exceptions.message]); Stack  = dbstack; Stack.line
-        Screen('Close')
-        Screen('CloseAll')
-        return
-    end
-    if(error)
-        display('Error communicating with the projector (setting part')
-        return
-    end
-end
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%% LOAD THE SAMPLING INTERFASE FILE %%%%%%%%%%%%%%%%%%%%%%%%%
@@ -2423,14 +2405,14 @@ dirName = [pwd '/'];
 cd(initialFolder)
 
 if ~siFilesNotCharged && ~indexColorFrame && nonVisual
-    if useProjector && ~exist(fullfile(dirName,siFileName),'file'),
-        copyfile('*.si',dirName);
-        saveLogFile(data,Time,dirName);
-        delete *.si
-    else
-        saveLogFile(data,Time,dirName);
-    end
-    
+    saveLogFile(data,Time,dirName);
+%     if useProjector && ~exist(fullfile(dirName,siFileName),'file'),
+%         copyfile('*.si',dirName);
+%         saveLogFile(data,Time,dirName);
+%         delete *.si
+%     else
+%         saveLogFile(data,Time,dirName);
+%     end    
     for kexp=1:lengthProtocols,
         if strcmp(experiment(kexp).mode,'White noise')
             s = experiment(kexp).whitenoise.seed;
