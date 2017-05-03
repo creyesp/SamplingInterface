@@ -22,7 +22,7 @@ function varargout = SamplingInterface(varargin)
 
 % Edit the above text to modify the response to help SamplingInterface
 
-% Last Modified by GUIDE v2.5 21-Apr-2017 17:53:23
+% Last Modified by GUIDE v2.5 03-May-2017 11:33:13
 
 % Begin initialization code - DO NOT EDIT
 addpath('lib');
@@ -2455,21 +2455,80 @@ if ~handles.modify
     return
 end
 in = get(hObject,'Value');
-if in == handles.experiments.selected && in ~=1 ,
+if in == handles.experiments.selected && in ~=1,
     inputH = ['Exp' sprintf('%03d',handles.experiments.file(in)) '.si'];
     inputHprev = ['Exp' sprintf('%03d',handles.experiments.file(in-1)) '.si'];
-    expInformation = getInformation(inputH,'print');
     if exist(inputHprev,'file'),
         hprev = getInformation(inputHprev);
         if strcmp(hprev.mode,'Presentation'),
-            tprev = hprev.presentation.time;
+            tprev = hprev.presentation.time/1000.0;
         end
+    end    
+    if length(handles.experiments.file)>= in+1,
+        inputHnext = ['Exp' sprintf('%03d',handles.experiments.file(in+1)) '.si'];
+        if exist(inputHnext,'file'),
+            hnext = getInformation(inputHnext);
+            switch hnext.mode
+                case 'Flicker'
+                    rephnext = hnext.flicker.repeatBackground;
+                case 'Only stimulus (fps)'
+                    rephnext  = hnext.onlyStimulus.repeatBackground;
+                case 'Mask stimulus'
+                    rephnext  = hnext.maskStimulus.repeatBackground;
+                case 'White noise'
+                    rephnext = false;
+                otherwise
+                    rephnext = false;
+            end
+        else
+            errordlg(['Error no exist the ' inputHnext ' file', 'Error'])
+            return            
+        end  
+    else
+        rephnext = false;
     end
+    expInformation = getInformation(inputH,'print');
+   
     h = getInformation(inputH);
     title = ['Experiment ' num2str(in-1) ' information (' inputH ')'];
     q = questdlg(expInformation,title,'Ok','Delete','Ok');
     if ~isempty(q) && strcmp(q,'Delete'),
-        delete(['Exp' sprintf('%03d',handles.experiments.file(in)) '.si']);
+        fileIndex = handles.experiments.file(in);
+        switch h.mode 
+            case 'Flicker'
+                if h.flicker.repeatBackground,
+                    handles.time = handles.time - (h.flicker.time+tprev)*(h.flicker.repetitions+1)+tprev;
+                    handles.img.totalFiles = handles.img.totalFiles - handles.img.files;
+                else
+                    handles.time = handles.time - h.flicker.time;
+                    handles.img.totalFiles = handles.img.totalFiles - handles.img.files;                    
+                end
+            case 'Only stimulus (fps)'
+                if h.onlyStimulus.repeatBackground,
+                    handles.time = handles.time - (h.onlyStimulus.time+tprev)*(h.onlyStimulus.repetitions+1)+tprev;
+                    handles.img.totalFiles = handles.img.totalFiles - handles.img.files;                    
+                else
+                    handles.time = handles.time - h.onlyStimulus.time;
+                    handles.img.totalFiles = handles.img.totalFiles - handles.img.files;                    
+                end                
+            case 'Mask stimulus'
+                if h.maskStimulus.repeatBackground,
+                    handles.time = handles.time - (h.maskStimulus.time+tprev)*(h.maskStimulus.repetitions+1)+tprev;
+                    handles.img.totalFiles = handles.img.totalFiles - handles.img.files;                    
+                else
+                    handles.time = handles.time - h.maskStimulus.time;
+                    handles.img.totalFiles = handles.img.totalFiles - handles.img.files;                    
+                end                
+            case 'White noise'
+                handles.time = handles.time - h.whitenoise.time;
+            case 'Presentation'
+                if rephnext,
+                    errordlg('Delete the follow protocol before delete this protocol', 'Error')
+                    return
+                else
+                    handles.time = handles.time - h.presentation.time/1000.0;
+                end
+        end        
         if in==size(handles.experiments.list,1),
             handles.experiments.list = handles.experiments.list(1:in-1,:);
             handles.experiments.file = handles.experiments.file(1:in-1);
@@ -2481,36 +2540,8 @@ if in == handles.experiments.selected && in ~=1 ,
         set(hObject,'String',handles.experiments.list);
         set(hObject,'Value',in-1);
         handles.experiments.selected = in-1;
-        switch h.mode 
-            case 'Flicker'
-                if h.flicker.repeatBackground,
-                    if exist(inputHprev,'file'),
-                        hprev = getInformation(inputHprev);
-                        if strcmp(hprev.mode,'Presentation'),
-                            tprev = hprev.presentation.time;
-                        else
-                            %error
-                            return;
-                            
-                        end
-                    end                    
-                    handles.time = handles.time - (h.flicker.time+tprev)*h.flicker.repetitions;
-                    handles.img.totalFiles = handles.img.totalFiles - handles.img.files;
-                else
-                    handles.time = handles.time - h.flicker.time;
-                    handles.img.totalFiles = handles.img.totalFiles - handles.img.files;                    
-                end
-            case 'Only stimulus (fps)'
-                handles.time = handles.time - h.onlyStimulus.time;
-                handles.img.totalFiles = handles.img.totalFiles - handles.img.files;
-            case 'Mask stimulus'
-                handles.time = handles.time - h.maskStimulus.time;
-                handles.img.totalFiles = handles.img.totalFiles - handles.img.files;
-            case 'White noise'
-                handles.time = handles.time - h.whitenoise.time;
-            otherwise
-                handles.time = handles.time - h.presentation.time/1000.0;
-        end
+
+        delete(['Exp' sprintf('%03d',fileIndex) '.si']);
         set(handles.totalTime,'String',datestr(datenum(0,0,0,0,0,handles.time),...
             'HH:MM:SS.FFF'));
     end
@@ -7126,3 +7157,15 @@ end
 % --------------------------------------------------------------------
 function newFile_ClickedCallback(hObject, eventdata, handles)
 SamplingInterface_OpeningFcn(hObject, eventdata, handles, []);
+
+
+% --------------------------------------------------------------------
+function newProtocol_ClickedCallback(hObject, eventdata, handles)
+if ~handles.modify
+    return
+end
+delete *.si;
+inputHandles = getInformation('Default Configuration.dsi');
+handles = replaceHandles(handles,inputHandles);
+setAllGUIParameters(handles);
+guidata(hObject,handles);
