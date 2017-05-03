@@ -59,7 +59,7 @@ imshow(handles.img.background.graph);
 
 % Set the parameters of <<<Reproduction list Panel>>
 set(handles.experimentList,'String',handles.experiments.list);
-
+set(handles.experimentList,'Value',handles.experiments.selected);
 
 % Set the parameters of <<<Selection Screen Panel>>
 set(handles.selectScreen,'String',handles.screens.list);

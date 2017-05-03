@@ -30,11 +30,11 @@ Cuando se usa usa una mascara de WN,
 guardar las imagenes del wn a 120 HZ
 
 
--revisar wn como protocolo y como mascara y ver como usan la semilla al inicio, si usan la misma semilla entonces deberia
+ -revisar wn como protocolo y como mascara y ver como usan la semilla al inicio, si usan la misma semilla entonces deberia
 presentar el mismo wn, pero eso no ocurre actualmente.
-- total time cambia la borra un protocolo de la lista de reproduccion
-- img img mask no cambia tiempo local con el cambio en prev background
+OK - total time cambia la borra un protocolo de la lista de reproduccion
+OK - img img mask no cambia tiempo local con el cambio en prev background
 - revisar que todos los parametros RGB, al usar 120 hz hagan el corrimiento 
-- revisar que al cargar als imagenes al principio como en la mascara tengan el corrimiento para 120 hz (linea 307)
-- revisar que todos los protocolos tengan en consideracion los 120  hz
-- revisar en img mask porque al final de la repeticion agrega un frame rojo
+OK - revisar que al cargar als imagenes al principio como en la mascara tengan el corrimiento para 120 hz (linea 307)
+OK - revisar que todos los protocolos tengan en consideracion los 120  hz
+- revisar en img mask porque al final de la repeticion agrega un frame rojo (Solo mac)
