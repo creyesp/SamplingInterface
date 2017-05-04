@@ -22,7 +22,7 @@ function varargout = SamplingInterface(varargin)
 
 % Edit the above text to modify the response to help SamplingInterface
 
-% Last Modified by GUIDE v2.5 03-May-2017 11:33:13
+% Last Modified by GUIDE v2.5 03-May-2017 17:23:40
 
 % Begin initialization code - DO NOT EDIT
 addpath('lib');
@@ -7139,7 +7139,23 @@ if ~handles.modify
     set(hObject,'Value',1.0);
     return
 end
-handles.sync.digital.mode = get(hObject,'String');
+
+mode = get(hObject,'value');
+modeList = get(hObject,'String');
+
+if mode == 1, % on every frames
+    set(handles.frecuencylistDigitalSync,'Visible','On');
+    set(handles.frecuencyDigitalSync,'Visible','On');
+    handles.sync.digital.mode = modeList(mode);
+    disp(handles.sync.digital.mode)
+else
+    set(handles.frecuencylistDigitalSync,'Visible','off');
+    set(handles.frecuencyDigitalSync,'Visible','off');
+    handles.sync.digital.mode = modeList(mode);
+    disp(handles.sync.digital.mode)
+end
+guidata(hObject,handles);
+
 
 % --- Executes during object creation, after setting all properties.
 function digitalSyncMode_CreateFcn(hObject, eventdata, handles)
@@ -7169,3 +7185,31 @@ inputHandles = getInformation('Default Configuration.dsi');
 handles = replaceHandles(handles,inputHandles);
 setAllGUIParameters(handles);
 guidata(hObject,handles);
+
+
+% --- Executes on selection change in frecuencylistDigitalSync.
+function frecuencylistDigitalSync_Callback(hObject, eventdata, handles)
+% hObject    handle to frecuencylistDigitalSync (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+frecuencyList = str2double(get(hObject,'String'));
+handles.sync.digital.frecuency = frecuencyList(get(hObject,'Value'));
+guidata(hObject,handles);
+
+
+
+% Hints: contents = cellstr(get(hObject,'String')) returns frecuencylistDigitalSync contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from frecuencylistDigitalSync
+
+
+% --- Executes during object creation, after setting all properties.
+function frecuencylistDigitalSync_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to frecuencylistDigitalSync (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
