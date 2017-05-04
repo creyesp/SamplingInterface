@@ -80,22 +80,23 @@ if handles.sync.is,
         set(handles.DigitalsyncPanel,'visible','on')        
         if strcmp(handles.sync.digital.mode,'On every frames')
             set(handles.digitalSyncMode,'value',1);
-            set(handles.frecuencylistDigitalSync,'Visible',true);
-            set(handles.frecuencyDigitalSync,'Visible',true);
-            switch handles.sync.digital.frecuency,
+            set(handles.frequencylistDigitalSync,'Visible',true);
+            set(handles.frequencyDigitalSync,'Visible',true);
+            disp(handles.sync.digital.frequency)
+            switch handles.sync.digital.frequency,
                 case 120,
-                    set(handles.frecuencylistDigitalSync,'value',1);
+                    set(handles.frequencylistDigitalSync,'value',1);
                 case 240,
-                    set(handles.frecuencylistDigitalSync,'value',2);
+                    set(handles.frequencylistDigitalSync,'value',2);
                 case 480
-                    set(handles.frecuencylistDigitalSync,'value',3);
+                    set(handles.frequencylistDigitalSync,'value',3);
             end
         else % 
             set(handles.digitalSyncMode,'value',2);
-            set(handles.frecuencylistDigitalSync,'Visible',false);
-            set(handles.frecuencyDigitalSync,'Visible',false);
-            set(handles.frecuencylistDigitalSync,'Visible',false);
-            set(handles.frecuencyDigitalSync,'Visible',false);
+            set(handles.frequencylistDigitalSync,'Visible',false);
+            set(handles.frequencyDigitalSync,'Visible',false);
+            set(handles.frequencylistDigitalSync,'Visible',false);
+            set(handles.frequencyDigitalSync,'Visible',false);
         end
         handles.sync.analog.graph = zeros(100,100,3);
     elseif handles.sync.isSerial,

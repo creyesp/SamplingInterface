@@ -21,6 +21,8 @@ end
 % constant for digital synchronize
 FPS_60HZ = 8;
 FPS_120HZ = 4;
+FPS_240HZ = 2;
+FPS_480HZ = 1;
 TRIGGER_TIME_UP = 800;
 TRIGGER_TIME_ZERO = 0;
 WAIT_TIME_SIGNAL = 0.018; % 18[ms] to mark the start o end of a protocol
@@ -216,7 +218,7 @@ for kexp=1:lengthProtocols,
                 end
                 
                 if useDigitalProjector,
-                    imgPresentation = bitshift(imgPresentation,-4) + bitshift(bitshift(imgPresentation,-4),4);
+                    imgPresentation = compressImg(imgPresentation, experiment(kexp).sync.digital.frequency);
                 end
                 
                 experiment(kexp).img.charge(1) = Screen('MakeTexture',win,imgPresentation);
@@ -293,13 +295,17 @@ for kexp=1:lengthProtocols,
                 end
                 % over 60 hz (useDigitalProjector) the images are compressed using a binary shift
                 if useDigitalProjector,
-                    if mod(j-nInit,2),
-                        loadedImg2 = loadedImg1 + bitshift(bitshift(loadedImg,-4),4);
-                        Screen('Close',experiment(kexp).img.charge(j-nInit));
-                        experiment(kexp).img.charge((j-nInit-1)/2) = Screen('MakeTexture',win,loadedImg2); 
+                    nsplits = experiment(kexp).sync.digital.frequency/60;
+                    kposition = floor((j-nInit)/nsplits)+1;
+                    kshift = mod(j-nInit,nsplits);
+                    if kshift,
+                        loadedImg1 = loadedImg1 + compresskImg( loadedImg, experiment(kexp).sync.digital.frequency, kshift);
+                        Screen('Close',experiment(kexp).img.charge(kposition));
+                        experiment(kexp).img.charge(kposition) = Screen('MakeTexture',win,loadedImg1); 
                     else
-                        loadedImg1 = bitshift(loadedImg,-4);
-                        experiment(kexp).img.charge((j-nInit)/2+1) = Screen('MakeTexture',win,loadedImg); 
+                        clear loadedImg1;
+                        loadedImg1 = compresskImg( loadedImg, experiment(kexp).sync.digital.frequency, kshift );
+                        experiment(kexp).img.charge(kposition) = Screen('MakeTexture',win,loadedImg1); 
                     end
                 else
                     experiment(kexp).img.charge(j-nInit+1) = Screen('MakeTexture',win,loadedImg); 
@@ -319,7 +325,7 @@ for kexp=1:lengthProtocols,
     end
     
     if useDigitalProjector,
-        experiment(kexp).img.files = ceil(experiment(kexp).img.files/2);
+        experiment(kexp).img.files = ceil(experiment(kexp).img.files/nsplits);
     end
 
     % If it have images for display in masked stimulus, get name, ext, initial number, final
@@ -349,17 +355,23 @@ for kexp=1:lengthProtocols,
                 if exist(imgNameMask,'file'),
                     loadedImgMask = imread(imgNameMask);
                     if islogical(loadedImgMask) || useDigitalProjector,
-%                         loadedImgMask = uint8(loadedImgMask);
                         loadedImgMask = uint8(loadedImgMask);
                     end
                     % over 60 hz (useDigitalProjector) the images are compressed using a binary shift
+%Revisar para el caso donde la cantidad de imagenes no es multiplo de la frecuencia
+
                     if useDigitalProjector,
-                        if mod(j-nInitMask,2),
-                            loadedImgMask2 = loadedImgMask1 + bitshift(bitshift(loadedImgMask,-4),4);
-                            experiment(kexp).maskStimulus.mask.img.imgpreloaded{(j-nInit-1)/2} = loadedImgMask2; 
+                        nsplits = experiment(kexp).sync.digital.frequency/60;
+                        kposition = floor((j-nInit)/nsplits)+1;
+                        kshift = mod(j-nInit,nsplits);    
+                        if kshift,
+                            loadedImg1 = loadedImg1 + compresskImg( loadedImgMask, experiment(kexp).sync.digital.frequency, kshift);
+                            Screen('Close', experiment(kexp).maskStimulus.mask.img.imgpreloaded{kposition});
+                            experiment(kexp).maskStimulus.mask.img.imgpreloaded{kposition} = Screen('MakeTexture',win,loadedImg1); 
                         else
-                            loadedImgMask1 = bitshift(loadedImgMask,-4);
-                            experiment(kexp).maskStimulus.mask.img.imgpreloaded{(j-nInit)/2+1} = loadedImgMask; 
+                            clear loadedImg1;
+                            loadedImg1 = compresskImg( loadedImgMask, experiment(kexp).sync.digital.frequency, kshift);
+                            experiment(kexp).maskStimulus.mask.img.imgpreloaded{kposition} = Screen('MakeTexture',win,loadedImg1); 
                         end
                     else
                         experiment(kexp).maskStimulus.mask.img.imgpreloaded{j-nInitMask+1} = loadedImgMask; 
@@ -500,7 +512,7 @@ while(kexp<length(data.experiments.file)),
                 if isempty(tmpMap)
                     if useDigitalProjector,
                         tmp = uint8(tmp);
-                        tmp = bitshift(tmp,-4) + bitshift(bitshift(tmp,-4),4);
+                        tmp = compressImg(tmp,experiment(kexp).sync.digital.frequency);
                     end                    
                     background = Screen('MakeTexture',win,tmp);
                     clear tmp;
@@ -599,7 +611,7 @@ while(kexp<length(data.experiments.file)),
                     if isempty(tmpMap)
                         if useDigitalProjector,
                             tmp = uint8(tmp);
-                            tmp = bitshift(tmp,-4) + bitshift(bitshift(tmp,-4),4);
+                            tmp = compressImg(tmp,experiment(kexp).sync.digital.frequency);;
                         end                    
                         flickerBackground = Screen('MakeTexture',win,tmp);
                         clear tmp;
@@ -1185,7 +1197,7 @@ while(kexp<length(data.experiments.file)),
                     if isempty(tmpMap)
                         if useDigitalProjector,
                         tmp = uint8(tmp);
-                            tmp = bitshift(tmp,-4) + bitshift(bitshift(tmp,-4),4);
+                            tmp = compressImg(tmp,experiment(kexp).sync.digital.frequency);;
                         end                    
                         MSflickerBackground = Screen('MakeTexture', win,tmp);
                         clear tmp;
@@ -1569,18 +1581,22 @@ while(kexp<length(data.experiments.file)),
                         end
                         % over 60 hz (useDigitalProjector) the images are compressed using a binary shift
                         if useDigitalProjector,
-                            if mod(j-nInit,2),
-                                loadedImg2 = loadedImg1 + bitshift(bitshift(loadedImg,-4),4);
-                                Screen('Close',experiment(kexp).img.charge(j-nInit));
-                                experiment(kexp).img.charge((j-nInit-1)/2) = Screen('MakeTexture',win,loadedImg2); 
+                            nsplits = experiment(kexp).sync.digital.frequency/60;
+                            kposition = floor((j-nInit)/nsplits)+1;
+                            kshift = mod(j-nInit,nsplits);
+                            if kshift,
+                                loadedImg1 = loadedImg1 + compresskImg( loadedImg, experiment(kexp).sync.digital.frequency, kshift);
+                                Screen('Close',experiment(kexp).img.charge(kposition));
+                                experiment(kexp).img.charge(kposition) = Screen('MakeTexture',win,loadedImg1); 
                             else
-                                loadedImg1 = bitshift(loadedImg,-4);
-                                experiment(kexp).img.charge((j-nInit)/2+1) = Screen('MakeTexture',win,loadedImg); 
-                            end                            
+                                clear loadedImg1;
+                                loadedImg1 = compresskImg( loadedImg, experiment(kexp).sync.digital.frequency, kshift );
+                                experiment(kexp).img.charge(kposition) = Screen('MakeTexture',win,loadedImg1); 
+                            end
                         else
                             Screen('Close',experiment(kexp).img.charge(j-nInit+1));
                             experiment(kexp).img.charge(j-nInit+1) = Screen('MakeTexture',win,loadedImg); 
-                        end
+                        end  
 
                         if ~mod(j,100)
                             Screen('DrawText', win,['Charging experiment ' num2str(kexp) ' img ' num2str(j-nInit+1) ],...
@@ -1603,7 +1619,7 @@ while(kexp<length(data.experiments.file)),
                     if isempty(tmpMap)
                         if useDigitalProjector,
                         tmp = uint8(tmp*intensity);
-                        tmp = bitshift(tmp,-4) + bitshift(bitshift(tmp,-4),4);
+                        tmp = compressImg(tmp,experiment(kexp).sync.digital.frequency);;
                         end                    
                         MSflickerBackground = Screen('MakeTexture', win,tmp);
                         clear tmp;

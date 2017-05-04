@@ -22,7 +22,7 @@ function varargout = SamplingInterface(varargin)
 
 % Edit the above text to modify the response to help SamplingInterface
 
-% Last Modified by GUIDE v2.5 03-May-2017 17:23:40
+% Last Modified by GUIDE v2.5 04-May-2017 14:31:50
 
 % Begin initialization code - DO NOT EDIT
 addpath('lib');
@@ -7144,15 +7144,21 @@ mode = get(hObject,'value');
 modeList = get(hObject,'String');
 
 if mode == 1, % on every frames
-    set(handles.frecuencylistDigitalSync,'Visible','On');
-    set(handles.frecuencyDigitalSync,'Visible','On');
     handles.sync.digital.mode = modeList(mode);
-    disp(handles.sync.digital.mode)
+    set(handles.frequencylistDigitalSync,'Visible','On');
+    switch handles.sync.digital.frequency,
+        case 120,
+            set(handles.frequencylistDigitalSync,'value',1);
+        case 240,
+            set(handles.frequencylistDigitalSync,'value',2);
+        case 480,
+            set(handles.frequencylistDigitalSync,'value',3);
+    end
+    set(handles.frequencyDigitalSync,'Visible','On');
 else
-    set(handles.frecuencylistDigitalSync,'Visible','off');
-    set(handles.frecuencyDigitalSync,'Visible','off');
+    set(handles.frequencylistDigitalSync,'Visible','off');
+    set(handles.frequencyDigitalSync,'Visible','off');
     handles.sync.digital.mode = modeList(mode);
-    disp(handles.sync.digital.mode)
 end
 guidata(hObject,handles);
 
@@ -7187,24 +7193,24 @@ setAllGUIParameters(handles);
 guidata(hObject,handles);
 
 
-% --- Executes on selection change in frecuencylistDigitalSync.
-function frecuencylistDigitalSync_Callback(hObject, eventdata, handles)
-% hObject    handle to frecuencylistDigitalSync (see GCBO)
+% --- Executes on selection change in frequencylistDigitalSync.
+function frequencylistDigitalSync_Callback(hObject, eventdata, handles)
+% hObject    handle to frequencylistDigitalSync (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-frecuencyList = str2double(get(hObject,'String'));
-handles.sync.digital.frecuency = frecuencyList(get(hObject,'Value'));
+frequencyList = str2double(get(hObject,'String'));
+handles.sync.digital.frequency = frequencyList(get(hObject,'Value'));
 guidata(hObject,handles);
 
 
 
-% Hints: contents = cellstr(get(hObject,'String')) returns frecuencylistDigitalSync contents as cell array
-%        contents{get(hObject,'Value')} returns selected item from frecuencylistDigitalSync
+% Hints: contents = cellstr(get(hObject,'String')) returns frequencylistDigitalSync contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from frequencylistDigitalSync
 
 
 % --- Executes during object creation, after setting all properties.
-function frecuencylistDigitalSync_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to frecuencylistDigitalSync (see GCBO)
+function frequencylistDigitalSync_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to frequencylistDigitalSync (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
