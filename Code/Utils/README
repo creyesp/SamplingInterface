@@ -8,7 +8,7 @@ diferencias con el que se guarda en el SamplingInterface
 - Agregar una secuancia de imagenes (caso generalizado) como mascara 
 	ok
 - En la señal digital dejar todo a 120 hz, no realizar cambios de 60 - 120 - 60 hz
-	...
+	ok emplementado ambos casos
 - Implementar varias perforaciones en los estimulos (generar una grilla) 
   que se puedan mover independientemente
   	....
@@ -34,7 +34,25 @@ guardar las imagenes del wn a 120 HZ
 presentar el mismo wn, pero eso no ocurre actualmente.
 OK - total time cambia la borra un protocolo de la lista de reproduccion
 OK - img img mask no cambia tiempo local con el cambio en prev background
-- revisar que todos los parametros RGB, al usar 120 hz hagan el corrimiento 
+OK - revisar que todos los parametros RGB, al usar todas las frecuencias usen compressColor()
 OK - revisar que al cargar als imagenes al principio como en la mascara tengan el corrimiento para 120 hz (linea 307)
 OK - revisar que todos los protocolos tengan en consideracion los 120  hz
 - revisar en img mask porque al final de la repeticion agrega un frame rojo (Solo mac)
+OK - boton nuevo protocolo
+ok - cargar imagenes a todas las frecuencias
+- cargar imagenes de las mascaras a todas las frecuencias
+	Para cargar la secuencia de imagenes para la mascara a mas de 60HZ
+		* cargar las imagenes necesarias para que quepan todas
+		* restringir la cantidad de images a multiplos de la frecuencia de muestreo.
+		* restringir la cantidad de imagenes al tiempo del protocolo 
+- agregar las frecuencias en la sincronizacion digital
+- moficar para que el wn funcione a todas la frecuecias
+	* dejar que el numero de presentaciones sea multiplo de la frecuencia
+	* dejar que el numero de presentaciones sea cualquier numero
+- actualizar todos los protocolos para el uso de altas frecuencias
+	- flicker
+	OK - images
+	OK - white noise
+	- masked
+- reducir el numero de frames en el caso de alta frecuencia para solid color protocol
+	
