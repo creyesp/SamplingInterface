@@ -6,17 +6,17 @@ function stimulation(compressData)
 addpath(genpath('lib'))
 
 Stack  = dbstack; Stack.line
-if isunix,
-    Screen('Preference', 'ConserveVRAM', 64);
-    Screen('Preference', 'SkipSyncTests', 1);
-%     Screen('Preference', 'SkipSyncTests', 0); 
-    oldLevel = Screen('Preference', 'VisualDebugLevel', 1);
-end
+% if isunix,
+%     Screen('Preference', 'ConserveVRAM', 64);
+%     Screen('Preference', 'SkipSyncTests', 1);
+% %     Screen('Preference', 'SkipSyncTests', 0); 
+%     oldLevel = Screen('Preference', 'VisualDebugLevel', 1);
+% end
 %CAMBAI EN LA VERSION FINAL!!!!!! linea 1261 tb
-if ismac,
+% if ismac,
 oldLevel = Screen('Preference', 'VisualDebugLevel', 0);
 oldSkip = Screen('Preference', 'SkipSyncTests',0);
-end
+% end
 
 % constant for digital synchronize
 FPS_60HZ = 8;
@@ -945,9 +945,10 @@ while(kexp<length(data.experiments.file)),
                         end
                     end
                 end
-                
+                timeend = zeros(2,experiment(kexp).img.files);
                 % Show the images of protocol and bottom bar if set on
                 for k=tmp:nInit+experiment(kexp).img.files-1, 
+                    tic;
                     % set the background
                     if experiment(kexp).img.background.isImg
                         Screen('FillRect',win,[0 0 0]);
@@ -970,7 +971,7 @@ while(kexp<length(data.experiments.file)),
                         IOPort('Write', serialCom, change);
                         b_serial = b_serial + 1;
                     end
-                    
+                    timeend(2,k) = toc;
                     if nRefreshImg == 1,
                         vbl = Screen('Flip', win, vbl);
                     else
@@ -2158,7 +2159,7 @@ while(kexp<length(data.experiments.file)),
                                 maskImage = getMaskImg( experiment(kexp).maskStimulus.mask, mask, kimg );                                               
                             end
                             textureMask = Screen('MakeTexture', win, maskImage);                           
-                            timeend(1,j) = toc;
+                            timeend(1,kimg) = toc;
                             % draw Texture 
                             Screen('FillRect',win,colorSC*intensity,experiment(kexp).position);
                             Screen('DrawTextures', win, textureMask, [], experiment(kexp).positionMask);
@@ -2176,7 +2177,7 @@ while(kexp<length(data.experiments.file)),
                                 IOPort('Write', serialCom, change);
                                 b_serial = b_serial + 1;
                             end
-                            timeend(2,j) = toc(tStart);
+                            timeend(2,kimg) = toc(tStart);
                             if nRefreshImg == 1,
                                 vbl = Screen('Flip', win, vbl);
                             else
@@ -2414,10 +2415,10 @@ Priority(0);
 ShowCursor();
 data.finishedTime = round(clock);
 % Descomentar version final
-if ismac,
+% if ismac,
 Screen('Preference', 'SkipSyncTests',oldSkip);
 Screen('Preference', 'VisualDebugLevel', oldLevel);
-end
+% end
 if data.sync.isSerial, IOPort('CloseAll');end
 
 % Process aborted because there is a missing file
