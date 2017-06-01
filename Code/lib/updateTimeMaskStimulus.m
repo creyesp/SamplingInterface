@@ -56,7 +56,6 @@ function updateTimeMaskStimulus(hObject, eventdata, handles)
                 set(handles.maskStimulusTime,'String',datestr(datenum(0,0,0,0,0,...
                     handles.maskStimulus.time),'HH:MM:SS.FFF')); 
         end        
-        disp(handles.maskStimulus.time)
     else
         switch handles.maskStimulus.protocol.type,
             case 'Flicker',
