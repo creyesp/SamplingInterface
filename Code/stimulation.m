@@ -19,10 +19,10 @@ oldSkip = Screen('Preference', 'SkipSyncTests',0);
 end
 
 % constant for digital synchronize
-FPS_60HZ = 8;
-FPS_120HZ = 4;
-FPS_240HZ = 2;
-FPS_480HZ = 1;
+% FPS_60HZ = 8;
+% FPS_120HZ = 4;
+% FPS_240HZ = 2;
+% FPS_480HZ = 1;
 TRIGGER_TIME_UP = 800;
 TRIGGER_TIME_ZERO = 0;
 WAIT_TIME_SIGNAL = 0.018; % 18[ms] to mark the start o end of a protocol
@@ -172,6 +172,7 @@ for kexp=length(data.experiments.file)-1:-1:1,
         end
         experiment(kexp) = dataExp;
         if experiment(kexp).sync.is && experiment(kexp).sync.isdigital
+            experiment(kexp).sync.digital.compressbit = 1/(experiment(kexp).sync.digital.frequency/480); % the value is converted to projector parameter. 120 hz -> 4 | 240 -> 6 ...
             digitalSync = true;
         end
      else
@@ -184,7 +185,7 @@ end
 if digitalSync,
     try
         which setProjector
-        error = setProjector(FPS_60HZ);
+        error = setProjector(handles.sync.digital.frequency);
     catch exceptions
         display(['Error communicating with the projector: setting projector. ' exceptions.message]); Stack  = dbstack; Stack.line
         Screen('Close')
@@ -205,6 +206,7 @@ lengthProtocols = length(data.experiments.file)-1;
 for kexp=1:lengthProtocols,
     
     useDigitalProjector = experiment(kexp).sync.is && experiment(kexp).sync.isdigital && strcmp(experiment(kexp).sync.digital.mode,'On every frames');
+    
     % charge the image for presentation mode and sets the shift in the 
     % presentation position depending on the previous or next experiment
     if strcmp(experiment(kexp).mode,'Presentation')
@@ -685,13 +687,13 @@ while(kexp<length(data.experiments.file)),
                 if experiment(kexp).sync.isdigital,
                     try
                         if strcmp(experiment(kexp).sync.digital.mode,'On every frames'), 
-                            error = setProjector(FPS_120HZ);
+                            error = setProjector(experiment(kexp).sync.digital.compressbit);
                             error = error || setTrigger(TRIGGER_TIME_UP); 
                         else
-                            error = setProjector(FPS_120HZ);
+                            error = setProjector(experiment(kexp).sync.digital.compressbit);
                             error = error || setTrigger(TRIGGER_TIME_UP); 
                             WaitSecs(WAIT_TIME_SIGNAL); 
-                            error = error || setProjector(FPS_60HZ);
+                            error = error || setProjector(experiment(kexp).sync.digital.compressbit);
                         end
                     catch exceptions
                         display(['Error communicating with the projector: setting trigger. ' exceptions.message]); Stack  = dbstack; Stack.line
@@ -785,12 +787,12 @@ while(kexp<length(data.experiments.file)),
             if experiment(kexp).sync.is && experiment(kexp).sync.isdigital,
                 try  
                     if strcmp(experiment(kexp).sync.digital.mode,'On every frames'),
-                        error = setProjector(FPS_60HZ); 
+                        error = setProjector(experiment(kexp).sync.digital.compressbit); 
                     else
-                        error = setProjector(FPS_120HZ); 
+                        error = setProjector(experiment(kexp).sync.digital.compressbit); 
                         error = error || setTrigger(TRIGGER_TIME_UP); 
                         WaitSecs(WAIT_TIME_SIGNAL); 
-                        error = error || setProjector(FPS_60HZ);
+                        error = error || setProjector(experiment(kexp).sync.digital.compressbit);
                     end
                 catch exceptions
                     display(['Error communicating with the projector: setting trigger. ' exceptions.message]); Stack  = dbstack; Stack.line
@@ -869,13 +871,13 @@ while(kexp<length(data.experiments.file)),
                 if experiment(kexp).sync.isdigital, % Digital synchronize
                     try
                         if strcmp(experiment(kexp).sync.digital.mode,'On every frames'), 
-                            error = setProjector(FPS_120HZ);
+                            error = setProjector(experiment(kexp).sync.digital.compressbit);
                             error = error || setTrigger(TRIGGER_TIME_UP); 
                         else
-                            error = setProjector(FPS_120HZ);
+                            error = setProjector(experiment(kexp).sync.digital.compressbit);
                             error = error || setTrigger(TRIGGER_TIME_UP); 
                             WaitSecs(WAIT_TIME_SIGNAL); 
-                            error = error || setProjector(FPS_60HZ);
+                            error = error || setProjector(experiment(kexp).sync.digital.compressbit);
                         end
                     catch exceptions
                         display(['Error communicating with the projector: setting trigger. ' exceptions.message]); Stack  = dbstack; Stack.line
@@ -927,10 +929,10 @@ while(kexp<length(data.experiments.file)),
                     % trigger, it's mark for 18[ms] the start of repetition.
                     if experiment(kexp).sync.is && experiment(kexp).sync.isdigital && ~strcmp(experiment(kexp).sync.digital.mode,'On every frames'),
                         try
-                            error = setProjector(FPS_120HZ);
+                            error = setProjector(experiment(kexp).sync.digital.compressbit);
                             error = error || setTrigger(TRIGGER_TIME_UP); 
                             WaitSecs(WAIT_TIME_SIGNAL); 
-                            error = error || setProjector(FPS_60HZ); 
+                            error = error || setProjector(experiment(kexp).sync.digital.compressbit); 
                         catch exceptions
                             display(['Error communicating with the projector: setting trigger. ' exceptions.message]); Stack  = dbstack; Stack.line
                             Screen('Close')
@@ -988,12 +990,12 @@ while(kexp<length(data.experiments.file)),
                 if experiment(kexp).sync.is && experiment(kexp).sync.isdigital,
                     try  
                         if strcmp(experiment(kexp).sync.digital.mode,'On every frames'),
-                            error = setProjector(FPS_60HZ); 
+                            error = setProjector(experiment(kexp).sync.digital.compressbit); 
                         else
-                            error = setProjector(FPS_120HZ); 
+                            error = setProjector(experiment(kexp).sync.digital.compressbit); 
                             error = error || setTrigger(TRIGGER_TIME_UP); 
                             WaitSecs(WAIT_TIME_SIGNAL); 
-                            error = error || setProjector(FPS_60HZ);
+                            error = error || setProjector(experiment(kexp).sync.digital.compressbit);
                         end
                     catch exceptions
                         display(['Error communicating with the projector: setting trigger. ' exceptions.message]); Stack  = dbstack; Stack.line
@@ -1145,7 +1147,7 @@ while(kexp<length(data.experiments.file)),
                     if experiment(kexp).sync.isdigital && (j == 1), 
                         display('Setting trigger for projector')
                         try
-                            error = setProjector(FPS_120HZ);
+                            error = setProjector(experiment(kexp).sync.digital.compressbit);
                             error = error || setTrigger(TRIGGER_TIME_UP);                 
                         catch exceptions
                             display(['Error communicating with the projector: setting trigger. ' exceptions.message]); Stack  = dbstack; Stack.line
@@ -1185,7 +1187,7 @@ while(kexp<length(data.experiments.file)),
             % and finish the trigger
             if experiment(kexp).sync.is && experiment(kexp).sync.isdigital,
                 try  
-                    error = setProjector(FPS_60HZ);
+                    error = setProjector(experiment(kexp).sync.digital.compressbit);
                 catch exceptions
                     display(['Error communicating with the projector: setting trigger. ' exceptions.message]); Stack  = dbstack; Stack.line
                     Screen('Close')
@@ -1411,15 +1413,15 @@ while(kexp<length(data.experiments.file)),
                     widthLim = abs(width*cos(deg2rad(angle)))+abs(height*sin(deg2rad(angle)));
                     heightLim = abs(width*sin(deg2rad(angle)))+abs(height*cos(deg2rad(angle)));
                     if shiftX < -(RectWidth(experiment(kexp).position)/2 + widthLim) + delta
-                      shiftX = -(RectWidth(experiment(kexp).position)/2 + widthLim) + delta;
+                      shiftX = round(-(RectWidth(experiment(kexp).position)/2 + widthLim) + delta);
                     elseif shiftX > (RectWidth(experiment(kexp).position)/2 + widthLim) - delta
-                        shiftX = (RectWidth(experiment(kexp).position)/2 + widthLim) - delta;
+                        shiftX = round((RectWidth(experiment(kexp).position)/2 + widthLim) - delta);
                     end
 
                     if shiftY < -(RectHeight(experiment(kexp).position)/2 + heightLim) + delta
-                        shiftY = -(RectHeight(experiment(kexp).position)/2 + heightLim) + delta;
+                        shiftY = round(-(RectHeight(experiment(kexp).position)/2 + heightLim) + delta);
                     elseif shiftY > (RectHeight(experiment(kexp).position)/2 + heightLim) - delta 
-                        shiftY = (RectHeight(experiment(kexp).position)/2 + heightLim) - delta;
+                        shiftY = round((RectHeight(experiment(kexp).position)/2 + heightLim) - delta);
                     end
 
                     % Set the SIZE (width and height) of the mask
@@ -1807,13 +1809,13 @@ while(kexp<length(data.experiments.file)),
                 if experiment(kexp).sync.isdigital,% digital synchronize
                     try
                         if strcmp(experiment(kexp).sync.digital.mode,'On every frames'), 
-                            error = setProjector(FPS_120HZ);
+                            error = setProjector(experiment(kexp).sync.digital.compressbit);
                             error = error || setTrigger(TRIGGER_TIME_UP); 
                         else
-                            error = setProjector(FPS_120HZ);
+                            error = setProjector(experiment(kexp).sync.digital.compressbit);
                             error = error || setTrigger(TRIGGER_TIME_UP); 
                             WaitSecs(WAIT_TIME_SIGNAL); 
-                            error = error || setProjector(FPS_60HZ);
+                            error = error || setProjector(experiment(kexp).sync.digital.compressbit);
                         end
                     catch exceptions
                         display(['Error communicating with the projector: setting trigger. ' exceptions.message]); Stack  = dbstack; Stack.line
@@ -1865,10 +1867,10 @@ while(kexp<length(data.experiments.file)),
                                 % trigger, it's mark for 18[ms] the start of repetition.
                             if experiment(kexp).sync.is && experiment(kexp).sync.isdigital && ~strcmp(experiment(kexp).sync.digital.mode,'On every frames'),
                                 try
-                                    error = setProjector(FPS_120HZ);
+                                    error = setProjector(experiment(kexp).sync.digital.compressbit);
                                     error = error || setTrigger(TRIGGER_TIME_UP); 
                                     WaitSecs(WAIT_TIME_SIGNAL); 
-                                    error = error || setProjector(FPS_60HZ); 
+                                    error = error || setProjector(experiment(kexp).sync.digital.compressbit); 
                                 catch exceptions
                                     display(['Error communicating with the projector: setting trigger. ' exceptions.message]); Stack  = dbstack; Stack.line
                                     Screen('Close')
@@ -1973,10 +1975,10 @@ while(kexp<length(data.experiments.file)),
                             % trigger, it's mark for 18[ms] the start of repetition.
                             if experiment(kexp).sync.is && experiment(kexp).sync.isdigital && ~strcmp(experiment(kexp).sync.digital.mode,'On every frames'),
                                 try
-                                    error = setProjector(FPS_120HZ);
+                                    error = setProjector(experiment(kexp).sync.digital.compressbit);
                                     error = error || setTrigger(TRIGGER_TIME_UP); 
                                     WaitSecs(WAIT_TIME_SIGNAL); 
-                                    error = error || setProjector(FPS_60HZ);
+                                    error = error || setProjector(experiment(kexp).sync.digital.compressbit);
                                 catch exceptions
                                     display(['Error communicating with the projector: setting trigger. ' exceptions.message]); Stack  = dbstack; Stack.line
                                     Screen('Close')
@@ -2092,10 +2094,10 @@ while(kexp<length(data.experiments.file)),
                             % trigger, it's mark for 18[ms] the start of repetition.
                             if experiment(kexp).sync.is && experiment(kexp).sync.isdigital && ~strcmp(experiment(kexp).sync.digital.mode,'On every frames'),
                                 try
-                                    error = setProjector(FPS_120HZ);
+                                    error = setProjector(experiment(kexp).sync.digital.compressbit);
                                     error = error || setTrigger(TRIGGER_TIME_UP); 
                                     WaitSecs(WAIT_TIME_SIGNAL); 
-                                    error = error || setProjector(FPS_60HZ); 
+                                    error = error || setProjector(experiment(kexp).sync.digital.compressbit); 
                                 catch exceptions
                                     display(['Error communicating with the projector: setting trigger. ' exceptions.message]); Stack  = dbstack; Stack.line
                                     Screen('Close')
@@ -2197,10 +2199,10 @@ while(kexp<length(data.experiments.file)),
                             % trigger, it's mark for 18[ms] the start of repetition.
                             if experiment(kexp).sync.is && experiment(kexp).sync.isdigital && ~strcmp(experiment(kexp).sync.digital.mode,'On every frames'),
                                 try
-                                    error = setProjector(FPS_120HZ);
+                                    error = setProjector(experiment(kexp).sync.digital.compressbit);
                                     error = error || setTrigger(TRIGGER_TIME_UP); 
                                     WaitSecs(WAIT_TIME_SIGNAL); 
-                                    error = error || setProjector(FPS_60HZ); 
+                                    error = error || setProjector(experiment(kexp).sync.digital.compressbit); 
                                 catch exceptions
                                     display(['Error communicating with the projector: setting trigger. ' exceptions.message]); Stack  = dbstack; Stack.line
                                     Screen('Close')
@@ -2347,12 +2349,12 @@ while(kexp<length(data.experiments.file)),
             if experiment(kexp).sync.is && experiment(kexp).sync.isdigital,
                 try  
                     if strcmp(experiment(kexp).sync.digital.mode,'On every frames'),
-                        error = setProjector(FPS_60HZ); 
+                        error = setProjector(experiment(kexp).sync.digital.compressbit); 
                     else
-                        error = setProjector(FPS_120HZ); 
+                        error = setProjector(experiment(kexp).sync.digital.compressbit); 
                         error = error || setTrigger(TRIGGER_TIME_UP); 
                         WaitSecs(WAIT_TIME_SIGNAL); 
-                        error = error || setProjector(FPS_60HZ);
+                        error = error || setProjector(experiment(kexp).sync.digital.compressbit);
                     end
                 catch exceptions
                     display(['Error communicating with the projector: setting trigger. ' exceptions.message]); Stack  = dbstack; Stack.line
