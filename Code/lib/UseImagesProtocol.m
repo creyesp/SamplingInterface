@@ -18,6 +18,8 @@ function use = UseImagesProtocol( handles )
                     use = false;        
                 case 'White noise',
                     use = false;
+                otherwise
+                    use = false;
             end
         otherwise,
             use = false;
