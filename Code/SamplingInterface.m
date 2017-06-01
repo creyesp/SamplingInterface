@@ -2209,7 +2209,10 @@ function addExperiment_Callback(hObject, eventdata, handles)
 if ~handles.modify
     return
 end
-
+if mod(handles.maskStimulus.mask.img.files, handles.sync.digital.frequency/60) ~= 0
+    errordlg(['You are trying to add an experiment with digital sync but the file numbers in Mask Images is not multiple per ' num2str(handles.sync.digital.frequency/60)],'Error');
+    return      
+end    
 [handles.protocol.width, handles.protocol.height] = getProtocolSize(handles);
 handles.protocol.useImages = UseImagesProtocol(handles);
 if strcmp(handles.mode, 'Mask stimulus'),
@@ -6519,20 +6522,30 @@ in = uigetdir;
 if in~=0,
     pos = searchFirstFile(in);
     if pos,
-        handles.maskStimulus.mask.img.directory = in;
-        set(handles.imgMaskDirectory,'String',in);
+        finalposition = pos;
         filelist = dir(in);
         filelist = dir_to_Win_ls(filelist);
+        if  handles.sync.is && handles.sync.isdigital && strcmp(handles.sync.digital.mode,'On every frames');
+            if (size(filelist,1)-2) < handles.sync.digital.frequency/60
+                errordlg(['The directory must have at last ' num2str(handles.sync.digital.frequency/60) ' image files'],'Error');
+                set(handles.imgMaskDirectory,'String',handles.maskStimulus.mask.img.directory);
+                return
+            else
+                finalposition = pos+handles.sync.digital.frequency/60-1;
+            end
+        end
+        handles.maskStimulus.mask.img.directory = in;
+        set(handles.imgMaskDirectory,'String',in);
         handles.maskStimulus.mask.img.list = char('',filelist(3:size(filelist,1),:));
         set(handles.imgMaskInitial,'String',char('Initial image',handles.maskStimulus.mask.img.list(2:end,:)));
         set(handles.imgMaskFinal,'String',char('Final image',handles.maskStimulus.mask.img.list(2:end,:)));
         set(handles.imgMaskInitial,'Value',pos);
-        set(handles.imgMaskFinal,'Value',pos);
-        set(handles.imgMasknFiles,'String',1);
+        set(handles.imgMaskFinal,'Value',finalposition);
+        set(handles.imgMasknFiles,'String',finalposition - pos +1);
         handles.maskStimulus.mask.img.nInitial = handles.maskStimulus.mask.img.list(pos,:);
         handles.maskStimulus.mask.img.nInitialPos = pos;
-        handles.maskStimulus.mask.img.nFinal = handles.maskStimulus.mask.img.list(pos,:);
-        handles.maskStimulus.mask.img.nFinalPos = pos;
+        handles.maskStimulus.mask.img.nFinal = handles.maskStimulus.mask.img.list(finalposition,:);
+        handles.maskStimulus.mask.img.nFinalPos = finalposition;
         imageInfo = imfinfo(fullfile(handles.maskStimulus.mask.img.directory,handles.maskStimulus.mask.img.nInitial));
         % if handles.maskStimulus.mask.img.size.width ~=0 && handles.img.deltaX~=0 && handles.img.deltaY~=0 && ...
         %         (handles.maskStimulus.mask.img.size.width ~= imageInfo.Width || ...
@@ -6551,7 +6564,7 @@ if in~=0,
         handles.maskStimulus.mask.img.size.height = imageInfo.Height;
         set(handles.imgMaskSizeWidth,'String',handles.maskStimulus.mask.img.size.width);
         set(handles.imgMaskSizeHeight,'String',handles.maskStimulus.mask.img.size.height);
-        handles.maskStimulus.mask.img.files = 1;
+        handles.maskStimulus.mask.img.files = finalposition - pos + 1;
   
     else
         errordlg('Directory has no supported image files','Error');
@@ -6569,13 +6582,23 @@ if ~handles.modify
     return
 end
 dirlist = dir(handles.maskStimulus.mask.img.directory);
-pos = get(hObject,'Value');
-if pos~=1 && (dirlist(pos+1).isdir || ~supportedImageFormat(dirlist(pos+1).name)),
+initPos = get(hObject,'Value');
+endPos = handles.maskStimulus.mask.img.nFinalPos;
+if initPos~=1 && (dirlist(initPos+1).isdir || ~supportedImageFormat(dirlist(initPos+1).name)),
     errordlg('The selected file is not a supported image file','Error');
     set(hObject,'Value',handles.maskStimulus.mask.img.nInitialPos);
-else if pos~=1
-        handles.maskStimulus.mask.img.nInitial = handles.maskStimulus.mask.img.list(pos,:);
-        handles.maskStimulus.mask.img.nInitialPos = pos;
+else
+    if initPos~=1
+        if  handles.sync.is && handles.sync.isdigital && strcmp(handles.sync.digital.mode,'On every frames');
+            [initPos, endPos] = fitNimages(initPos,endPos, handles.sync.digital.frequency/60, size(handles.maskStimulus.mask.img.list,1));
+        end      
+        handles.maskStimulus.mask.img.nInitial = handles.maskStimulus.mask.img.list(initPos,:);
+        handles.maskStimulus.mask.img.nInitialPos = initPos;        
+        handles.maskStimulus.mask.img.nFinal = handles.maskStimulus.mask.img.list(endPos,:);
+        handles.maskStimulus.mask.img.nFinalPos = endPos;
+        set( handles.imgMaskFinal , 'Value', endPos);
+        set( handles.imgMaskInitial , 'Value', initPos);
+
         imageInfo = imfinfo(fullfile(handles.maskStimulus.mask.img.directory,handles.maskStimulus.mask.img.nInitial));
         handles.maskStimulus.mask.img.size.width = imageInfo.Width;
         handles.maskStimulus.mask.img.size.height = imageInfo.Height;
@@ -6619,6 +6642,23 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
     set(hObject,'BackgroundColor','white');
 end
 
+% size(handles.maskStimulus.mask.img.list,1)
+% handles.sync.digital.frequency/60+1
+% fitNimages(pos, )
+function [ninitPos, nendPos] = fitNimages(initPos, endPos, minimg, lenList)
+    ninitPos = initPos;
+    nendPos = endPos;
+    if initPos > lenList - minimg
+        errordlg(['The directory must have at last ' num2str(handles.sync.digital.frequency/60) ' image files'],'Error');
+        ninitPos = lenList - minimg + 1;
+        nendPos = lenList;
+    else
+        if (endPos - initPos) <= minimg 
+            nendPos = initPos+minimg-1;
+        else
+            nendPos = floor((endPos-initPos+1)/minimg)*(minimg)+initPos-1;
+        end
+    end    
 
 % --- Executes on selection change in imgMaskFinal.
 function imgMaskFinal_Callback(hObject, eventdata, handles)
@@ -6627,14 +6667,22 @@ if ~handles.modify
     return
 end
 dirlist = dir(handles.maskStimulus.mask.img.directory);
-pos = get(hObject,'Value');
-if pos~=1 && (dirlist(pos+1).isdir || ~supportedImageFormat(dirlist(pos+1).name)),
+endPos = get(hObject,'Value');
+initPos = handles.maskStimulus.mask.img.nInitialPos;
+if endPos~=1 && (dirlist(endPos+1).isdir || ~supportedImageFormat(dirlist(endPos+1).name)),
     errordlg('The selected file is not a supported image file','Error');
     set(hObject,'Value',handles.maskStimulus.mask.img.nFinalPos);
 else
-    if pos~=1,
-        handles.maskStimulus.mask.img.nFinal = handles.maskStimulus.mask.img.list(pos,:);
-        handles.maskStimulus.mask.img.nFinalPos = pos;
+    if endPos~=1,
+        if  handles.sync.is && handles.sync.isdigital && strcmp(handles.sync.digital.mode,'On every frames');
+            [initPos, endPos] = fitNimages(initPos,endPos, handles.sync.digital.frequency/60, size(handles.maskStimulus.mask.img.list,1));
+        end      
+        handles.maskStimulus.mask.img.nInitial = handles.maskStimulus.mask.img.list(initPos,:);
+        handles.maskStimulus.mask.img.nInitialPos = initPos;        
+        handles.maskStimulus.mask.img.nFinal = handles.maskStimulus.mask.img.list(endPos,:);
+        handles.maskStimulus.mask.img.nFinalPos = endPos;
+        set( handles.imgMaskFinal , 'Value', endPos);
+        set( handles.imgMaskInitial , 'Value', initPos);
         difference=find((handles.maskStimulus.mask.img.nInitial==handles.maskStimulus.mask.img.nFinal)==0);
         if ~isempty(difference),
             nExt = find(handles.maskStimulus.mask.img.nInitial=='.');
@@ -6680,14 +6728,18 @@ function imgMaskSelectAll_Callback(hObject, eventdata, handles)
 if ~handles.modify %|| (handles.maskStimulus.mask.img.nInitial == 1)
     return
 end
-pos = searchFirstFile(handles.maskStimulus.mask.img.directory);
-set(handles.imgMaskInitial,'Value',pos);
-handles.maskStimulus.mask.img.nInitial = handles.maskStimulus.mask.img.list(pos,:);
-handles.maskStimulus.mask.img.nInitialPos = pos;
-pos = searchLastFile(handles.maskStimulus.mask.img.directory);
-set(handles.imgMaskFinal,'Value',pos);
-handles.maskStimulus.mask.img.nFinalPos = pos;
-handles.maskStimulus.mask.img.nFinal = handles.maskStimulus.mask.img.list(pos,:);
+ninitPos = searchFirstFile(handles.maskStimulus.mask.img.directory);
+nendPos = searchLastFile(handles.maskStimulus.mask.img.directory);
+if  handles.sync.is && handles.sync.isdigital && strcmp(handles.sync.digital.mode,'On every frames');
+    [initPos, endPos] = fitNimages(ninitPos,nendPos, handles.sync.digital.frequency/60, size(handles.maskStimulus.mask.img.list,1));
+end      
+handles.maskStimulus.mask.img.nInitial = handles.maskStimulus.mask.img.list(initPos,:);
+handles.maskStimulus.mask.img.nInitialPos = initPos;        
+handles.maskStimulus.mask.img.nFinal = handles.maskStimulus.mask.img.list(endPos,:);
+handles.maskStimulus.mask.img.nFinalPos = endPos;
+set( handles.imgMaskFinal , 'Value', endPos);
+set( handles.imgMaskInitial , 'Value', initPos);
+
 difference=find((handles.maskStimulus.mask.img.nInitial==handles.maskStimulus.mask.img.nFinal)==0);
 
 if ~isempty(difference),
@@ -7116,8 +7168,8 @@ switch type,
 end
 axes(handles.bottomBarGraph);
 imshow(handles.sync.analog.graph); 
-
-guidata(hObject,handles);
+updateTimeMaskStimulus(hObject, eventdata, handles);
+% guidata(hObject,handles);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -7160,7 +7212,8 @@ else
     set(handles.frequencyDigitalSync,'Visible','off');
     handles.sync.digital.mode = modeList(mode);
 end
-guidata(hObject,handles);
+updateTimeMaskStimulus(hObject, eventdata, handles);
+% guidata(hObject,handles);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -7200,7 +7253,8 @@ function frequencylistDigitalSync_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 frequencyList = str2double(get(hObject,'String'));
 handles.sync.digital.frequency = frequencyList(get(hObject,'Value'));
-guidata(hObject,handles);
+updateTimeMaskStimulus(hObject, eventdata, handles);
+% guidata(hObject,handles);
 
 
 
