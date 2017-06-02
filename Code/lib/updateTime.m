@@ -52,7 +52,6 @@ function flickerStimulusTime(handles,beforetime)
         handles.flicker.time = beforetime + (handles.flicker.imgTime+handles.flicker.backgroundTime)/1000.0*handles.img.files;
     end
 
-    disp([handles.flicker.time handles.flicker.imgTime handles.flicker.backgroundTime handles.img.files handles.flicker.repetitions handles.flicker.dutyCicle handles.flicker.fps])
     set(handles.flickerTime,'String',datestr(datenum(0,0,0,0,0,...
         handles.flicker.time),'HH:MM:SS.FFF'));
 end
@@ -115,7 +114,6 @@ function DigitalMaskStimulusTime(handles,t)
             end
             set(handles.maskStimulusTime,'String',datestr(datenum(0,0,0,0,0,...
                 handles.maskStimulus.time),'HH:MM:SS.FFF'));
-            disp([handles.sync.digital.frequency,t])
         case 'Solid color',
             if ~get(handles.maskStimulusRepWithBackground,'Value')
                 handles.maskStimulus.time = handles.maskStimulus.protocol.solidColor.nframes...

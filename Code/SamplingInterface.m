@@ -1714,7 +1714,6 @@ in = uigetdir(pwd,'Select a directory where the file will be saved');
 if in~=0
     name = strtrim(inputdlg('Insert the name of the file to be saved. Remember! the default experiment name used by stimulation scripts is "experiment.zip" and should be located at Documents/Matlab/Experiments/ folder, you are aware!','Insert file name',1,cellstr(fileName)));
     if ~isempty(name)
-%         save('Final Configuration.si','-struct','handles');
         saveInformation('Final Configuration.si',handles);
         zip(fullfile(in,name{1}),'*.si');
         selection = questdlg(['Do you want to create a Script ' ...
@@ -1727,17 +1726,7 @@ if in~=0
         if isempty(selection)
             return
         end
-%         switch selection, 
-%           case 'Yes',
-%              delete *.si;
-%              delete *.dsi;
-%              Screen('Preference', 'SkipSyncTests', 0);
-%              Screen('Preference', 'VisualDebugLevel', 4);
-%              delete(gcf);
-%              exit;
-%             otherwise
-%              return 
-%         end
+
     end
 end
 guidata(hObject,handles);
@@ -6871,14 +6860,46 @@ end
 
 in = get(hObject,'Value');
 if in==1,
-    handles.maskStimulus.protocol.type = '';
-    
     if isempty(handles.maskStimulus.mask.type),
         set(handles.maskConfigurationMSPanel,'visible','off');
         set(handles.solidcolorMaskMSPanel,'visible','off');
         set(handles.whitenoiseMaskMSPanel,'visible','off'); 
         set(handles.imgMaskMSPanel,'visible','off');
     end
+    if isempty(handles.maskStimulus.protocol.type),
+        set(handles.protocolConfigurationMSPanel,'visible','off');
+        set(handles.whitenoiseProtoMSPanel,'visible','off');
+        set(handles.imgProtoMSPanel,'visible','off');
+        set(handles.solidColorProtoMSPanel,'visible','off');
+        set(handles.flickerProtoMSPanel,'visible','off');
+    end
+    
+    set(handles.otherOptionsPanel,'visible','off');
+    set(handles.gridmaskPanel,'visible','off');
+    set(handles.initialpositionmaskPanel,'visible','off');
+    set(handles.autoshiftmaskPanel,'visible','off');
+elseif in==2,
+    set(handles.maskConfigurationMSPanel,'visible','off');
+    set(handles.solidcolorMaskMSPanel,'visible','off');
+    set(handles.whitenoiseMaskMSPanel,'visible','off'); 
+    set(handles.imgMaskMSPanel,'visible','off');
+    
+    set(handles.protocolConfigurationMSPanel,'visible','off');
+    set(handles.whitenoiseProtoMSPanel,'visible','off');
+    set(handles.imgProtoMSPanel,'visible','off');
+    set(handles.solidColorProtoMSPanel,'visible','off');
+    set(handles.flickerProtoMSPanel,'visible','off'); 
+    
+    set(handles.otherOptionsPanel,'visible','on');
+    set(handles.autoshiftmaskPanel,'visible','on');    
+    set(handles.gridmaskPanel,'visible','off');
+    set(handles.initialpositionmaskPanel,'visible','off');
+
+elseif in==3,
+    set(handles.maskConfigurationMSPanel,'visible','off');
+    set(handles.solidcolorMaskMSPanel,'visible','off');
+    set(handles.whitenoiseMaskMSPanel,'visible','off'); 
+    set(handles.imgMaskMSPanel,'visible','off');
     
     set(handles.protocolConfigurationMSPanel,'visible','off');
     set(handles.whitenoiseProtoMSPanel,'visible','off');
@@ -6886,67 +6907,27 @@ if in==1,
     set(handles.solidColorProtoMSPanel,'visible','off');
     set(handles.flickerProtoMSPanel,'visible','off');
     
-    set(handles.otherOptionsPanel,'visible','off');
-elseif in==2,
-    handles.maskStimulus.protocol.type = 'Flicker';
-    
-    set(handles.maskConfigurationMSPanel,'visible','off');
-    set(handles.solidcolorMaskMSPanel,'visible','off');
-    set(handles.whitenoiseMaskMSPanel,'visible','off'); 
-    set(handles.imgMaskMSPanel,'visible','off');
-    
-    set(handles.protocolConfigurationMSPanel,'visible','on');
-    set(handles.whitenoiseProtoMSPanel,'visible','off');
-    set(handles.imgProtoMSPanel,'visible','off');
-    set(handles.solidColorProtoMSPanel,'visible','off');
-    set(handles.flickerProtoMSPanel,'visible','on'); 
-    
-    set(handles.otherOptionsPanel,'visible','off');
-elseif in==3,
-    handles.maskStimulus.protocol.type = 'Images';
-    
-    set(handles.maskConfigurationMSPanel,'visible','off');
-    set(handles.solidcolorMaskMSPanel,'visible','off');
-    set(handles.whitenoiseMaskMSPanel,'visible','off'); 
-    set(handles.imgMaskMSPanel,'visible','off');
-    
-    set(handles.protocolConfigurationMSPanel,'visible','on');
-    set(handles.whitenoiseProtoMSPanel,'visible','off');
-    set(handles.imgProtoMSPanel,'visible','on');
-    set(handles.solidColorProtoMSPanel,'visible','off');
-    set(handles.flickerProtoMSPanel,'visible','off');
-    
-    set(handles.otherOptionsPanel,'visible','off');
+    set(handles.otherOptionsPanel,'visible','on');
+    set(handles.autoshiftmaskPanel,'visible','off');    
+    set(handles.gridmaskPanel,'visible','on');
+    set(handles.initialpositionmaskPanel,'visible','off');
 elseif in==4,
-    handles.maskStimulus.protocol.type = 'Solid color';
     set(handles.maskConfigurationMSPanel,'visible','off');
     set(handles.solidcolorMaskMSPanel,'visible','off');
     set(handles.whitenoiseMaskMSPanel,'visible','off'); 
     set(handles.imgMaskMSPanel,'visible','off');
     
-    set(handles.protocolConfigurationMSPanel,'visible','on');
+    set(handles.protocolConfigurationMSPanel,'visible','off');
     set(handles.whitenoiseProtoMSPanel,'visible','off');
-    set(handles.imgProtoMSPanel,'visible','off');
-    set(handles.solidColorProtoMSPanel,'visible','on');
-    set(handles.flickerProtoMSPanel,'visible','off');
-    
-    set(handles.otherOptionsPanel,'visible','off');
-elseif in ==5;
-    handles.maskStimulus.protocol.type = 'White noise';
-    set(handles.maskConfigurationMSPanel,'visible','off');
-    set(handles.solidcolorMaskMSPanel,'visible','off');
-    set(handles.whitenoiseMaskMSPanel,'visible','off'); 
-    set(handles.imgMaskMSPanel,'visible','off');
-    
-    set(handles.protocolConfigurationMSPanel,'visible','on');
-    set(handles.whitenoiseProtoMSPanel,'visible','on');
     set(handles.imgProtoMSPanel,'visible','off');
     set(handles.solidColorProtoMSPanel,'visible','off');
     set(handles.flickerProtoMSPanel,'visible','off');
     
-    set(handles.otherOptionsPanel,'visible','off');
+    set(handles.otherOptionsPanel,'visible','on');
+    set(handles.autoshiftmaskPanel,'visible','off');    
+    set(handles.gridmaskPanel,'visible','off');
+    set(handles.initialpositionmaskPanel,'visible','on');
 end
-updateTime(hObject, eventdata, handles);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -6979,7 +6960,7 @@ else
         set(hObject,'String',handles.maskStimulus.mask.xspacing);
         errordlg('Input do not must be a number less than 0', 'Error')
     else
-        handles.maskStimulus.mask.xspacing = spacing;
+        handles.maskStimulus.mask.spacing.x = spacing;
     end
 end
 guidata(hObject,handles);
@@ -7003,16 +6984,16 @@ function xspacingrep_Callback(hObject, eventdata, handles)
 if ~handles.modify
     return
 end
-spacinrepg = str2double(get(hObject,'String'));
-if isnan(rep)
-  set(hObject,'String',handles.maskStimulus.mask.xspacingrep);
+spacinrep = str2double(get(hObject,'String'));
+if isnan(spacinrep)
+  set(hObject,'String',handles.maskStimulus.mask.spacing.xrep);
   errordlg('Input must be a integer number', 'Error')
 else
-    if rep < 0,
-        set(hObject,'String',handles.maskStimulus.mask.xspacingrep);
+    if spacinrep < 0,
+        set(hObject,'String',handles.maskStimulus.mask.spacing.xrep);
         errordlg('Input do not must be a number less than 0', 'Error')
     else
-        handles.maskStimulus.mask.xspacingrep = rep;
+        handles.maskStimulus.mask.spacing.xrep = spacinrep;
     end
 end
 guidata(hObject,handles);
@@ -7038,14 +7019,14 @@ if ~handles.modify
 end
 spacing = str2double(get(hObject,'String'));
 if isnan(spacing)
-  set(hObject,'String',handles.maskStimulus.mask.yspacing);
+  set(hObject,'String',handles.maskStimulus.mask.spacing.y);
   errordlg('Input must be a integer number', 'Error')
 else
     if spacing < 0,
-        set(hObject,'String',handles.maskStimulus.mask.yspacing);
+        set(hObject,'String',handles.maskStimulus.mask.spacing.y);
         errordlg('Input do not must be a number less than 0', 'Error')
     else
-        handles.maskStimulus.mask.yspacing = spacing;
+        handles.maskStimulus.mask.spacing.y = spacing;
     end
 end
 guidata(hObject,handles);
@@ -7071,14 +7052,14 @@ if ~handles.modify
 end
 rep = str2double(get(hObject,'String'));
 if isnan(rep)
-  set(hObject,'String',handles.maskStimulus.mask.yspacingrep);
+  set(hObject,'String',handles.maskStimulus.mask.spacing.yrep);
   errordlg('Input must be a integer number', 'Error')
 else
     if rep < 0,
-        set(hObject,'String',handles.maskStimulus.mask.yspacingrep);
+        set(hObject,'String',handles.maskStimulus.mask.spacing.yrep);
         errordlg('Input do not must be a number less than 0', 'Error')
     else
-        handles.maskStimulus.mask.yspacingrep = rep;
+        handles.maskStimulus.mask.spacing.yrep = rep;
     end
 end
 guidata(hObject,handles);

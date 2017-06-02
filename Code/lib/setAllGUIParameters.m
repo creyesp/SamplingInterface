@@ -82,7 +82,6 @@ if handles.sync.is,
             set(handles.digitalSyncMode,'value',1);
             set(handles.frequencylistDigitalSync,'Visible',true);
             set(handles.frequencyDigitalSync,'Visible',true);
-            disp(handles.sync.digital.frequency)
             switch handles.sync.digital.frequency,
                 case 120,
                     set(handles.frequencylistDigitalSync,'value',1);
@@ -326,6 +325,10 @@ if handles.maskStimulus.repeatBackground
 else
     set(handles.maskStimulusRepWithBackground,'Value',0.0);
 end
+set(handles.xspacing,'string',handles.maskStimulus.mask.spacing.x)
+set(handles.yspacing,'string',handles.maskStimulus.mask.spacing.y)
+set(handles.xspacingrep,'string',handles.maskStimulus.mask.spacing.x)
+set(handles.yspacingrep,'string',handles.maskStimulus.mask.spacing.y)
 
 set( handles.imgMaskDirectory , 'String', handles.maskStimulus.mask.img.directory);
 set( handles.imgMaskInitial , 'Value', handles.maskStimulus.mask.img.nInitialPos);

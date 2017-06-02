@@ -125,6 +125,7 @@ for kexp=length(data.experiments.file)-1:-1:1,
         if ~strcmp((dataExp.mode),'Presentation')
             dataExp.img.charge = zeros(1,dataExp.img.files);
             dataExp.img.repeated = 0;
+            dataExp.maskStimulus.mask.spacing.xrepeated = 0;
             % Adjustment Bar variables
             if dataExp.sync.is && ~dataExp.sync.isdigital                     
                 dataExp.sync.analog.posLeft = (dataExp.sync.analog.posLeft-1)*wScreen/99.0;
@@ -1300,7 +1301,6 @@ while(kexp<length(data.experiments.file)),
                 maskShape = 'oval';
                 npresentedflicker = 0;
                 nflickerImg = 1;
-                disp(nflickerImg);
               
 
                 % Find the color values which correspond to white and black.
@@ -1423,7 +1423,8 @@ while(kexp<length(data.experiments.file)),
                     elseif shiftY > (RectHeight(experiment(kexp).position)/2 + heightLim) - delta 
                         shiftY = round((RectHeight(experiment(kexp).position)/2 + heightLim) - delta);
                     end
-
+                    originalShiftX = shiftX;
+                    originalShiftY = shiftY;
                     % Set the SIZE (width and height) of the mask
                     if keyCode( inWidthKey ) 
                         width = width + stepSize;
@@ -2188,7 +2189,6 @@ while(kexp<length(data.experiments.file)),
                         end
                     end
                 case 'White noise'
-                    
                     for repProto = 1:rep+1,
                         if repProto==1, 
                             tmp = 2; 
@@ -2217,14 +2217,14 @@ while(kexp<length(data.experiments.file)),
                                 end
                             end
                         end          
-                        
+
                         if useDigitalProjector,
                             limit = ceil( experiment(kexp).maskStimulus.protocol.wn.frames/(experiment(kexp).sync.digital.frequency/60));
                         else
                             limit = experiment(kexp).maskStimulus.protocol.wn.frames;
                         end
                         timeend = zeros(2,limit);
-                        
+
                         for j=tmp:limit,
                             % Set the background
                             tStart = tic;
@@ -2269,8 +2269,8 @@ while(kexp<length(data.experiments.file)),
                                 end
                                 protocolImage = noiseimg;	
                             end
-                            
-                            
+
+
                             % Get the masked image depending on the mask type
                             if strcmp(experiment(kexp).maskStimulus.mask.type,'White noise'),
                                 maskImage = uint8(0*experiment(kexp).maskStimulus.mask.wn.noiseimg);
@@ -2306,7 +2306,7 @@ while(kexp<length(data.experiments.file)),
                                 maskImage = getMaskImg( experiment(kexp).maskStimulus.mask, mask, j );                                               
                             end
                             timeend(1,j) = toc;
-              
+
                             noisetxt = Screen('MakeTexture',win,protocolImage);
                             Screen('DrawTexture', win, noisetxt,[],experiment(kexp).position);
                             Screen('Close',noisetxt);
@@ -2334,7 +2334,7 @@ while(kexp<length(data.experiments.file)),
                                 vbl = Screen('Flip', win, vbl + ...
                                     (nRefreshImg - 0.5) * refresh);
                             end
-                            
+
                         end     
                     end
             end
@@ -2377,18 +2377,44 @@ while(kexp<length(data.experiments.file)),
             if experiment(kexp).img.background.isImg
                 Screen('Close',background);
             end
-            if ~strcmp(experiment(kexp).maskStimulus.protocol.type,'Flicker'),
+%             if ~strcmp(experiment(kexp).maskStimulus.protocol.type,'Flicker'),
                 if experiment(kexp).maskStimulus.repeatBackground && kexp>1 && strcmp(experiment(kexp-1).mode,'Presentation') ...
                         && experiment(kexp).img.repeated < experiment(kexp).maskStimulus.repetitions,
                     experiment(kexp).img.repeated = experiment(kexp).img.repeated + 1;
                     kexp = kexp - 2;
+                end
+%             end
+%             if strcmp(experiment(kexp).maskStimulus.protocol.type,'Mask stimulus'),
+            if experiment(kexp).maskStimulus.repeatBackground,
+                if kexp>1 && strcmp(experiment(kexp-1).mode,'Presentation') && experiment(kexp).img.repeated == experiment(kexp).maskStimulus.repetitions,
+                    if experiment(kexp).maskStimulus.mask.spacing.xrep > 0,
+                        if experiment(kexp).maskStimulus.mask.spacing.xrepeated < experiment(kexp).maskStimulus.mask.spacing.xrep,
+                            experiment(kexp).img.repeated = 0;
+                            experiment(kexp).maskStimulus.mask.spacing.xrepeated = experiment(kexp).maskStimulus.mask.spacing.xrepeated + 1;
+                            shiftX = shiftX - experiment(kexp).maskStimulus.mask.spacing.x;
+                            kexp = kexp - 2;
+                        else
+                            shiftX = originalShiftX;
+                        end
+                    end                    
+                
+                end
+            else
+                if experiment(kexp).maskStimulus.mask.spacing.xrep > 0,
+                    if experiment(kexp).maskStimulus.mask.spacing.xrepeated < experiment(kexp).maskStimulus.mask.spacing.xrep,
+                        experiment(kexp).img.repeated = 0;
+                        experiment(kexp).maskStimulus.mask.spacing.xrepeated = experiment(kexp).maskStimulus.mask.spacing.xrepeated + 1;
+                        shiftX = shiftX - experiment(kexp).maskStimulus.mask.spacing.x;
+                            kexp = kexp - 1;
+                    else
+                        shiftX = originalShiftX;
+                    end
                 end
             end
         else
             disp('Error, the mode nor exist')
         end % end if-else flicker-fps
     end % end if-else presentation
-    disp([kexp Time(kexp).start Time(kexp).finish])
     kexp = kexp + 1;
 end % end for(experiments)
 
@@ -2453,8 +2479,6 @@ if ~siFilesNotCharged && ~indexColorFrame && nonVisual
             save([dirName 'FirstImages_' num2str(kexp) '.mat'],'fi');
         elseif strcmp(experiment(kexp).mode,'Mask stimulus'),
             if strcmp(experiment(kexp).maskStimulus.mask.type,'White noise'),
-                disp('Experiment:')
-                disp(kexp)
                 s = experiment(kexp).maskStimulus.mask.wn.seed;
                 fi = experiment(kexp).maskStimulus.mask.wn.imgToComp;
                 save([dirName 'MS_Seed_' num2str(kexp) '.mat'],'s');

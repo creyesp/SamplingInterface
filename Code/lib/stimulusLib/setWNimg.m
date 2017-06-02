@@ -13,7 +13,6 @@ function [noise, imgToComp, noiseimg] = setWNimg(whitenoise)
             whitenoise.blocks*whitenoise.pxX,whitenoise.saveImages);
         noiseimg = zeros(size(noise));
     else %array 3D [R G B]
-        disp([whitenoise.blocks, whitenoise.pxY, whitenoise.pxX])
         imgToComp = zeros(whitenoise.blocks*whitenoise.pxY,...
             whitenoise.blocks*whitenoise.pxX,...
             3,whitenoise.saveImages);
