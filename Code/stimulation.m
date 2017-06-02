@@ -1312,7 +1312,7 @@ while(kexp<length(data.experiments.file)),
                 %%%% Set the initial MASK %%%%
                 [x, y] = meshgrid(-s1/2:1:s1/2-1, -s2/2:1:s2/2-1);
                 ss = max([s1 s2]);
-                factor = 1.42;
+                factor = 2;
                 imgMask =  uint8(ones(s2, s1)*255);
                 rotMask = deg2rad(angle);
                 % oval shape
@@ -1337,7 +1337,7 @@ while(kexp<length(data.experiments.file)),
                     else
                         imgMask = mask;
                     end
-                    mask = imgMask(round((ss-s2)/2)+1:round((ss+s2)/2), round((ss-s1)/2)+1:round((ss+s1)/2));
+                    mask = imgMask(round((ss*2-s2)/2)+1:round((ss*2+s2)/2), round((ss*2-s1)/2)+1:round((ss*2+s1)/2));
                 end
             end
             
@@ -1462,9 +1462,9 @@ while(kexp<length(data.experiments.file)),
                             ((x*sin(rotMask)+y*cos(rotMask))./height).^2 >= 1)*255);
                     else %rect shape
                         [xr, yr] = meshgrid(-round(ss*factor/2):1:round(ss*factor/2)-1, -round(ss*factor/2):1:round(ss*factor/2)-1);
+                        imgMask =  uint8(ones(ss*factor, ss*factor)*255);                    
                         mask = ((abs(xr) < width) & (abs(yr) < height));
                         mask = uint8((~imrotate(mask,angle,'crop'))*255);
-                        imgMask =  uint8(ones(ss*factor, ss*factor)*255);      
                         if shiftX >= 0 && shiftY >= 0, %move ^>
                             imgMask(shiftY+1:end,1:end-shiftX) = mask(1:end-shiftY,shiftX+1:end);
                         elseif shiftX >= 0 && shiftY <= 0, %move v>
@@ -1476,7 +1476,7 @@ while(kexp<length(data.experiments.file)),
                         else
                             imgMask = mask;
                         end
-                        mask = imgMask(round((ss*factor-s1)/2)+1:round((ss*factor+s1)/2), round((ss*factor-s2)/2)+1:round((ss*factor+s2)/2));
+                        mask = imgMask(round((ss*2-s2)/2)+1:round((ss*2+s2)/2), round((ss*2-s1)/2)+1:round((ss*2+s1)/2));
                     end                    
                 end
                 
@@ -1682,9 +1682,10 @@ while(kexp<length(data.experiments.file)),
                 mask = uint8((((x*cos(rotMask)-y*sin(rotMask))./width).^2+...
                     ((x*sin(rotMask)+y*cos(rotMask))./height).^2 >= 1)*255);
             else % rectangle shape
-                mask = ((abs(x) < width) & (abs(y) < height));
+                [xr, yr] = meshgrid(-round(ss*factor/2):1:round(ss*factor/2)-1, -round(ss*factor/2):1:round(ss*factor/2)-1);
+                imgMask =  uint8(ones(ss*factor, ss*factor)*255);                    
+                mask = ((abs(xr) < width) & (abs(yr) < height));
                 mask = uint8((~imrotate(mask,angle,'crop'))*255);
-
                 if shiftX >= 0 && shiftY >= 0, %move ^>
                     imgMask(shiftY+1:end,1:end-shiftX) = mask(1:end-shiftY,shiftX+1:end);
                 elseif shiftX >= 0 && shiftY <= 0, %move v>
@@ -1694,9 +1695,9 @@ while(kexp<length(data.experiments.file)),
                 elseif shiftX <= 0 && shiftY >= 0, %move <^
                     imgMask(shiftY+1:end,abs(shiftX)+1:end) = mask(1:end-shiftY,1:end-abs(shiftX));
                 else
-                    imgMask(:,:) = mask;
+                    imgMask = mask;
                 end
-                mask = imgMask;
+                mask = imgMask(round((ss*2-s2)/2)+1:round((ss*2+s2)/2), round((ss*2-s1)/2)+1:round((ss*2+s1)/2));
             end
             
             
