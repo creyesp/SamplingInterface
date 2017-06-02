@@ -3,7 +3,7 @@ function createScript(file)
 [folder,name] = fileparts(file);
 codepath = pwd;
 
-if isunix,
+if ~ismac,
     matlab = ['ptb3-matlab'];
     text = sprintf(['#!/bin/sh\n\n' matlab ' -nojvm -nodisplay -r "cd ''' codepath '''; stimulation('''...
             file ''')" 2>&1 | grep -v "exclude an item from Time Machine"']);
