@@ -22,7 +22,7 @@ function varargout = SamplingInterface(varargin)
 
 % Edit the above text to modify the response to help SamplingInterface
 
-% Last Modified by GUIDE v2.5 01-Jun-2017 17:07:14
+% Last Modified by GUIDE v2.5 07-Jun-2017 17:10:02
 
 % Begin initialization code - DO NOT EDIT
 addpath('lib');
@@ -2028,7 +2028,7 @@ function addExperiment_Callback(hObject, eventdata, handles)
 if ~handles.modify
     return
 end
-if mod(handles.maskStimulus.mask.img.files, handles.sync.digital.frequency/60) ~= 0
+if handles.sync.is && handles.sync.isdigital && strcmp(handles.sync.digital.mode,'On every frames') && mod(handles.maskStimulus.mask.img.files, handles.sync.digital.frequency/60) ~= 0 
     errordlg(['You are trying to add an experiment with digital sync but the file numbers in Mask Images is not multiple per ' num2str(handles.sync.digital.frequency/60)],'Error');
     return      
 end    
@@ -6307,10 +6307,10 @@ function imgMaskSelectAll_Callback(hObject, eventdata, handles)
 if ~handles.modify %|| (handles.maskStimulus.mask.img.nInitial == 1)
     return
 end
-ninitPos = searchFirstFile(handles.maskStimulus.mask.img.directory);
-nendPos = searchLastFile(handles.maskStimulus.mask.img.directory);
+initPos = searchFirstFile(handles.maskStimulus.mask.img.directory);
+endPos = searchLastFile(handles.maskStimulus.mask.img.directory);
 if  handles.sync.is && handles.sync.isdigital && strcmp(handles.sync.digital.mode,'On every frames');
-    [initPos, endPos] = fitNimages(ninitPos,nendPos, handles.sync.digital.frequency/60, size(handles.maskStimulus.mask.img.list,1));
+    [initPos, endPos] = fitNimages(initPos,endPos, handles.sync.digital.frequency/60, size(handles.maskStimulus.mask.img.list,1));
 end      
 handles.maskStimulus.mask.img.nInitial = handles.maskStimulus.mask.img.list(initPos,:);
 handles.maskStimulus.mask.img.nInitialPos = initPos;        
@@ -7075,3 +7075,93 @@ function yspacingrep_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+
+
+% --- Executes on button press in positionRandom.
+function positionRandom_Callback(hObject, eventdata, handles)
+if ~handles.modify
+    set(hObject,'Value',0.0);
+    return
+end
+handles.maskStimulus.mask.spacing.israndom = ~handles.maskStimulus.mask.spacing.israndom;
+disp(handles.maskStimulus.mask.spacing.israndom )
+guidata(hObject,handles);
+
+
+
+% --- Executes on button press in savePositionRandom.
+function savePositionRandom_Callback(hObject, eventdata, handles)
+    xrep = handles.maskStimulus.mask.spacing.xrep;
+    yrep = handles.maskStimulus.mask.spacing.yrep;
+    x = handles.maskStimulus.mask.spacing.x;
+    y = handles.maskStimulus.mask.spacing.y;
+    israndom = handles.maskStimulus.mask.spacing.israndom;
+    [handles.maskStimulus.mask.spacing.xposition , handles.maskStimulus.mask.spacing.yposition] = ...
+        positionmask(xrep,yrep,x,y,israndom);
+    xposition = handles.maskStimulus.mask.spacing.xposition;
+    yposition = handles.maskStimulus.mask.spacing.yposition;
+
+    [FileName,PathName] = uiputfile('*.mat','Save position random struct','positionrandom');
+    handles.maskStimulus.mask.spacing.pathfile = fullfile(PathName,FileName);
+    save(handles.maskStimulus.mask.spacing.pathfile,'xposition','yposition','xrep','yrep','x','y','israndom');    
+    set(handles.pathPositionRandom,'String',handles.maskStimulus.mask.spacing.pathfile);
+    
+    guidata(hObject,handles)
+
+% --- Executes on button press in loadPositionRandom.
+function loadPositionRandom_Callback(hObject, eventdata, handles)
+if ~handles.modify
+    return
+end
+
+[name,folder] = uigetfile('.mat','Select seed file','positionrandom.mat');
+positionshift = load(fullfile(folder,name));
+if isstruct(positionshift) && isfield(positionshift,'x') && isfield(positionshift,'y') 
+    handles.maskStimulus.mask.spacing.xposition = positionshift.xposition;
+    handles.maskStimulus.mask.spacing.yposition = positionshift.yposition;
+    handles.maskStimulus.mask.spacing.xrep = positionshift.xrep;
+    handles.maskStimulus.mask.spacing.yrep = positionshift.yrep;
+    handles.maskStimulus.mask.spacing.x = positionshift.x;
+    handles.maskStimulus.mask.spacing.y = positionshift.y;
+    handles.maskStimulus.mask.spacing.israndom = positionshift.israndom;
+    handles.maskStimulus.mask.spacing.pathfile = fullfile(folder,name);
+else
+    errordlg('The file do not has correct format.','Error');
+end
+
+set(handles.xspacing,'String',handles.maskStimulus.mask.spacing.x);
+set(handles.yspacing,'String',handles.maskStimulus.mask.spacing.y);
+set(handles.xspacingrep,'String',handles.maskStimulus.mask.spacing.xrep);
+set(handles.yspacingrep,'String',handles.maskStimulus.mask.spacing.yrep);
+set(handles.positionRandom,'Value',handles.maskStimulus.mask.spacing.israndom);
+set(handles.pathPositionRandom,'String',handles.maskStimulus.mask.spacing.pathfile);
+guidata(hObject,handles)
+
+
+
+function pathPositionRandom_Callback(hObject, eventdata, handles)
+% hObject    handle to pathPositionRandom (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of pathPositionRandom as text
+%        str2double(get(hObject,'String')) returns contents of pathPositionRandom as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function pathPositionRandom_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to pathPositionRandom (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on button press in inverstedMask.
+function inverstedMask_Callback(hObject, eventdata, handles)
+handles.maskStimulus.mask.inverse = get(hObject,'Value');
+guidata(hObject,handles)

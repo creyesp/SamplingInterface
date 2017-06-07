@@ -45,6 +45,7 @@ OK - cargar imagenes de las mascaras con compresión cuando no son multiplos de 
 -----OK	* restringir la cantidad de images a multiplos de la frecuencia de muestreo.
 		* restringir la cantidad de imagenes al tiempo del protocolo 
 OK - Actualizar la funcion para el manejo de los tiempos por protocolo, version extentida de updateTimeMaskStimulus()
+OK - correccion para condiciones de borde en el caso de la mascara cuadrada
 - revisar en img mask porque al final de la repeticion agrega un frame rojo (Solo mac)
 - moficar para que el wn funcione a todas la frecuecias
 	* dejar que el numero de presentaciones sea multiplo de la frecuencia
@@ -55,4 +56,8 @@ OK - Actualizar la funcion para el manejo de los tiempos por protocolo, version 
 	- flicker
 	- masked
 - reducir el numero de frames en el caso de alta frecuencia para solid color protocol
+
+
+- Actualizat el tiempo total para el spacing x-y en la lista
+- poner el numero de repeticiones al imprimir la lista
 	

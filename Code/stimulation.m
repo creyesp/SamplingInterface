@@ -126,6 +126,8 @@ for kexp=length(data.experiments.file)-1:-1:1,
             dataExp.img.charge = zeros(1,dataExp.img.files);
             dataExp.img.repeated = 0;
             dataExp.maskStimulus.mask.spacing.xrepeated = 0;
+            dataExp.maskStimulus.mask.spacing.yrepeated = 0;
+           
             % Adjustment Bar variables
             if dataExp.sync.is && ~dataExp.sync.isdigital                     
                 dataExp.sync.analog.posLeft = (dataExp.sync.analog.posLeft-1)*wScreen/99.0;
@@ -186,7 +188,7 @@ end
 if digitalSync,
     try
         which setProjector
-        error = setProjector(handles.sync.digital.frequency);
+        error = setProjector(data.sync.digital.frequency);
     catch exceptions
         display(['Error communicating with the projector: setting projector. ' exceptions.message]); Stack  = dbstack; Stack.line
         Screen('Close')
@@ -1284,21 +1286,21 @@ while(kexp<length(data.experiments.file)),
             if settingMaskMode == true,
                 %%% INITIAL PARAMETERS MASK %%%%
                 vbl = GetSecs;
-                angle = 0;
+                angle = experiment(kexp).maskStimulus.mask.hole.angle;
                 degreePerFrame = 5;
                 intensity = 1;
                 intensityStep = 0.1;
                 stepSize = 1;
-                width = 50;
-                height = 60;
-                shiftX = 0;
-                shiftY = 0;
+                width = experiment(kexp).maskStimulus.mask.hole.width;
+                height = experiment(kexp).maskStimulus.mask.hole.height;
+                shiftX = experiment(kexp).maskStimulus.mask.hole.xcenter;
+                shiftY = experiment(kexp).maskStimulus.mask.hole.ycenter;
                 s1 = experiment(kexp).maskStimulus.mask.width;
                 s2 = experiment(kexp).maskStimulus.mask.height;
                 timeReadkey = 0;
                 nloop = 0;
                 delta = 2; % min pixel inside mask image 
-                maskShape = 'oval';
+                maskShape = experiment(kexp).maskStimulus.mask.hole.shape;
                 npresentedflicker = 0;
                 nflickerImg = 1;
               
@@ -1312,7 +1314,6 @@ while(kexp<length(data.experiments.file)),
                 [x, y] = meshgrid(-s1/2:1:s1/2-1, -s2/2:1:s2/2-1);
                 ss = max([s1 s2]);
                 factor = 2;
-                imgMask =  uint8(ones(s2, s1)*255);
                 rotMask = deg2rad(angle);
                 % oval shape
                 if strcmp(maskShape,'oval')
@@ -1337,6 +1338,9 @@ while(kexp<length(data.experiments.file)),
                         imgMask = mask;
                     end
                     mask = imgMask(round((ss*2-s2)/2)+1:round((ss*2+s2)/2), round((ss*2-s1)/2)+1:round((ss*2+s1)/2));
+                end
+                if experiment(kexp).maskStimulus.mask.inverse
+                   mask = (~mask)*255; 
                 end
             end
             
@@ -1451,7 +1455,7 @@ while(kexp<length(data.experiments.file)),
                     
                     % Get mask
                     [x, y] = meshgrid(-s1/2:1:s1/2-1, -s2/2:1:s2/2-1);
-                    imgMask =  uint8(ones(s2, s1)*255);
+                    
                     rotMask = deg2rad(angle);
                     % oval shape
                     if strcmp(maskShape,'oval')
@@ -1476,6 +1480,9 @@ while(kexp<length(data.experiments.file)),
                             imgMask = mask;
                         end
                         mask = imgMask(round((ss*2-s2)/2)+1:round((ss*2+s2)/2), round((ss*2-s1)/2)+1:round((ss*2+s1)/2));
+                    end                    
+                    if experiment(kexp).maskStimulus.mask.inverse
+                       mask = (~mask)*255; 
                     end                    
                 end
                 
@@ -1563,7 +1570,7 @@ while(kexp<length(data.experiments.file)),
                     vbl = Screen('Flip', win, vbl + ...
                         (nRefreshImg - 0.5) * refresh);
                 end
-                
+
                 if keyCode(escapeKey)
                     settingMaskMode = false;
                     if experiment(kexp).protocol.useImages,
@@ -1571,6 +1578,9 @@ while(kexp<length(data.experiments.file)),
                            Screen('Close',experiment(kexp).img.charge(kimg));
                         end
                     end
+                    shiftX = originalShiftX - experiment(kexp).maskStimulus.mask.spacing.xposition(1,1);
+                    shiftY = originalShiftY + experiment(kexp).maskStimulus.mask.spacing.yposition(1,1);                    
+                    experiment(kexp).maskStimulus.mask.spacing.xrepeated = experiment(kexp).maskStimulus.mask.spacing.xrepeated + 1;
                     continue;
                 end
             end
@@ -1583,6 +1593,13 @@ while(kexp<length(data.experiments.file)),
                 kexp = kexp + 1;
                 continue;
             end
+            
+            experiment(kexp).maskStimulus.mask.hole.width = width;
+            experiment(kexp).maskStimulus.mask.hole.height = height;
+            experiment(kexp).maskStimulus.mask.hole.angle = angle;
+            experiment(kexp).maskStimulus.mask.hole.xcenter = originalShiftX;
+            experiment(kexp).maskStimulus.mask.hole.ycenter = originalShiftY;
+            experiment(kexp).maskStimulus.mask.hole.shape = maskShape; 
 
             % counter for signal sync 
             b = 0; 
@@ -1656,7 +1673,7 @@ while(kexp<length(data.experiments.file)),
                     if isempty(tmpMap)
                         if useDigitalProjector,
                         tmp = uint8(tmp*intensity);
-                        tmp = compressImg(tmp,experiment(kexp).sync.digital.frequency);;
+                        tmp = compressImg(tmp,experiment(kexp).sync.digital.frequency);
                         end                    
                         MSflickerBackground = Screen('MakeTexture', win,tmp);
                         clear tmp;
@@ -1673,7 +1690,6 @@ while(kexp<length(data.experiments.file)),
             s2 = experiment(kexp).maskStimulus.mask.height;
             
             [x, y] = meshgrid(-s1/2:1:s1/2-1, -s2/2:1:s2/2-1);
-            imgMask =  uint8(ones(s2, s1)*255);
             rotMask = deg2rad(angle);
             if strcmp(maskShape,'oval')% oval shape
                 x = x + shiftX;
@@ -1698,7 +1714,9 @@ while(kexp<length(data.experiments.file)),
                 end
                 mask = imgMask(round((ss*2-s2)/2)+1:round((ss*2+s2)/2), round((ss*2-s1)/2)+1:round((ss*2+s1)/2));
             end
-            
+            if experiment(kexp).maskStimulus.mask.inverse
+                mask = (~mask)*255; 
+            end            
             
 
             % Draw background and sync bar before stimulus
@@ -2385,17 +2403,25 @@ while(kexp<length(data.experiments.file)),
                     kexp = kexp - 2;
                 end
 %             end
-%             if strcmp(experiment(kexp).maskStimulus.protocol.type,'Mask stimulus'),
+
             if experiment(kexp).maskStimulus.repeatBackground,
                 if kexp>1 && strcmp(experiment(kexp-1).mode,'Presentation') && experiment(kexp).img.repeated == experiment(kexp).maskStimulus.repetitions,
                     if experiment(kexp).maskStimulus.mask.spacing.xrep > 0,
                         if experiment(kexp).maskStimulus.mask.spacing.xrepeated < experiment(kexp).maskStimulus.mask.spacing.xrep,
                             experiment(kexp).img.repeated = 0;
                             experiment(kexp).maskStimulus.mask.spacing.xrepeated = experiment(kexp).maskStimulus.mask.spacing.xrepeated + 1;
-                            shiftX = shiftX - experiment(kexp).maskStimulus.mask.spacing.x;
+                            shiftX = originalShiftX - experiment(kexp).maskStimulus.mask.spacing.xposition(experiment(kexp).maskStimulus.mask.spacing.yrepeated, experiment(kexp).maskStimulus.mask.spacing.xrepeated);
+                            shiftY = originalShiftY - experiment(kexp).maskStimulus.mask.spacing.yposition(experiment(kexp).maskStimulus.mask.spacing.yrepeated, experiment(kexp).maskStimulus.mask.spacing.xrepeated);
                             kexp = kexp - 2;
                         else
-                            shiftX = originalShiftX;
+                            if experiment(kexp).maskStimulus.mask.spacing.yrepeated < experiment(kexp).maskStimulus.mask.spacing.yrep,
+                                experiment(kexp).img.repeated = 0;
+                                experiment(kexp).maskStimulus.mask.spacing.yrepeated = experiment(kexp).maskStimulus.mask.spacing.yrepeated + 1;
+                                experiment(kexp).maskStimulus.mask.spacing.xrepeated = 0;
+                                shiftX = originalShiftX - experiment(kexp).maskStimulus.mask.spacing.xposition(experiment(kexp).maskStimulus.mask.spacing.yrepeated, experiment(kexp).maskStimulus.mask.spacing.xrepeated);
+                                shiftY = originalShiftY - experiment(kexp).maskStimulus.mask.spacing.yposition(experiment(kexp).maskStimulus.mask.spacing.yrepeated, experiment(kexp).maskStimulus.mask.spacing.xrepeated);
+                                kexp = kexp - 2;        
+                            end
                         end
                     end                    
                 
@@ -2405,10 +2431,18 @@ while(kexp<length(data.experiments.file)),
                     if experiment(kexp).maskStimulus.mask.spacing.xrepeated < experiment(kexp).maskStimulus.mask.spacing.xrep,
                         experiment(kexp).img.repeated = 0;
                         experiment(kexp).maskStimulus.mask.spacing.xrepeated = experiment(kexp).maskStimulus.mask.spacing.xrepeated + 1;
-                        shiftX = shiftX - experiment(kexp).maskStimulus.mask.spacing.x;
-                            kexp = kexp - 1;
+                        shiftX = originalShiftX - experiment(kexp).maskStimulus.mask.spacing.xposition(experiment(kexp).maskStimulus.mask.spacing.yrepeated+1, experiment(kexp).maskStimulus.mask.spacing.xrepeated+1);
+                        shiftY = originalShiftY + experiment(kexp).maskStimulus.mask.spacing.yposition(experiment(kexp).maskStimulus.mask.spacing.yrepeated+1, experiment(kexp).maskStimulus.mask.spacing.xrepeated+1);
+                        kexp = kexp - 1;                            
                     else
-                        shiftX = originalShiftX;
+                        if experiment(kexp).maskStimulus.mask.spacing.yrepeated < experiment(kexp).maskStimulus.mask.spacing.yrep,
+                            experiment(kexp).img.repeated = 0;
+                            experiment(kexp).maskStimulus.mask.spacing.yrepeated = experiment(kexp).maskStimulus.mask.spacing.yrepeated + 1;
+                            experiment(kexp).maskStimulus.mask.spacing.xrepeated = 0;
+                            shiftX = originalShiftX - experiment(kexp).maskStimulus.mask.spacing.xposition(experiment(kexp).maskStimulus.mask.spacing.yrepeated+1, experiment(kexp).maskStimulus.mask.spacing.xrepeated+1);
+                            shiftY = originalShiftY + experiment(kexp).maskStimulus.mask.spacing.yposition(experiment(kexp).maskStimulus.mask.spacing.yrepeated+1, experiment(kexp).maskStimulus.mask.spacing.xrepeated+1);
+                            kexp = kexp - 1;        
+                        end
                     end
                 end
             end
@@ -2464,14 +2498,6 @@ dirName = [pwd '/'];
 cd(initialFolder)
 
 if ~siFilesNotCharged && ~indexColorFrame && nonVisual
-    saveLogFile(data,Time,dirName);
-%     if useProjector && ~exist(fullfile(dirName,siFileName),'file'),
-%         copyfile('*.si',dirName);
-%         saveLogFile(data,Time,dirName);
-%         delete *.si
-%     else
-%         saveLogFile(data,Time,dirName);
-%     end    
     for kexp=1:lengthProtocols,
         if strcmp(experiment(kexp).mode,'White noise')
             s = experiment(kexp).whitenoise.seed;
@@ -2488,7 +2514,20 @@ if ~siFilesNotCharged && ~indexColorFrame && nonVisual
                 save([dirName 'Mask_img.mat'],'mask');
             end
         end
+        disp(experiment(kexp).maskStimulus.mask.spacing.xposition)
+        disp(experiment(kexp).maskStimulus.mask.spacing.yposition)
+        dat = experiment(kexp);
+        save([dirName '/Exp' sprintf('%03d',experiment(kexp).experiments.file(kexp+1)) '.si'],'-struct','dat');
     end
+    saveLogFile(data,Time,dirName);
+%     if useProjector && ~exist(fullfile(dirName,siFileName),'file'),
+%         copyfile('*.si',dirName);
+%         saveLogFile(data,Time,dirName);
+%         delete *.si
+%     else
+%         saveLogFile(data,Time,dirName);
+%     end    
+
 end
 
 if nonVisual
