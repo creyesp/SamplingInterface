@@ -8,30 +8,29 @@ function updateTime(hObject, eventdata, handles)
     if  handles.sync.is && handles.sync.isdigital && strcmp(handles.sync.digital.mode,'On every frames');
         switch handles.mode
             case 'Flicker'
-                flickerStimulusTime(handles,t)
+                flickerStimulusTime(hObject,handles,t)
             case 'Only stimulus (fps)'
-                DigitalonlyStimulusTime(handles,t)
+                DigitalonlyStimulusTime(hObject,handles,t)
             case 'White noise'
-                DigitalwnStimulusTime(handles,t)
+                DigitalwnStimulusTime(hObject,handles,t)
             case  'Mask stimulus'
-                DigitalMaskStimulusTime(handles,t)
+                DigitalMaskStimulusTime(hObject,handles,t)
         end
     else
         switch handles.mode
             case 'Flicker'
-                flickerStimulusTime(handles,t)
+                flickerStimulusTime(hObject,handles,t)
             case 'Only stimulus (fps)'
-                onlyStimulusTime(handles,t)
+                onlyStimulusTime(hObject,handles,t)
             case 'White noise'
-                wnStimulusTime(handles,t)
+                wnStimulusTime(hObject,handles,t)
             case  'Mask stimulus'
-                MaskStimulusTime(handles,t)
+                MaskStimulusTime(hObject,handles,t)
         end        
     end
-    guidata(hObject,handles);
 end
 
-function flickerStimulusTime(handles,beforetime)
+function flickerStimulusTime(hObject,handles,beforetime)
     axes(handles.flickerSignalGraph);
     periode = 1000.0/handles.flicker.fps;
     tau = 0:periode/100.0:periode;
@@ -54,10 +53,11 @@ function flickerStimulusTime(handles,beforetime)
 
     set(handles.flickerTime,'String',datestr(datenum(0,0,0,0,0,...
         handles.flicker.time),'HH:MM:SS.FFF'));
+    guidata(hObject,handles);
 end
 
 
-function onlyStimulusTime(handles,t)
+function onlyStimulusTime(hObject,handles,t)
     if ~get(handles.onlyStimulusRepWithBackground,'Value')
         handles.onlyStimulus.time = handles.img.files/handles.onlyStimulus.fps...
             * (handles.onlyStimulus.repetitions+1) + t;
@@ -66,9 +66,10 @@ function onlyStimulusTime(handles,t)
     end
     set(handles.onlyStimulusTime,'String',datestr(datenum(0,0,0,0,0,...
         handles.onlyStimulus.time),'HH:MM:SS.FFF'));
+    guidata(hObject,handles);
 end
 
-function DigitalonlyStimulusTime(handles,t)
+function DigitalonlyStimulusTime(hObject,handles,t)
     if ~get(handles.onlyStimulusRepWithBackground,'Value')
         handles.onlyStimulus.time = handles.img.files/handles.sync.digital.frequency...
             * (handles.onlyStimulus.repetitions+1) + t;
@@ -77,21 +78,24 @@ function DigitalonlyStimulusTime(handles,t)
     end
     set(handles.onlyStimulusTime,'String',datestr(datenum(0,0,0,0,0,...
         handles.onlyStimulus.time),'HH:MM:SS.FFF'));
+    guidata(hObject,handles);
 end
 
-function wnStimulusTime(handles, t)
+function wnStimulusTime(hObject,handles, t)
     handles.whitenoise.time = handles.whitenoise.frames/handles.whitenoise.fps + t;
     set(handles.whiteNoiseTime,'String',datestr(datenum(0,0,0,0,0,...
         handles.whitenoise.time),'HH:MM:SS.FFF'));
+    guidata(hObject,handles);
 end
 
-function DigitalwnStimulusTime(handles, t)
+function DigitalwnStimulusTime(hObject,handles, t)
     handles.whitenoise.time = handles.whitenoise.frames/handles.sync.digital.frequency + t;
     set(handles.whiteNoiseTime,'String',datestr(datenum(0,0,0,0,0,...
         handles.whitenoise.time),'HH:MM:SS.FFF'));
+    guidata(hObject,handles);
 end
 
-function DigitalMaskStimulusTime(handles,t)
+function DigitalMaskStimulusTime(hObject,handles,t)
     switch handles.maskStimulus.protocol.type,
         case 'Flicker',
             if ~get(handles.maskStimulusRepWithBackground,'Value')
@@ -140,9 +144,10 @@ function DigitalMaskStimulusTime(handles,t)
             set(handles.maskStimulusTime,'String',datestr(datenum(0,0,0,0,0,...
                 handles.maskStimulus.time),'HH:MM:SS.FFF')); 
     end         
+    guidata(hObject,handles);
 end
 
-function MaskStimulusTime(handles,t)
+function MaskStimulusTime(hObject,handles,t)
     switch handles.maskStimulus.protocol.type,
         case 'Flicker',
             if ~get(handles.maskStimulusRepWithBackground,'Value')
@@ -192,4 +197,5 @@ function MaskStimulusTime(handles,t)
             set(handles.maskStimulusTime,'String',datestr(datenum(0,0,0,0,0,...
                 handles.maskStimulus.time),'HH:MM:SS.FFF')); 
     end
+    guidata(hObject,handles);
 end
