@@ -7114,7 +7114,7 @@ if ~handles.modify
     return
 end
 
-[name,folder] = uigetfile('.mat','Select seed file','positionrandom.mat');
+[name,folder] = uigetfile('.mat','Select position file','positionrandom.mat');
 positionshift = load(fullfile(folder,name));
 if isstruct(positionshift) && isfield(positionshift,'x') && isfield(positionshift,'y') 
     handles.maskStimulus.mask.spacing.xposition = positionshift.xposition;

@@ -2432,6 +2432,10 @@ while(kexp<length(data.experiments.file)),
                     if experiment(kexp).maskStimulus.mask.spacing.xrepeated < experiment(kexp).maskStimulus.mask.spacing.xrep,
                         experiment(kexp).img.repeated = 0;
                         experiment(kexp).maskStimulus.mask.spacing.xrepeated = experiment(kexp).maskStimulus.mask.spacing.xrepeated + 1;
+                        disp(experiment(kexp).maskStimulus.mask.spacing.xrepeated)
+                        disp(experiment(kexp).maskStimulus.mask.spacing.yrepeated)
+                        disp(experiment(kexp).maskStimulus.mask.spacing.xposition)
+                        disp(experiment(kexp).maskStimulus.mask.spacing.yposition)
                         shiftX = originalShiftX - experiment(kexp).maskStimulus.mask.spacing.xposition(experiment(kexp).maskStimulus.mask.spacing.yrepeated+1, experiment(kexp).maskStimulus.mask.spacing.xrepeated+1);
                         shiftY = originalShiftY + experiment(kexp).maskStimulus.mask.spacing.yposition(experiment(kexp).maskStimulus.mask.spacing.yrepeated+1, experiment(kexp).maskStimulus.mask.spacing.xrepeated+1);
                         kexp = kexp - 1;                            
