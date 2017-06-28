@@ -3554,10 +3554,10 @@ switch handles.mode
 end
 
 
-if ismac,
+if IsOSX,
     [handles.img.deltaX,handles.img.deltaY] = moveImageMac(handles.img.deltaX,handles.img.deltaY,...
         handles.screens.selected,img);
-elseif isunix
+elseif IsLinux
     [handles.img.deltaX,handles.img.deltaY] = moveImageUnix(handles.img.deltaX,handles.img.deltaY,...
         handles.screens.selected,img);    
 else
@@ -6961,8 +6961,16 @@ else
         errordlg('Input do not must be a number less than 0', 'Error')
     else
         handles.maskStimulus.mask.spacing.x = spacing;
+        xrep = handles.maskStimulus.mask.spacing.xrep;
+        yrep = handles.maskStimulus.mask.spacing.yrep;
+        x = handles.maskStimulus.mask.spacing.x;
+        y = handles.maskStimulus.mask.spacing.y;
+        israndom = handles.maskStimulus.mask.spacing.israndom;
+        [handles.maskStimulus.mask.spacing.xposition , handles.maskStimulus.mask.spacing.yposition] = ...
+                    positionmask(xrep,yrep,x,y,israndom);
     end
 end
+disp(handles.maskStimulus.mask.spacing.xposition)
 guidata(hObject,handles);
 
 
@@ -6994,6 +7002,13 @@ else
         errordlg('Input do not must be a number less than 0', 'Error')
     else
         handles.maskStimulus.mask.spacing.xrep = spacinrep;
+        xrep = handles.maskStimulus.mask.spacing.xrep;
+        yrep = handles.maskStimulus.mask.spacing.yrep;
+        x = handles.maskStimulus.mask.spacing.x;
+        y = handles.maskStimulus.mask.spacing.y;
+        israndom = handles.maskStimulus.mask.spacing.israndom;
+        [handles.maskStimulus.mask.spacing.xposition , handles.maskStimulus.mask.spacing.yposition] = ...
+                    positionmask(xrep,yrep,x,y,israndom);        
     end
 end
 guidata(hObject,handles);
@@ -7027,6 +7042,13 @@ else
         errordlg('Input do not must be a number less than 0', 'Error')
     else
         handles.maskStimulus.mask.spacing.y = spacing;
+        xrep = handles.maskStimulus.mask.spacing.xrep;
+        yrep = handles.maskStimulus.mask.spacing.yrep;
+        x = handles.maskStimulus.mask.spacing.x;
+        y = handles.maskStimulus.mask.spacing.y;
+        israndom = handles.maskStimulus.mask.spacing.israndom;
+        [handles.maskStimulus.mask.spacing.xposition , handles.maskStimulus.mask.spacing.yposition] = ...
+                    positionmask(xrep,yrep,x,y,israndom);        
     end
 end
 guidata(hObject,handles);
@@ -7060,6 +7082,13 @@ else
         errordlg('Input do not must be a number less than 0', 'Error')
     else
         handles.maskStimulus.mask.spacing.yrep = rep;
+        xrep = handles.maskStimulus.mask.spacing.xrep;
+        yrep = handles.maskStimulus.mask.spacing.yrep;
+        x = handles.maskStimulus.mask.spacing.x;
+        y = handles.maskStimulus.mask.spacing.y;
+        israndom = handles.maskStimulus.mask.spacing.israndom;
+        [handles.maskStimulus.mask.spacing.xposition , handles.maskStimulus.mask.spacing.yposition] = ...
+                    positionmask(xrep,yrep,x,y,israndom);        
     end
 end
 guidata(hObject,handles);
@@ -7084,7 +7113,13 @@ if ~handles.modify
     return
 end
 handles.maskStimulus.mask.spacing.israndom = ~handles.maskStimulus.mask.spacing.israndom;
-disp(handles.maskStimulus.mask.spacing.israndom )
+xrep = handles.maskStimulus.mask.spacing.xrep;
+yrep = handles.maskStimulus.mask.spacing.yrep;
+x = handles.maskStimulus.mask.spacing.x;
+y = handles.maskStimulus.mask.spacing.y;
+israndom = handles.maskStimulus.mask.spacing.israndom;
+[handles.maskStimulus.mask.spacing.xposition , handles.maskStimulus.mask.spacing.yposition] = ...
+            positionmask(xrep,yrep,x,y,israndom);
 guidata(hObject,handles);
 
 

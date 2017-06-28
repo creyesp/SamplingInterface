@@ -6,17 +6,17 @@ function stimulation(compressData)
 addpath(genpath('lib'))
 
 Stack  = dbstack; Stack.line
-% if isunix,
-%     Screen('Preference', 'ConserveVRAM', 64);
-%     Screen('Preference', 'SkipSyncTests', 1);
-% %     Screen('Preference', 'SkipSyncTests', 0); 
-%     oldLevel = Screen('Preference', 'VisualDebugLevel', 1);
-% end
+if IsLinux,
+    Screen('Preference', 'ConserveVRAM', 64);
+    Screen('Preference', 'SkipSyncTests', 1);
+%     Screen('Preference', 'SkipSyncTests', 0); 
+    oldLevel = Screen('Preference', 'VisualDebugLevel', 1);
+end
 %CAMBAI EN LA VERSION FINAL!!!!!! linea 1261 tb
-% if ismac,
+if IsOSX,
 oldLevel = Screen('Preference', 'VisualDebugLevel', 0);
 oldSkip = Screen('Preference', 'SkipSyncTests',0);
-% end
+end
 
 % constant for digital synchronize
 % FPS_60HZ = 8;
@@ -1592,6 +1592,7 @@ while(kexp<length(data.experiments.file)),
             if ~presentationMaskMode,
                 presentationMaskMode = true;
                 kexp = kexp + 1;
+                overmask = zeros(size(mask),'uint8');
                 continue;
             end
             
@@ -1718,7 +1719,7 @@ while(kexp<length(data.experiments.file)),
             if experiment(kexp).maskStimulus.mask.inverse
                 mask = (~mask)*255; 
             end            
-            
+            overmask = overmask+ceil((mask)/255.0);
 
             % Draw background and sync bar before stimulus
             if experiment(kexp).beforeStimulus.is
@@ -2432,10 +2433,6 @@ while(kexp<length(data.experiments.file)),
                     if experiment(kexp).maskStimulus.mask.spacing.xrepeated < experiment(kexp).maskStimulus.mask.spacing.xrep,
                         experiment(kexp).img.repeated = 0;
                         experiment(kexp).maskStimulus.mask.spacing.xrepeated = experiment(kexp).maskStimulus.mask.spacing.xrepeated + 1;
-                        disp(experiment(kexp).maskStimulus.mask.spacing.xrepeated)
-                        disp(experiment(kexp).maskStimulus.mask.spacing.yrepeated)
-                        disp(experiment(kexp).maskStimulus.mask.spacing.xposition)
-                        disp(experiment(kexp).maskStimulus.mask.spacing.yposition)
                         shiftX = originalShiftX - experiment(kexp).maskStimulus.mask.spacing.xposition(experiment(kexp).maskStimulus.mask.spacing.yrepeated+1, experiment(kexp).maskStimulus.mask.spacing.xrepeated+1);
                         shiftY = originalShiftY + experiment(kexp).maskStimulus.mask.spacing.yposition(experiment(kexp).maskStimulus.mask.spacing.yrepeated+1, experiment(kexp).maskStimulus.mask.spacing.xrepeated+1);
                         kexp = kexp - 1;                            
@@ -2469,6 +2466,9 @@ end % end for(experiments)
 
 %% Finishing
 save('SI_Performance.mat','timeend');
+if false
+    save('overmask.mat','overmask');
+end
 
 if ~siFilesNotCharged && ~indexColorFrame 
     Screen('DrawText',win,'Process done',...
@@ -2482,10 +2482,10 @@ Priority(0);
 ShowCursor();
 data.finishedTime = round(clock);
 % Descomentar version final
-% if ismac,
+if IsOSX,
 Screen('Preference', 'SkipSyncTests',oldSkip);
 Screen('Preference', 'VisualDebugLevel', oldLevel);
-% end
+end
 if data.sync.isSerial, IOPort('CloseAll');end
 
 % Process aborted because there is a missing file
