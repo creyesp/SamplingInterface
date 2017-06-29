@@ -32,9 +32,9 @@ end
 
 function flickerStimulusTime(hObject,handles,beforetime)
     axes(handles.flickerSignalGraph);
-    periode = 1000.0/handles.flicker.fps;
+    periode = (handles.flicker.imgTime + handles.flicker.backgroundTime)/1000;
     tau = 0:periode/100.0:periode;
-    signal = tau < handles.flicker.dutyCicle*tau(end)/100.0; 
+    signal = tau < handles.flicker.dutyCicle*tau(end)/100; 
     area(tau,signal); hold on;
     plot(tau(round(handles.flicker.dutyCicle)+1),1,'ks','MarkerFaceColor',[0 1 0],'MarkerSize',3);
     if handles.flicker.dutyCicle>50
@@ -43,8 +43,6 @@ function flickerStimulusTime(hObject,handles,beforetime)
         text(tau(round(handles.flicker.dutyCicle)+1)+1,1.2,num2str(tau(round(handles.flicker.dutyCicle)+1)),'FontSize',10.0);
     end
     ylabel('Signal'),xlabel('Time [ms]'),xlim([0 tau(end)]),ylim([0 1.5]); hold off;
-    handles.flicker.imgTime = 1000.0/handles.flicker.fps*handles.flicker.dutyCicle;
-    handles.flicker.backgroundTime = 1000.0/handles.flicker.fps*(1-handles.flicker.dutyCicle);
     if ~get(handles.flickerRepWithBackground,'Value')
         handles.flicker.time = beforetime + (handles.flicker.imgTime+handles.flicker.backgroundTime)/1000.0*handles.img.files*(handles.flicker.repetitions+1);
     else

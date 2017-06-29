@@ -10,7 +10,7 @@ delete *.si;
 handles.mode = 'Flicker';
 
 % Set the parameters of <<<General options Panel>>
-handles.img.directory='...';
+handles.img.directory = '...';
 filelist = dir_to_Win_ls(dir(handles.img.directory));
 handles.list = char('',filelist(3:size(filelist,1),:));
 pos = searchFirstFile(handles.img.directory);

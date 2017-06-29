@@ -2469,7 +2469,6 @@ end % end for(experiments)
 %KbQueueRelease();
 
 %% Finishing
-save('SI_Performance.mat','timeend');
 if false
     save('overmask.mat','overmask');
 end

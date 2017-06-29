@@ -59,5 +59,12 @@ OK - correccion para condiciones de borde en el caso de la mascara cuadrada
 
 
 - Actualizat el tiempo total para el spacing x-y en la lista
-- poner el numero de repeticiones al imprimir la lista
-
+ok - poner el numero de repeticiones al imprimir la lista
+ok - mascara invertida
+ok - tiempos corregiuidos
+ok - restricciones al momento de agregar protocolos y no cumplir con los requisitos minimos (imagenes, protocols prev, n imagenes ok para digital sync) para el manejo de usuario
+ok - menu para el tipo de sycronizacion
+ok - unificacion de los SI para ambos proyectores en una sola version
+- joystick comprado pero no configurado 
+ok - pruebas de rendimiento para las altas frecuencias
+ok - mini programa para ajustar a posteriori la posicion de los protocolos 	

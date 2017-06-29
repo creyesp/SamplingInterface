@@ -1382,12 +1382,14 @@ else
         if get(handles.flickerFreqConf,'Value')
             handles.flicker.fps = fps;
             handles.flicker.dutyCicle = dc;
+            handles.flicker.imgTime = 1000*dc/fps;
+            handles.flicker.backgroundTime = 1000*(1-dc)/fps;
 %             handles.flicker.time = actualizeTemporalGraph(handles);
+            updateTime(hObject, eventdata, handles) 
         end
     end
 end
 % guidata(hObject,handles);
-updateTime(hObject, eventdata, handles) 
 % Hints: get(hObject,'String') returns contents of flickerFrequency as text
 %        str2double(get(hObject,'String')) returns contents of flickerFrequency as a double
 
@@ -1815,7 +1817,7 @@ function selectDirectory_Callback(hObject, eventdata, handles)
 if ~handles.modify
     return
 end
-in = uigetdir;
+in = uigetdir(handles.img.directory);
 if in~=0,
     pos = searchFirstFile(in);
     if pos,
@@ -2057,11 +2059,14 @@ if handles.img.files~=0 ...
                 if strcmp(inf.mode,'Presentation')
                     handles.time = handles.time + (inf.presentation.time/1000)*handles.flicker.repetitions +...
                         handles.flicker.time*(handles.flicker.repetitions+1);
+                else
+                    errordlg('You are trying to add an experiment with prev. background but you not added a previous background stimulus','Error');
+                    return
                 end
             else
                 errordlg('You are trying to add an experiment with prev. background but you not added a previous background stimulus','Error');
-                return            
-            end                                        
+                return
+            end             
          else
             handles.time = handles.time + handles.flicker.time;
          end
@@ -2075,11 +2080,14 @@ if handles.img.files~=0 ...
                 if strcmp(inf.mode,'Presentation')
                     handles.time = handles.time + (inf.presentation.time/1000)*handles.onlyStimulus.repetitions +...
                         handles.onlyStimulus.time*(handles.onlyStimulus.repetitions+1);
+                else
+                    errordlg('You are trying to add an experiment with prev. background but you not added a previous background stimulus','Error');
+                    return            
                 end
             else
                 errordlg('You are trying to add an experiment with prev. background but you not added a previous background stimulus','Error');
-                return            
-            end                    
+                return
+            end            
          else
             handles.time = handles.time + handles.onlyStimulus.time;
          end
@@ -2708,13 +2716,13 @@ if dc ~= 0 && dc ~= 100
     set(handles.flickerDcSlider, 'Value', dc);
     set(handles.flickerDc, 'String', dc);
 end
-if get(handles.flickerFreqConf,'Value'),
+if get(handles.flickerFreqConf,'Value')
     handles.flicker.fps = fps;
     handles.flicker.dutyCicle = dc;
-%     handles.flicker.time = actualizeTemporalGraph(handles);
+    handles.flicker.imgTime = 1000*dc/fps;
+    handles.flicker.backgroundTime = 1000*(1-dc)/fps;
+    updateTime(hObject, eventdata, handles) 
 end
-% guidata(hObject,handles);
-updateTime(hObject, eventdata, handles) 
 
 % --- Executes on button press in flickerPreviousFrequency.
 function flickerPreviousFrequency_Callback(hObject, eventdata, handles)
@@ -2748,13 +2756,13 @@ if dc ~= 0 && dc ~= 100
     set(handles.flickerDcSlider, 'Value', dc);
     set(handles.flickerDc, 'String', dc);
 end
-if get(handles.flickerFreqConf,'Value'),
+if get(handles.flickerFreqConf,'Value')
     handles.flicker.fps = fps;
     handles.flicker.dutyCicle = dc;
-%     handles.flicker.time = actualizeTemporalGraph(handles);
-end
-% guidata(hObject,handles);
-updateTime(hObject, eventdata, handles) 
+    handles.flicker.imgTime = 1000*dc/fps;
+    handles.flicker.backgroundTime = 1000*(1-dc)/fps;
+    updateTime(hObject, eventdata, handles) 
+end 
 
 
 % --- Executes on slider movement.
@@ -2776,12 +2784,13 @@ end
 dc = in;
 set(handles.flickerDc,'String',dc);
 set(hObject,'Value',dc);
-if get(handles.flickerFreqConf,'Value'),
+if get(handles.flickerFreqConf,'Value')
+    fps = handles.flicker.fps;
     handles.flicker.dutyCicle = dc;
-%     handles.flicker.time = actualizeTemporalGraph(handles);
-end
-% guidata(hObject,handles);
-updateTime(hObject, eventdata, handles) 
+    handles.flicker.imgTime = 1000*dc/fps;
+    handles.flicker.backgroundTime = 1000*(1-dc)/fps;
+    updateTime(hObject, eventdata, handles) 
+end 
 
 % --- Executes during object creation, after setting all properties.
 function flickerDcSlider_CreateFcn(hObject, eventdata, handles)
@@ -2821,20 +2830,17 @@ else
     handles.flicker.dutyCicle = in;
     set(hObject,'String',handles.flicker.dutyCicle);
     set(handles.flickerDcSlider,'Value',handles.flicker.dutyCicle);
-    axes(handles.flickerSignalGraph);
-    periode = 1000.0/handles.flicker.fps;
-    t = 0:periode/100.0:periode;
-    signal = t < handles.flicker.dutyCicle*t(end)/100.0; 
-    area(t,signal); hold on;
-    plot(t(round(handles.flicker.dutyCicle)+1),1,'ks','MarkerFaceColor',[0 1 0],'MarkerSize',3);
-    if handles.flicker.dutyCicle>50
-        text(t(round(handles.flicker.dutyCicle)+1)-1.85*periode/10.0,1.2,num2str(t(round(handles.flicker.dutyCicle)+1)),'FontSize',6.0);
-    else
-        text(t(round(handles.flicker.dutyCicle)+1)+1,1.2,num2str(t(round(handles.flicker.dutyCicle)+1)),'FontSize',6.0);
-    end
-    ylabel('Signal'),xlabel('Time [ms]'),xlim([0 t(end)]),ylim([0 1.5]); hold off;
+    if get(handles.flickerFreqConf,'Value')
+        fps = handles.flicker.fps;
+        dc = handles.flicker.dutyCicle;
+        handles.flicker.imgTime = 1000*dc/fps;
+        handles.flicker.backgroundTime = 1000*(1-dc)/fps;
+%             handles.flicker.time = actualizeTemporalGraph(handles);
+        updateTime(hObject, eventdata, handles) 
+    end    
+
 end
-guidata(hObject,handles);
+
 
 % --- Executes during object creation, after setting all properties.
 function flickerDc_CreateFcn(hObject, eventdata, handles)
@@ -3260,14 +3266,18 @@ if (get(hObject,'Value')==0)
     set(hObject,'Value',1.0);
 else
     set(handles.flickerFreqConf,'value',0);
-    handles.flicker.fps = 1000/(handles.flicker.imgTime + handles.flicker.backgroundTime);
-    handles.flicker.dutyCicle = 100 * handles.flicker.fps * handles.flicker.imgTime/1000;
-%     handles.flicker.time = actualizeTemporalGraph(handles);
+    imgtime = str2double(get(handles.flickerImgTime,'String'));
+    bkgtime = str2double(get(handles.flickerBackgroundTime,'String'));
+    disp([imgtime, bkgtime])
+    disp([get(handles.flickerImgTime,'String') get(handles.flickerBackgroundTime,'String')])
+    handles.flicker.fps = 1000/(imgtime + bkgtime);
+    handles.flicker.dutyCicle = 100*imgtime/(imgtime + bkgtime);
+    handles.flicker.imgTime = imgtime;
+    handles.flicker.backgroundTime = bkgtime;
     handles.flicker.confFrecuencyused = false;
+    
+    updateTime(hObject, eventdata, handles)     
 end
-% guidata(hObject,handles);
-updateTime(hObject, eventdata, handles) 
-% Hint: get(hObject,'Value') returns toggle state of flickerTimeConf
 
 
 
@@ -3282,9 +3292,10 @@ in = str2double(get(hObject,'String'));
 if isnan(in)
   set(hObject,'String',handles.flicker.imgTime);
   errordlg('Input must be a number and non negative', 'Error')
-else if in<0,
-  set(hObject,'String',handles.flicker.imgTime);
-  errordlg('Input must be a number and non negative', 'Error')
+else
+    if in<0,
+        set(hObject,'String',handles.flicker.imgTime);
+        errordlg('Input must be a number and non negative', 'Error')
     else
         if str2double(get(handles.flickerBackgroundTime,'String'))==0 && in == 0,
             errordlg('Both, background time and image time can''t be equal to zero simultaneously','Error');
@@ -3293,7 +3304,7 @@ else if in<0,
         end
         in = round(in/(1000*handles.screens.refreshRate));
         if in == 0 && (handles.flicker.backgroundTime ~= 0 || in ~= 1)
-        set(handles.flickerPreviousImgTime,'String',0);
+            set(handles.flickerPreviousImgTime,'String',0);
         else
             set(handles.flickerPreviousImgTime,'String',1000*(in-1)*handles.screens.refreshRate);
         end
@@ -3302,16 +3313,14 @@ else if in<0,
         handles.flicker.imgTime = 1000*in;
         set(hObject,'String',handles.flicker.imgTime);
         if get(handles.flickerTimeConf,'Value'),
-            handles.flicker.fps = 1 / (in + str2double(get(handles.flickerBackgroundTime,'String'))/1000);
-            handles.flicker.dutyCicle = 100 * handles.flicker.fps * in;
-%             handles.flicker.time = actualizeTemporalGraph(handles);            
+            handles.flicker.fps = 1000 / (handles.flicker.imgTime + handles.flicker.backgroundTime);
+            handles.flicker.dutyCicle = 100 * handles.flicker.imgTime / (handles.flicker.imgTime + handles.flicker.backgroundTime);
+            updateTime(hObject, eventdata, handles) 
         end
     end
 end
-% guidata(hObject,handles);
-updateTime(hObject, eventdata, handles) 
-% Hints: get(hObject,'String') returns contents of flickerImgTime as text
-%        str2double(get(hObject,'String')) returns contents of flickerImgTime as a double
+
+
 
 
 % --- Executes during object creation, after setting all properties.
@@ -3339,9 +3348,10 @@ in = str2double(get(hObject,'String'));
 if isnan(in)
   set(hObject,'String',handles.flicker.fps);
   errordlg('Input must be a number and non negative', 'Error')
-else if in<0,
-  set(hObject,'String',handles.flicker.fps);
-  errordlg('Input must be a number and non negative', 'Error')
+else
+    if in<0,
+        set(hObject,'String',handles.flicker.fps);
+        errordlg('Input must be a number and non negative', 'Error')
     else
         if str2double(get(handles.flickerImgTime,'String'))==0 && in == 0,
             errordlg('Both, background time and image time can''t be equal to zero simultaneously','Error');
@@ -3359,19 +3369,14 @@ else if in<0,
         handles.flicker.backgroundTime = 1000*in;
         set(hObject,'String',handles.flicker.backgroundTime);
         if get(handles.flickerTimeConf,'Value'),
-            handles.flicker.fps = 1 / (in + str2double(get(handles.flickerImgTime,'String'))/1000);
-            handles.flicker.dutyCicle = 100 * (1 - handles.flicker.fps * in);
-%             handles.flicker.time = actualizeTemporalGraph(handles);
+            handles.flicker.fps = 1000 / (handles.flicker.imgTime + handles.flicker.backgroundTime);
+            
+            handles.flicker.dutyCicle = 100 * handles.flicker.backgroundTime / (handles.flicker.imgTime + handles.flicker.backgroundTime);
+            updateTime(hObject, eventdata, handles) 
         end
     end
 end
-% guidata(hObject,handles);
-updateTime(hObject, eventdata, handles) 
-% Hints: get(hObject,'String') returns contents of flickerBackgroundTime as text
-%        str2double(get(hObject,'String')) returns contents of flickerBackgroundTime as a double
 
-
-% --- Executes during object creation, after setting all properties.
 function flickerBackgroundTime_CreateFcn(hObject, eventdata, handles)
 % hObject    handle to flickerBackgroundTime (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -3398,11 +3403,12 @@ else
     set(handles.flickerTimeConf,'value',0);
     handles.flicker.fps = str2double(get(handles.flickerFrequency,'String'));
     handles.flicker.dutyCicle = str2double(get(handles.flickerDc,'String'));
-%     handles.flicker.time = actualizeTemporalGraph(handles);
+    handles.flicker.imgTime = 1000*handles.flicker.dutyCicle/handles.flicker.fps;
+    handles.flicker.backgroundTime = 1000*(1-handles.flicker.dutyCicle)/handles.flicker.fps;
     handles.flicker.confFrecuencyused = true;
+    updateTime(hObject, eventdata, handles) 
 end
 % guidata(hObject,handles);
-updateTime(hObject, eventdata, handles) 
 % Hint: get(hObject,'Value') returns toggle state of flickerFreqConf
 
 function actualizeTemporalGraph(handles)
@@ -3440,9 +3446,9 @@ set(handles.flickerNextImgTime,'String',rr*(round(handles.flicker.imgTime/rr)+1)
 set(handles.flickerImgTime,'String',handles.flicker.imgTime);
 if(get(handles.flickerTimeConf,'Value'))
     handles.flicker.fps = 1000 / (handles.flicker.imgTime + handles.flicker.backgroundTime);
-    handles.flicker.dutyCicle = 100 * handles.flicker.fps * handles.flicker.imgTime/1000;
+    handles.flicker.dutyCicle = 100 * handles.flicker.imgTime / (handles.flicker.imgTime + handles.flicker.backgroundTime);
+    updateTime(hObject, eventdata, handles)
 end
-updateTime(hObject, eventdata, handles)
 
 
 % --- Executes on button press in flickerNextImgTime.
@@ -3461,11 +3467,10 @@ set(handles.flickerNextImgTime,'String',rr*(round(handles.flicker.imgTime/rr)+1)
 set(handles.flickerImgTime,'String',handles.flicker.imgTime);
 if(get(handles.flickerTimeConf,'Value'))
     handles.flicker.fps = 1000 / (handles.flicker.imgTime + handles.flicker.backgroundTime);
-    handles.flicker.dutyCicle = 100 * handles.flicker.fps * handles.flicker.imgTime/1000;
-%     handles.flicker.time = actualizeTemporalGraph(handles);
+    handles.flicker.dutyCicle = 100 * handles.flicker.imgTime / (handles.flicker.imgTime + handles.flicker.backgroundTime);
+    updateTime(hObject, eventdata, handles) 
 end
-% guidata(hObject,handles);
-updateTime(hObject, eventdata, handles) 
+
 
 % --- Executes on button press in flickerPreviousBgndTime.
 function flickerPreviousBgndTime_Callback(hObject, eventdata, handles)
@@ -3486,11 +3491,10 @@ set(handles.flickerNextBgndTime,'String',rr*(round(handles.flicker.backgroundTim
 set(handles.flickerBackgroundTime,'String',handles.flicker.backgroundTime);
 if(get(handles.flickerTimeConf,'Value'))
     handles.flicker.fps = 1000 / (handles.flicker.imgTime + handles.flicker.backgroundTime);
-    handles.flicker.dutyCicle = 100 * handles.flicker.fps * handles.flicker.imgTime/1000;
-%     handles.flicker.time = actualizeTemporalGraph(handles);
+    handles.flicker.dutyCicle = 100 *handles.flicker.backgroundTime / (handles.flicker.imgTime + handles.flicker.backgroundTime);
+    updateTime(hObject, eventdata, handles) 
 end
-% guidata(hObject,handles);
-updateTime(hObject, eventdata, handles) 
+
 
 
 % --- Executes on button press in flickerNextBgndTime.
@@ -3509,11 +3513,9 @@ set(handles.flickerNextBgndTime,'String',rr*(round(handles.flicker.backgroundTim
 set(handles.flickerBackgroundTime,'String',handles.flicker.backgroundTime);
 if(get(handles.flickerTimeConf,'Value'))
     handles.flicker.fps = 1000 / (handles.flicker.imgTime + handles.flicker.backgroundTime);
-    handles.flicker.dutyCicle = 100 * handles.flicker.fps * handles.flicker.imgTime/1000;
-%     handles.flicker.time = actualizeTemporalGraph(handles);
+    handles.flicker.dutyCicle = 100 * handles.flicker.backgroundTime / (handles.flicker.imgTime + handles.flicker.backgroundTime);
+    updateTime(hObject, eventdata, handles) 
 end
-% guidata(hObject,handles);
-updateTime(hObject, eventdata, handles) 
 
 
 % --- Executes on button press in imgSetPos.
@@ -5612,7 +5614,7 @@ else
         in = in * handles.screens.refreshRate;
         handles.maskStimulus.protocol.flicker.imgTime = 1000*in;
         handles.maskStimulus.protocol.flicker.periodo = handles.maskStimulus.protocol.flicker.imgTime + handles.maskStimulus.protocol.flicker.backgroundTime;
-        handles.maskStimulus.protocol.flicker.dutyCycle = handles.maskStimulus.protocol.flicker.imgTime/handles.maskStimulus.protocol.flicker.periodo;       
+        handles.maskStimulus.protocol.flicker.dutyCycle = 100*handles.maskStimulus.protocol.flicker.imgTime/handles.maskStimulus.protocol.flicker.periodo;       
 
         set(hObject,'String',handles.maskStimulus.protocol.flicker.imgTime);
     end
@@ -5667,7 +5669,7 @@ else
         handles.maskStimulus.protocol.flicker.backgroundTime = 1000*in;
         set(hObject,'String',handles.maskStimulus.protocol.flicker.backgroundTime);
         handles.maskStimulus.protocol.flicker.periodo = handles.maskStimulus.protocol.flicker.imgTime + handles.maskStimulus.protocol.flicker.backgroundTime;
-        handles.maskStimulus.protocol.flicker.dutyCycle = handles.maskStimulus.protocol.flicker.imgTime./handles.maskStimulus.protocol.flicker.periodo;
+        handles.maskStimulus.protocol.flicker.dutyCycle = 100*handles.maskStimulus.protocol.flicker.imgTime./handles.maskStimulus.protocol.flicker.periodo;
 
       
     end
@@ -5708,7 +5710,7 @@ set(handles.maskStimulusFlickerNextImgTime,'String',rr*(round(handles.maskStimul
 set(handles.maskStimulusImgtimeFlicker,'String',handles.maskStimulus.protocol.flicker.imgTime);
 
 handles.maskStimulus.protocol.flicker.periodo = handles.maskStimulus.protocol.flicker.imgTime + handles.maskStimulus.protocol.flicker.backgroundTime;
-handles.maskStimulus.protocol.flicker.dutyCycle = handles.maskStimulus.protocol.flicker.imgTime/handles.maskStimulus.protocol.flicker.periodo;
+handles.maskStimulus.protocol.flicker.dutyCycle = 100*handles.maskStimulus.protocol.flicker.imgTime/handles.maskStimulus.protocol.flicker.periodo;
 
 updateTime(hObject, eventdata, handles);
 
@@ -5728,7 +5730,7 @@ set(handles.maskStimulusFlickerPreviousImgTime,'String',rr*(round(handles.maskSt
 set(handles.maskStimulusFlickerNextImgTime,'String',rr*(round(handles.maskStimulus.protocol.flicker.imgTime/rr)+1));
 set(handles.maskStimulusImgtimeFlicker,'String',handles.maskStimulus.protocol.flicker.imgTime);
 handles.maskStimulus.protocol.flicker.periodo = handles.maskStimulus.protocol.flicker.imgTime + handles.maskStimulus.protocol.flicker.backgroundTime;
-handles.maskStimulus.protocol.flicker.dutyCycle = handles.maskStimulus.protocol.flicker.imgTime/handles.maskStimulus.protocol.flicker.periodo;
+handles.maskStimulus.protocol.flicker.dutyCycle = 100*handles.maskStimulus.protocol.flicker.imgTime/handles.maskStimulus.protocol.flicker.periodo;
 updateTime(hObject, eventdata, handles);
 
 
@@ -5750,7 +5752,7 @@ end
 set(handles.maskStimulusFlickerNextBgTime,'String',rr*(round(handles.maskStimulus.protocol.flicker.backgroundTime/rr)+1));
 set(handles.maskStimulusBackgroundtimeFlicker,'String',handles.maskStimulus.protocol.flicker.backgroundTime);
 handles.maskStimulus.protocol.flicker.periodo = handles.maskStimulus.protocol.flicker.imgTime + handles.maskStimulus.protocol.flicker.backgroundTime;
-handles.maskStimulus.protocol.flicker.dutyCycle = handles.maskStimulus.protocol.flicker.imgTime/handles.maskStimulus.protocol.flicker.periodo;
+handles.maskStimulus.protocol.flicker.dutyCycle = 100*handles.maskStimulus.protocol.flicker.imgTime/handles.maskStimulus.protocol.flicker.periodo;
 updateTime(hObject, eventdata, handles);
 
 
@@ -5769,7 +5771,7 @@ set(handles.maskStimulusFlickerPreviousBgTime,'String',rr*(round(handles.maskSti
 set(handles.maskStimulusFlickerNextBgTime,'String',rr*(round(handles.maskStimulus.protocol.flicker.backgroundTime/rr)+1));
 set(handles.maskStimulusBackgroundtimeFlicker,'String',handles.maskStimulus.protocol.flicker.backgroundTime);
 handles.maskStimulus.protocol.flicker.periodo = handles.maskStimulus.protocol.flicker.imgTime + handles.maskStimulus.protocol.flicker.backgroundTime;
-handles.maskStimulus.protocol.flicker.dutyCycle = handles.maskStimulus.protocol.flicker.imgTime/handles.maskStimulus.protocol.flicker.periodo;
+handles.maskStimulus.protocol.flicker.dutyCycle = 100*handles.maskStimulus.protocol.flicker.imgTime/handles.maskStimulus.protocol.flicker.periodo;
 updateTime(hObject, eventdata, handles);
 
 
@@ -6097,7 +6099,7 @@ function maskStimulusImgMaskSelect_Callback(hObject, eventdata, handles)
 if ~handles.modify
     return
 end
-in = uigetdir;
+in = uigetdir(handles.maskStimulus.mask.img.directory);
 if in~=0,
     pos = searchFirstFile(in);
     if pos,
