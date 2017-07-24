@@ -22,7 +22,7 @@ function varargout = GUI_updatePosition(varargin)
 
 % Edit the above text to modify the response to help GUI_updatePosition
 
-% Last Modified by GUIDE v2.5 28-Jun-2017 15:40:21
+% Last Modified by GUIDE v2.5 24-Jul-2017 09:18:32
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -56,6 +56,8 @@ handles.infile.folder = '';
 handles.infile.name = '';
 handles.ofile.folder = '';
 handles.ofile.name = '';
+handles.ndx = '';
+handles.ndy = '';
 % Choose default command line outfile for GUI_updatePosition
 handles.outfile = hObject;
 
@@ -87,7 +89,7 @@ function originalpath_Callback(hObject, eventdata, handles)
 %        str2double(get(hObject,'String')) returns contents of originalpath as a double
 filename = get(hObject,'String');
 if exist(filename,'file')
-    [pathstr,name,ext] = fileparts(filename) 
+    [pathstr,name,ext] = fileparts(filename); 
     handles.infile.name = [name,ext];
     handles.infile.folder = pathstr;
     set(handles.originalpath,'String',fullfile(pathstr,[name,ext]));
@@ -171,5 +173,61 @@ addpath('../lib/')
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 infileFile = fullfile(handles.infile.folder,handles.infile.name);
+% outfileFile = fullfile(handles.ofile.folder,handles.ofile.name);
+% updatePosition(infileFile,outfileFile)
+mkdir tmp2
+delete ./tmp2/*.si
+system(['unzip ' strrep(infileFile,' ','\ ') ' -d ./tmp2']);
+fileName = '/tmp2/Final Configuration.si';
+if exist(fullfile(pwd,fileName),'file')
+    data = getInformation(fullfile(pwd,fileName));
+    img = ones(data.protocol.height,data.protocol.width)*255;
+	% imageInfo = imfinfo(fullfile(data.img.directory,data.list(end,:)));
+	% w = imageInfo.Width;
+	% h = imageInfo.Height;
+	% img = ones(h,w)*255;
+
+    [ndx,ndy] = moveImageUnix(data.img.deltaX,data.img.deltaY,data.screens.selected,img);
+    disp(['PROTOCOLS centered to x:',num2str(ndx),' px y: ',num2str(ndy), 'px.'])
+    handles.ndx = ndx;
+    handles.ndy = ndy;
+else
+    disp('ERROR: Can''t open configuration file "Final Configuration.si" of the screen data zip');
+end	
+rmdir('tmp2','s');
+guidata(hObject,handles)
+
+
+
+
+% --- Executes on button press in savebutton.
+function savebutton_Callback(hObject, eventdata, handles)
+infileFile = fullfile(handles.infile.folder,handles.infile.name);
 outfileFile = fullfile(handles.ofile.folder,handles.ofile.name);
-updatePosition(infileFile,outfileFile)
+mkdir tmp2
+delete ./tmp2/*.si
+system(['unzip ' strrep(infileFile,' ','\ ') ' -d ./tmp2']);
+fileName = '/tmp2/Final Configuration.si';
+if exist(fullfile(pwd,fileName),'file')
+    data = getInformation(fullfile(pwd,fileName));
+    for i=length(data.experiments.file)-1:-1:1,
+        fileName2 = ['./tmp2/Exp' sprintf('%03d',data.experiments.file(i+1)) '.si'];
+        if exist(fullfile(pwd,fileName2),'file'),
+            experiment = getInformation(fullfile(pwd,fileName2));
+            disp([experiment.img.deltaY experiment.img.deltaX handles.ndy handles.ndx])
+            experiment.img.deltaY = handles.ndy;
+            experiment.img.deltaX = handles.ndx;
+            disp([experiment.img.deltaY experiment.img.deltaX handles.ndy handles.ndx])
+            save(['./tmp2/Exp' sprintf('%03d',data.experiments.file(i+1)) '.si'],'-struct','experiment');
+        end
+    end
+    data.img.deltaY = handles.ndy;
+    data.img.deltaX = handles.ndx;
+    save('./tmp2/Final Configuration.si','-struct','data');
+
+    zip(outfileFile,'*.si','./tmp2/');
+    rmdir('tmp2','s');
+    disp('New protocol was create')
+else
+    disp('ERROR: Can''t open configuration file "Final Configuration.si" of the screen data zip');
+end	 
