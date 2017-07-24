@@ -1,0 +1,2 @@
+ptb3-matlab -nodesktop -nosplash -r 'cd /home/xx/xx/; GUI_updatePosition'
+/Applications/MATLAB_R2012b.app/bin/matlab -nodesktop -nosplash -r 'cd /home/xx/xx/code/; GUI_updatePosition'

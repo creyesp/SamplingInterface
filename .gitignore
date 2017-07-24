@@ -2,8 +2,8 @@
 adding
 Log/
 Code/protocols/*.zip
-extra/Protocol_Builder/*.png
 *~
+extra/Protocol_Builder/*.png
 # OS generated files #
 ######################
 .DS_Store
@@ -15,3 +15,14 @@ ehthumbs.db
 Thumbs.db
 
 Code/protocols/
+
+Code/SI_Performance\.mat
+
+Code/Default Configuration\.dsi
+
+*.si
+Code/SI_Performance.mat
+Code/positionrandom.mat
+
+
+Code/overmask\.mat

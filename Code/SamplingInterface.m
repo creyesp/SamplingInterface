@@ -22,7 +22,7 @@ function varargout = SamplingInterface(varargin)
 
 % Edit the above text to modify the response to help SamplingInterface
 
-% Last Modified by GUIDE v2.5 03-May-2017 11:33:13
+% Last Modified by GUIDE v2.5 07-Jun-2017 17:10:02
 
 % Begin initialization code - DO NOT EDIT
 addpath('lib');
@@ -99,24 +99,11 @@ else
         end
         set(handles.onlyStimulusPreviousFps,'String',1.0/((in+1)*handles.screens.refreshRate));
         set(handles.onlyStimulusFps,'String',handles.onlyStimulus.fps);
-        
-        if handles.beforeStimulus.is
-            t = handles.beforeStimulus.time/1000.0;
-        else
-            t = 0;
-        end
-        
-        if ~get(handles.onlyStimulusRepWithBackground,'Value')
-            handles.onlyStimulus.time = handles.img.files/handles.onlyStimulus.fps...
-                * (handles.onlyStimulus.repetitions+1) + t;
-        else
-            handles.onlyStimulus.time = handles.img.files/handles.onlyStimulus.fps + t;
-        end
-            set(handles.onlyStimulusTime,'String',datestr(datenum(0,0,0,0,0,...
-                handles.onlyStimulus.time),'HH:MM:SS.FFF'));
+
     end
 end
-guidata(hObject,handles);
+updateTime(hObject, eventdata, handles)
+% guidata(hObject,handles);
 % Hints: get(hObject,'String') returns contents of onlyStimulusFps as text
 %        str2double(get(hObject,'String')) returns contents of onlyStimulusFps as a double
 
@@ -169,10 +156,8 @@ else
     set(handles.whiteNoiseMenu,'visible','off');
     set(handles.maskStimulusMenu,'visible','on');
 end
-updateTimeMaskStimulus(hObject, eventdata, handles);
-% guidata(hObject,handles);
-% Hints: contents = cellstr(get(hObject,'String')) returns samplingFormat contents as cell array
-%        contents{get(hObject,'Value')} returns selected item from samplingFormat
+updateTime(hObject, eventdata, handles);
+
 
 
 % --- Executes during object creation, after setting all properties.
@@ -214,9 +199,6 @@ end
 if handles.beforeStimulus.is,
     handles.beforeStimulus.graph = zeros(100,100,3);
     handles.beforeStimulus.is = false;
-    handles.onlyStimulus.time = handles.onlyStimulus.time - handles.beforeStimulus.time/1000.0;
-    handles.maskStimulus.time = handles.maskStimulus.time - handles.beforeStimulus.time/1000.0;
-    handles.flicker.time = handles.flicker.time - handles.beforeStimulus.time/1000.0;
 else
     handles.beforeStimulus.is = true;
     handles.beforeStimulus.graph(:,:,1) = handles.beforeStimulus.background.r;
@@ -239,22 +221,10 @@ else
             floor(handles.beforeStimulus.bar.posRight),3) = ...
                 handles.beforeStimulus.bar.b ;
     end
-    handles.onlyStimulus.time = handles.onlyStimulus.time + handles.beforeStimulus.time/1000.0;
-    handles.maskStimulus.time = handles.maskStimulus.time + handles.beforeStimulus.time/1000.0;
-    handles.flicker.time = handles.flicker.time + handles.beforeStimulus.time/1000.0;
-    handles.whitenoise.time = handles.whitenoise.time + handles.beforeStimulus.time/1000.0;
 end
-set(handles.onlyStimulusTime,'String',datestr(datenum(0,0,0,0,0,handles.onlyStimulus.time),'HH:MM:SS.FFF'));
-%     set(handles.maskStimulusTime,'String',datestr(datenum(0,0,0,0,0,handles.maskStimulus.time),'HH:MM:SS.FFF'));
-%     updateTimeMaskStimulus(hObject, eventdata, handles);
-set(handles.flickerTime,'String',datestr(datenum(0,0,0,0,0,handles.flicker.time),'HH:MM:SS.FFF'));
-set(handles.whiteNoiseTime,'String',datestr(datenum(0,0,0,0,0,handles.whitenoise.time),'HH:MM:SS.FFF'));
 axes(handles.beforeStimulusGraph);
 imshow(handles.beforeStimulus.graph);   
-updateTimeMaskStimulus(hObject, eventdata, handles);
-%     guidata(hObject,handles);
-% Hint: get(hObject,'Value') returns toggle state of useImgBeforeStimuling
-
+updateTime(hObject, eventdata, handles);
 
 
 function beforeStimulusBgndB_Callback(hObject, eventdata, handles)
@@ -372,22 +342,11 @@ else
         set(hObject,'String',handles.beforeStimulus.time);
         errordlg('Input must be a number and non negative', 'Error')
     else
-        if handles.beforeStimulus.is
-            handles.flicker.time = handles.flicker.time - handles.beforeStimulus.time/1000.0 + in/1000.0;
-            handles.onlyStimulus.time = handles.onlyStimulus.time - handles.beforeStimulus.time/1000.0 + in/1000.0;
-            handles.maskStimulus.time = handles.maskStimulus.time - handles.beforeStimulus.time/1000.0 + in/1000.0;
-            set(handles.flickerTime,'String',datestr(datenum(0,0,0,0,0,handles.flicker.time),'HH:MM:SS.FFF'));
-            set(handles.onlyStimulusTime,'String',datestr(datenum(0,0,0,0,0,handles.onlyStimulus.time),'HH:MM:SS.FFF'));
-%             set(handles.maskStimulusTime,'String',datestr(datenum(0,0,0,0,0,handles.maskStimulus.time),'HH:MM:SS.FFF'));
-%             updateTimeMaskStimulus(hObject, eventdata, handles);
-        end
         handles.beforeStimulus.time = in;
     end
 end
-updateTimeMaskStimulus(hObject, eventdata, handles);
-% guidata(hObject,handles);
-% Hints: get(hObject,'String') returns contents of beforeStimulusTime as text
-%        str2double(get(hObject,'String')) returns contents of beforeStimulusTime as a double
+updateTime(hObject, eventdata, handles);
+
 
 
 % --- Executes during object creation, after setting all properties.
@@ -1423,11 +1382,14 @@ else
         if get(handles.flickerFreqConf,'Value')
             handles.flicker.fps = fps;
             handles.flicker.dutyCicle = dc;
-            handles.flicker.time = actualizeTemporalGraph(handles);
+            handles.flicker.imgTime = 1000*dc/fps;
+            handles.flicker.backgroundTime = 1000*(1-dc)/fps;
+%             handles.flicker.time = actualizeTemporalGraph(handles);
+            updateTime(hObject, eventdata, handles) 
         end
     end
 end
-guidata(hObject,handles);
+% guidata(hObject,handles);
 % Hints: get(hObject,'String') returns contents of flickerFrequency as text
 %        str2double(get(hObject,'String')) returns contents of flickerFrequency as a double
 
@@ -1754,7 +1716,6 @@ in = uigetdir(pwd,'Select a directory where the file will be saved');
 if in~=0
     name = strtrim(inputdlg('Insert the name of the file to be saved. Remember! the default experiment name used by stimulation scripts is "experiment.zip" and should be located at Documents/Matlab/Experiments/ folder, you are aware!','Insert file name',1,cellstr(fileName)));
     if ~isempty(name)
-%         save('Final Configuration.si','-struct','handles');
         saveInformation('Final Configuration.si',handles);
         zip(fullfile(in,name{1}),'*.si');
         selection = questdlg(['Do you want to create a Script ' ...
@@ -1767,17 +1728,7 @@ if in~=0
         if isempty(selection)
             return
         end
-%         switch selection, 
-%           case 'Yes',
-%              delete *.si;
-%              delete *.dsi;
-%              Screen('Preference', 'SkipSyncTests', 0);
-%              Screen('Preference', 'VisualDebugLevel', 4);
-%              delete(gcf);
-%              exit;
-%             otherwise
-%              return 
-%         end
+
     end
 end
 guidata(hObject,handles);
@@ -1828,43 +1779,6 @@ if ~isempty(in),
             
             set(handles.imgSizeWidth,'String',handles.img.size.width);
             set(handles.imgSizeHeight,'String',handles.img.size.height);
-            if handles.beforeStimulus.is,
-                t = handles.beforeStimulus.time/1000.0;
-            else
-                t = 0;
-            end
-            
-            if ~get(handles.flickerRepWithBackground,'Value')
-                handles.flicker.time = handles.img.files/handles.flicker.fps *...
-                    (handles.flicker.repetitions+1) + t;
-            else
-                handles.flicker.time = handles.img.files/handles.flicker.fps *+ t;
-            end
-            set(handles.flickerTime,'String',datestr(datenum(0,0,0,0,0,...
-                handles.flicker.time),'HH:MM:SS.FFF'));
-            
-            if ~get(handles.onlyStimulusRepWithBackground,'Value')
-                handles.onlyStimulus.time = handles.img.files/handles.onlyStimulus.fps...
-                    * (handles.onlyStimulus.repetitions+1) + t;
-            else
-                handles.onlyStimulus.time = handles.img.files/handles.onlyStimulus.fps + t;
-            end
-            set(handles.onlyStimulusTime,'String',datestr(datenum(0,0,0,0,0,...
-                handles.onlyStimulus.time),'HH:MM:SS.FFF'));
-            
-%             if ~get(handles.maskStimulusRepWithBackground,'Value')
-%                 handles.maskStimulus.time = handles.img.files/handles.maskStimulus.fps...
-%                     * (handles.maskStimulus.repetitions+1) + t;
-%             else
-%                 handles.maskStimulus.time = handles.img.files/handles.maskStimulus.fps + t;
-%             end
-%             set(handles.maskStimulusTime,'String',datestr(datenum(0,0,0,0,0,...
-%                 handles.maskStimulus.time),'HH:MM:SS.FFF'));
-%             updateTimeMaskStimulus(hObject, eventdata, handles);
-            
-            handles.whitenoise.time = 1/handles.whitenoise.fps + t;
-            set(handles.whiteNoiseTime,'String',datestr(datenum(0,0,0,0,0,...
-                handles.whitenoise.time),'HH:MM:SS.FFF'));
         else
             errordlg('Directory has no supported image file','Error');
             set(handles.imgDirectory,'String',handles.img.directory);
@@ -1877,10 +1791,8 @@ else
     errordlg('Directory name can''t be empty','Error');
     set(handles.imgDirectory,'String',handles.img.directory);
 end
-updateTimeMaskStimulus(hObject, eventdata, handles);
-% guidata(hObject,handles);
-% Hints: get(hObject,'String') returns contents of imgDirectory as text
-%        str2double(get(hObject,'String')) returns contents of imgDirectory as a double
+updateTime(hObject, eventdata, handles);
+
 
 
 % --- Executes during object creation, after setting all properties.
@@ -1905,7 +1817,7 @@ function selectDirectory_Callback(hObject, eventdata, handles)
 if ~handles.modify
     return
 end
-in = uigetdir;
+in = uigetdir(handles.img.directory);
 if in~=0,
     pos = searchFirstFile(in);
     if pos,
@@ -1942,43 +1854,13 @@ if in~=0,
         set(handles.imgSizeWidth,'String',handles.img.size.width);
         set(handles.imgSizeHeight,'String',handles.img.size.height);
         handles.img.files = 1;
-        if handles.beforeStimulus.is,
-            t = handles.beforeStimulus.time/1000.0;
-        else
-            t = 0;
-        end
-        
-        if ~get(handles.flickerRepWithBackground,'Value')
-            handles.flicker.time = handles.img.files/handles.flicker.fps *...
-                (handles.flicker.repetitions+1) + t;
-        else
-            handles.flicker.time = handles.img.files/handles.flicker.fps *+ t;
-        end
-        set(handles.flickerTime,'String',datestr(datenum(0,0,0,0,0,...
-            handles.flicker.time),'HH:MM:SS.FFF'));
-        
-        if ~get(handles.onlyStimulusRepWithBackground,'Value')
-            handles.onlyStimulus.time = handles.img.files/handles.onlyStimulus.fps...
-                * (handles.onlyStimulus.repetitions+1) + t;
-        else
-            handles.onlyStimulus.time = handles.img.files/handles.onlyStimulus.fps + t;
-        end
-        set(handles.onlyStimulusTime,'String',datestr(datenum(0,0,0,0,0,...
-            handles.onlyStimulus.time),'HH:MM:SS.FFF'));
-            
-        % UPDATE TIME MASK STIMULUS
-%         updateTimeMaskStimulus(hObject, eventdata, handles);
-        
-        handles.whitenoise.time = 1/handles.whitenoise.fps + t;
-        set(handles.whiteNoiseTime,'String',datestr(datenum(0,0,0,0,0,...
-            handles.whitenoise.time),'HH:MM:SS.FFF'));
     else
         errordlg('Directory has no supported image files','Error');
         set(handles.imgDirectory,'String',handles.img.directory);
     end
         
 end
-updateTimeMaskStimulus(hObject, eventdata, handles);
+updateTime(hObject, eventdata, handles);
 % guidata(hObject,handles);
 
 
@@ -2045,41 +1927,12 @@ else if pos~=1
             handles.img.files = 1;
             files = 1;
         end
-        if handles.beforeStimulus.is,
-            t = handles.beforeStimulus.time/1000.0;
-        else
-            t = 0;
-        end
-        
-        if ~get(handles.flickerRepWithBackground,'Value')
-            handles.flicker.time = handles.img.files/handles.flicker.fps *...
-                (handles.flicker.repetitions+1) + t;
-        else
-            handles.flicker.time = handles.img.files/handles.flicker.fps *+ t;
-        end
-        set(handles.flickerTime,'String',datestr(datenum(0,0,0,0,0,...
-            handles.flicker.time),'HH:MM:SS.FFF'));
-        
-        if ~get(handles.onlyStimulusRepWithBackground,'Value')
-            handles.onlyStimulus.time = handles.img.files/handles.onlyStimulus.fps...
-                * (handles.onlyStimulus.repetitions+1) + t;
-        else
-            handles.onlyStimulus.time = handles.img.files/handles.onlyStimulus.fps + t;
-        end
-        set(handles.onlyStimulusTime,'String',datestr(datenum(0,0,0,0,0,...
-            handles.onlyStimulus.time),'HH:MM:SS.FFF'));
-        
-%         updateTimeMaskStimulus(hObject, eventdata, handles);
-        
-        handles.whitenoise.time = handles.whitenoise.frames*1/handles.whitenoise.fps + t;
-        set(handles.whiteNoiseTime,'String',datestr(datenum(0,0,0,0,0,...
-            handles.whitenoise.time),'HH:MM:SS.FFF'));
     else
         set(handles.nFiles,'String',0);
         handles.img.files = 0;
     end
 end
-updateTimeMaskStimulus(hObject, eventdata, handles);
+updateTime(hObject, eventdata, handles);
 % guidata(hObject,handles);
 
 % Hints: contents = cellstr(get(hObject,'String')) returns imgInitial contents as cell array
@@ -2157,45 +2010,13 @@ else
             handles.img.files = 1;
             files = 1;
         end
-        
-        if handles.beforeStimulus.is,
-            t = handles.beforeStimulus.time/1000.0;
-        else
-            t = 0;
-        end
-        %Flicker update time (handles.flicker.time)
-        if ~get(handles.flickerRepWithBackground,'Value')
-            handles.flicker.time = handles.img.files/handles.flicker.fps *...
-                (handles.flicker.repetitions+1) + t;
-        else
-            handles.flicker.time = handles.img.files/handles.flicker.fps *+ t;
-        end
-        set(handles.flickerTime,'String',datestr(datenum(0,0,0,0,0,...
-            handles.flicker.time),'HH:MM:SS.FFF'));
-        
-        %Only Stimulus update time (handles.onlyStimulus.time)
-        if ~get(handles.onlyStimulusRepWithBackground,'Value')
-            handles.onlyStimulus.time = handles.img.files/handles.onlyStimulus.fps...
-                * (handles.onlyStimulus.repetitions+1) + t;
-        else
-            handles.onlyStimulus.time = handles.img.files/handles.onlyStimulus.fps + t;
-        end
-        set(handles.onlyStimulusTime,'String',datestr(datenum(0,0,0,0,0,...
-            handles.onlyStimulus.time),'HH:MM:SS.FFF'));
-        
-        % UPDATE TIME MASK STIMULUS
-%         updateTimeMaskStimulus(hObject, eventdata, handles);
-        
-        %White Noise update time (handles.onlyStimulus.time)   
-        handles.whitenoise.time = handles.whitenoise.frames * 1/handles.whitenoise.fps + t;
-        set(handles.whiteNoiseTime,'String',datestr(datenum(0,0,0,0,0,...
-            handles.whitenoise.time),'HH:MM:SS.FFF'));
+
     else
         set(handles.nFiles,'String',0);
         handles.img.files = 0;
     end
 end
-updateTimeMaskStimulus(hObject, eventdata, handles);
+updateTime(hObject, eventdata, handles);
 % guidata(hObject,handles);
 % Hints: contents = cellstr(get(hObject,'String')) returns imgFinal contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from imgFinal
@@ -2209,7 +2030,10 @@ function addExperiment_Callback(hObject, eventdata, handles)
 if ~handles.modify
     return
 end
-
+if handles.sync.is && handles.sync.isdigital && strcmp(handles.sync.digital.mode,'On every frames') && mod(handles.maskStimulus.mask.img.files, handles.sync.digital.frequency/60) ~= 0 
+    errordlg(['You are trying to add an experiment with digital sync but the file numbers in Mask Images is not multiple per ' num2str(handles.sync.digital.frequency/60)],'Error');
+    return      
+end    
 [handles.protocol.width, handles.protocol.height] = getProtocolSize(handles);
 handles.protocol.useImages = UseImagesProtocol(handles);
 if strcmp(handles.mode, 'Mask stimulus'),
@@ -2235,11 +2059,14 @@ if handles.img.files~=0 ...
                 if strcmp(inf.mode,'Presentation')
                     handles.time = handles.time + (inf.presentation.time/1000)*handles.flicker.repetitions +...
                         handles.flicker.time*(handles.flicker.repetitions+1);
+                else
+                    errordlg('You are trying to add an experiment with prev. background but you not added a previous background stimulus','Error');
+                    return
                 end
             else
                 errordlg('You are trying to add an experiment with prev. background but you not added a previous background stimulus','Error');
-                return            
-            end                                        
+                return
+            end             
          else
             handles.time = handles.time + handles.flicker.time;
          end
@@ -2253,11 +2080,14 @@ if handles.img.files~=0 ...
                 if strcmp(inf.mode,'Presentation')
                     handles.time = handles.time + (inf.presentation.time/1000)*handles.onlyStimulus.repetitions +...
                         handles.onlyStimulus.time*(handles.onlyStimulus.repetitions+1);
+                else
+                    errordlg('You are trying to add an experiment with prev. background but you not added a previous background stimulus','Error');
+                    return            
                 end
             else
                 errordlg('You are trying to add an experiment with prev. background but you not added a previous background stimulus','Error');
-                return            
-            end                    
+                return
+            end            
          else
             handles.time = handles.time + handles.onlyStimulus.time;
          end
@@ -2368,20 +2198,9 @@ else if in<0,
   errordlg('Input must be a number and non negative', 'Error')
     else
         handles.onlyStimulus.repetitions = in;
-        if handles.beforeStimulus.is
-            t = handles.beforeStimulus.time/1000.0;
-        else
-            t = 0;
-        end
-        if ~get(handles.onlyStimulusRepWithBackground,'Value')
-            handles.onlyStimulus.time = t + handles.img.files...
-                * 1/handles.onlyStimulus.fps * (handles.onlyStimulus.repetitions+1);
-            set(handles.onlyStimulusTime,'String',datestr(datenum(0,0,0,0,0,...
-                handles.onlyStimulus.time),'HH:MM:SS.FFF'));
-        end
     end
 end
-guidata(hObject,handles);
+updateTime(hObject, eventdata, handles)
 % Hints: get(hObject,'String') returns contents of onlyStimulusImageRepeatition as text
 %        str2double(get(hObject,'String')) returns contents of onlyStimulusImageRepeatition as a double
 
@@ -2415,20 +2234,9 @@ else if in<0,
   errordlg('Input must be a number and non negative', 'Error')
     else
         handles.flicker.repetitions = in;
-        if handles.beforeStimulus.is
-            t = handles.beforeStimulus.time/1000.0;
-        else
-            t = 0;
-        end
-        if ~get(handles.flickerRepWithBackground,'Value'),
-            handles.flicker.time = t + handles.img.files...
-                * 1/handles.flicker.fps * (handles.flicker.repetitions+1);
-            set(handles.flickerTime,'String',datestr(datenum(0,0,0,0,0,...
-                handles.flicker.time),'HH:MM:SS.FFF'));
-        end
     end
 end
-guidata(hObject,handles);
+updateTime(hObject, eventdata, handles)
 % Hints: get(hObject,'String') returns contents of flickerImageRepetition as text
 %        str2double(get(hObject,'String')) returns contents of flickerImageRepetition as a double
 
@@ -2828,44 +2636,11 @@ if ~isempty(difference),
     files = nFinal - nInit + 1;
     set(handles.nFiles,'String',files);
     handles.img.files = files;
-    if handles.beforeStimulus.is
-        t = handles.beforeStimulus.time/1000.0;
-    else
-        t = 0;
-    end
-    
-    % UPDATE TIME FLICKER
-    if ~get(handles.flickerRepWithBackground,'Value')
-        handles.flicker.time = handles.img.files/handles.flicker.fps *...
-            (handles.flicker.repetitions+1) + t;
-    else
-        handles.flicker.time = handles.img.files/handles.flicker.fps *+ t;
-    end
-    set(handles.flickerTime,'String',datestr(datenum(0,0,0,0,0,...
-        handles.flicker.time),'HH:MM:SS.FFF'));
-    
-    % UPDATE TIME ONLY STIMULUS
-    if ~get(handles.onlyStimulusRepWithBackground,'Value')
-        handles.onlyStimulus.time = handles.img.files/handles.onlyStimulus.fps...
-            * (handles.onlyStimulus.repetitions+1) + t;
-    else
-        handles.onlyStimulus.time = handles.img.files/handles.onlyStimulus.fps + t;
-    end
-    set(handles.onlyStimulusTime,'String',datestr(datenum(0,0,0,0,0,...
-        handles.onlyStimulus.time),'HH:MM:SS.FFF'));
-    
-    % UPDATE TIME MASK STIMULUS
-%     updateTimeMaskStimulus(hObject, eventdata, handles);
-    
-    % UPDATE TIME WHITE NOISE
-    handles.whitenoise.time = handles.whitenoise.frames * 1/handles.whitenoise.fps + t;
-    set(handles.whiteNoiseTime,'String',datestr(datenum(0,0,0,0,0,...
-        handles.whitenoise.time),'HH:MM:SS.FFF'));
 else
     set(handles.nFiles,'String',1);
     handles.img.files = 1;
 end
-updateTimeMaskStimulus(hObject, eventdata, handles);
+updateTime(hObject, eventdata, handles);
 % guidata(hObject,handles);
 
 
@@ -2887,20 +2662,7 @@ else
 end
 set(handles.onlyStimulusPreviousFps,'String',1.0/((in+1)*handles.screens.refreshRate));
 set(handles.onlyStimulusFps,'String',handles.onlyStimulus.fps);
-if handles.beforeStimulus.is
-    t = handles.beforeStimulus.time/1000.0;
-else
-    t = 0;
-end
-if ~get(handles.onlyStimulusRepWithBackground,'Value')
-    handles.onlyStimulus.time = handles.img.files/handles.onlyStimulus.fps...
-        * (handles.onlyStimulus.repetitions+1) + t;
-else
-    handles.onlyStimulus.time = handles.img.files/handles.onlyStimulus.fps + t;
-end
-set(handles.onlyStimulusTime,'String',datestr(datenum(0,0,0,0,0,...
-    handles.onlyStimulus.time),'HH:MM:SS.FFF'));
-guidata(hObject,handles);
+updateTime(hObject, eventdata, handles)
 
 % --- Executes on button press in onlyStimulusPreviousFps.
 function onlyStimulusPreviousFps_Callback(hObject, eventdata, handles)
@@ -2920,20 +2682,7 @@ else
 end
 set(handles.onlyStimulusPreviousFps,'String',1.0/((in+1)*handles.screens.refreshRate));
 set(handles.onlyStimulusFps,'String',handles.onlyStimulus.fps);
-if handles.beforeStimulus.is
-    t = handles.beforeStimulus.time/1000.0;
-else
-    t = 0;
-end
-if ~get(handles.onlyStimulusRepWithBackground,'Value')
-    handles.onlyStimulus.time = handles.img.files/handles.onlyStimulus.fps...
-        * (handles.onlyStimulus.repetitions+1) + t;
-else
-    handles.onlyStimulus.time = handles.img.files/handles.onlyStimulus.fps + t;
-end
-    set(handles.onlyStimulusTime,'String',datestr(datenum(0,0,0,0,0,...
-        handles.onlyStimulus.time),'HH:MM:SS.FFF'));
-guidata(hObject,handles);
+updateTime(hObject, eventdata, handles)
 
 % --- Executes on button press in flickerNextFrequency.
 function flickerNextFrequency_Callback(hObject, eventdata, handles)
@@ -2967,12 +2716,13 @@ if dc ~= 0 && dc ~= 100
     set(handles.flickerDcSlider, 'Value', dc);
     set(handles.flickerDc, 'String', dc);
 end
-if get(handles.flickerFreqConf,'Value'),
+if get(handles.flickerFreqConf,'Value')
     handles.flicker.fps = fps;
     handles.flicker.dutyCicle = dc;
-    handles.flicker.time = actualizeTemporalGraph(handles);
+    handles.flicker.imgTime = 1000*dc/fps;
+    handles.flicker.backgroundTime = 1000*(1-dc)/fps;
+    updateTime(hObject, eventdata, handles) 
 end
-guidata(hObject,handles);
 
 % --- Executes on button press in flickerPreviousFrequency.
 function flickerPreviousFrequency_Callback(hObject, eventdata, handles)
@@ -3006,12 +2756,13 @@ if dc ~= 0 && dc ~= 100
     set(handles.flickerDcSlider, 'Value', dc);
     set(handles.flickerDc, 'String', dc);
 end
-if get(handles.flickerFreqConf,'Value'),
+if get(handles.flickerFreqConf,'Value')
     handles.flicker.fps = fps;
     handles.flicker.dutyCicle = dc;
-    handles.flicker.time = actualizeTemporalGraph(handles);
-end
-guidata(hObject,handles);
+    handles.flicker.imgTime = 1000*dc/fps;
+    handles.flicker.backgroundTime = 1000*(1-dc)/fps;
+    updateTime(hObject, eventdata, handles) 
+end 
 
 
 % --- Executes on slider movement.
@@ -3033,11 +2784,13 @@ end
 dc = in;
 set(handles.flickerDc,'String',dc);
 set(hObject,'Value',dc);
-if get(handles.flickerFreqConf,'Value'),
+if get(handles.flickerFreqConf,'Value')
+    fps = handles.flicker.fps;
     handles.flicker.dutyCicle = dc;
-    handles.flicker.time = actualizeTemporalGraph(handles);
-end
-guidata(hObject,handles);
+    handles.flicker.imgTime = 1000*dc/fps;
+    handles.flicker.backgroundTime = 1000*(1-dc)/fps;
+    updateTime(hObject, eventdata, handles) 
+end 
 
 % --- Executes during object creation, after setting all properties.
 function flickerDcSlider_CreateFcn(hObject, eventdata, handles)
@@ -3077,20 +2830,17 @@ else
     handles.flicker.dutyCicle = in;
     set(hObject,'String',handles.flicker.dutyCicle);
     set(handles.flickerDcSlider,'Value',handles.flicker.dutyCicle);
-    axes(handles.flickerSignalGraph);
-    periode = 1000.0/handles.flicker.fps;
-    t = 0:periode/100.0:periode;
-    signal = t < handles.flicker.dutyCicle*t(end)/100.0; 
-    area(t,signal); hold on;
-    plot(t(round(handles.flicker.dutyCicle)+1),1,'ks','MarkerFaceColor',[0 1 0],'MarkerSize',3);
-    if handles.flicker.dutyCicle>50
-        text(t(round(handles.flicker.dutyCicle)+1)-1.85*periode/10.0,1.2,num2str(t(round(handles.flicker.dutyCicle)+1)),'FontSize',6.0);
-    else
-        text(t(round(handles.flicker.dutyCicle)+1)+1,1.2,num2str(t(round(handles.flicker.dutyCicle)+1)),'FontSize',6.0);
-    end
-    ylabel('Signal'),xlabel('Time [ms]'),xlim([0 t(end)]),ylim([0 1.5]); hold off;
+    if get(handles.flickerFreqConf,'Value')
+        fps = handles.flicker.fps;
+        dc = handles.flicker.dutyCicle;
+        handles.flicker.imgTime = 1000*dc/fps;
+        handles.flicker.backgroundTime = 1000*(1-dc)/fps;
+%             handles.flicker.time = actualizeTemporalGraph(handles);
+        updateTime(hObject, eventdata, handles) 
+    end    
+
 end
-guidata(hObject,handles);
+
 
 % --- Executes during object creation, after setting all properties.
 function flickerDc_CreateFcn(hObject, eventdata, handles)
@@ -3516,13 +3266,18 @@ if (get(hObject,'Value')==0)
     set(hObject,'Value',1.0);
 else
     set(handles.flickerFreqConf,'value',0);
-    handles.flicker.fps = 1000/(handles.flicker.imgTime + handles.flicker.backgroundTime);
-    handles.flicker.dutyCicle = 100 * handles.flicker.fps * handles.flicker.imgTime/1000;
-    handles.flicker.time = actualizeTemporalGraph(handles);
+    imgtime = str2double(get(handles.flickerImgTime,'String'));
+    bkgtime = str2double(get(handles.flickerBackgroundTime,'String'));
+    disp([imgtime, bkgtime])
+    disp([get(handles.flickerImgTime,'String') get(handles.flickerBackgroundTime,'String')])
+    handles.flicker.fps = 1000/(imgtime + bkgtime);
+    handles.flicker.dutyCicle = 100*imgtime/(imgtime + bkgtime);
+    handles.flicker.imgTime = imgtime;
+    handles.flicker.backgroundTime = bkgtime;
     handles.flicker.confFrecuencyused = false;
+    
+    updateTime(hObject, eventdata, handles)     
 end
-guidata(hObject,handles);
-% Hint: get(hObject,'Value') returns toggle state of flickerTimeConf
 
 
 
@@ -3537,9 +3292,10 @@ in = str2double(get(hObject,'String'));
 if isnan(in)
   set(hObject,'String',handles.flicker.imgTime);
   errordlg('Input must be a number and non negative', 'Error')
-else if in<0,
-  set(hObject,'String',handles.flicker.imgTime);
-  errordlg('Input must be a number and non negative', 'Error')
+else
+    if in<0,
+        set(hObject,'String',handles.flicker.imgTime);
+        errordlg('Input must be a number and non negative', 'Error')
     else
         if str2double(get(handles.flickerBackgroundTime,'String'))==0 && in == 0,
             errordlg('Both, background time and image time can''t be equal to zero simultaneously','Error');
@@ -3548,7 +3304,7 @@ else if in<0,
         end
         in = round(in/(1000*handles.screens.refreshRate));
         if in == 0 && (handles.flicker.backgroundTime ~= 0 || in ~= 1)
-        set(handles.flickerPreviousImgTime,'String',0);
+            set(handles.flickerPreviousImgTime,'String',0);
         else
             set(handles.flickerPreviousImgTime,'String',1000*(in-1)*handles.screens.refreshRate);
         end
@@ -3557,15 +3313,14 @@ else if in<0,
         handles.flicker.imgTime = 1000*in;
         set(hObject,'String',handles.flicker.imgTime);
         if get(handles.flickerTimeConf,'Value'),
-            handles.flicker.fps = 1 / (in + str2double(get(handles.flickerBackgroundTime,'String'))/1000);
-            handles.flicker.dutyCicle = 100 * handles.flicker.fps * in;
-            handles.flicker.time = actualizeTemporalGraph(handles);            
+            handles.flicker.fps = 1000 / (handles.flicker.imgTime + handles.flicker.backgroundTime);
+            handles.flicker.dutyCicle = 100 * handles.flicker.imgTime / (handles.flicker.imgTime + handles.flicker.backgroundTime);
+            updateTime(hObject, eventdata, handles) 
         end
     end
 end
-guidata(hObject,handles);
-% Hints: get(hObject,'String') returns contents of flickerImgTime as text
-%        str2double(get(hObject,'String')) returns contents of flickerImgTime as a double
+
+
 
 
 % --- Executes during object creation, after setting all properties.
@@ -3593,9 +3348,10 @@ in = str2double(get(hObject,'String'));
 if isnan(in)
   set(hObject,'String',handles.flicker.fps);
   errordlg('Input must be a number and non negative', 'Error')
-else if in<0,
-  set(hObject,'String',handles.flicker.fps);
-  errordlg('Input must be a number and non negative', 'Error')
+else
+    if in<0,
+        set(hObject,'String',handles.flicker.fps);
+        errordlg('Input must be a number and non negative', 'Error')
     else
         if str2double(get(handles.flickerImgTime,'String'))==0 && in == 0,
             errordlg('Both, background time and image time can''t be equal to zero simultaneously','Error');
@@ -3613,18 +3369,14 @@ else if in<0,
         handles.flicker.backgroundTime = 1000*in;
         set(hObject,'String',handles.flicker.backgroundTime);
         if get(handles.flickerTimeConf,'Value'),
-            handles.flicker.fps = 1 / (in + str2double(get(handles.flickerImgTime,'String'))/1000);
-            handles.flicker.dutyCicle = 100 * (1 - handles.flicker.fps * in);
-            handles.flicker.time = actualizeTemporalGraph(handles);
+            handles.flicker.fps = 1000 / (handles.flicker.imgTime + handles.flicker.backgroundTime);
+            
+            handles.flicker.dutyCicle = 100 * handles.flicker.backgroundTime / (handles.flicker.imgTime + handles.flicker.backgroundTime);
+            updateTime(hObject, eventdata, handles) 
         end
     end
 end
-guidata(hObject,handles);
-% Hints: get(hObject,'String') returns contents of flickerBackgroundTime as text
-%        str2double(get(hObject,'String')) returns contents of flickerBackgroundTime as a double
 
-
-% --- Executes during object creation, after setting all properties.
 function flickerBackgroundTime_CreateFcn(hObject, eventdata, handles)
 % hObject    handle to flickerBackgroundTime (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -3651,39 +3403,27 @@ else
     set(handles.flickerTimeConf,'value',0);
     handles.flicker.fps = str2double(get(handles.flickerFrequency,'String'));
     handles.flicker.dutyCicle = str2double(get(handles.flickerDc,'String'));
-    handles.flicker.time = actualizeTemporalGraph(handles);
+    handles.flicker.imgTime = 1000*handles.flicker.dutyCicle/handles.flicker.fps;
+    handles.flicker.backgroundTime = 1000*(1-handles.flicker.dutyCicle)/handles.flicker.fps;
     handles.flicker.confFrecuencyused = true;
-
+    updateTime(hObject, eventdata, handles) 
 end
-guidata(hObject,handles);
+% guidata(hObject,handles);
 % Hint: get(hObject,'Value') returns toggle state of flickerFreqConf
 
-function [time]=actualizeTemporalGraph(handles)
-if handles.beforeStimulus.is
-    t = handles.beforeStimulus.time/1000.0;
-else
-    t = 0;
-end
-if ~get(handles.flickerRepWithBackground,'Value'),
-    time = t + handles.img.files...
-        * 1/handles.flicker.fps * (handles.flicker.repetitions+1);
-else
-    time = t + handles.img.files* 1/handles.flicker.fps;
-end
-set(handles.flickerTime,'String',datestr(datenum(0,0,0,0,0,...
-    time),'HH:MM:SS.FFF'));
-axes(handles.flickerSignalGraph);
-periode = 1000.0/handles.flicker.fps;
-t = 0:periode/100.0:periode;
-signal = t < handles.flicker.dutyCicle*t(end)/100.0; 
-area(t,signal); hold on;
-plot(t(round(handles.flicker.dutyCicle)+1),1,'ks','MarkerFaceColor',[0 1 0],'MarkerSize',3);
-if handles.flicker.dutyCicle>50
-    text(t(round(handles.flicker.dutyCicle)+1)-6-1.85*periode/10.0,1.2,num2str(t(round(handles.flicker.dutyCicle)+1)),'FontSize',10.0);
-else
-    text(t(round(handles.flicker.dutyCicle)+1)+1,1.2,num2str(t(round(handles.flicker.dutyCicle)+1)),'FontSize',10.0);
-end
-ylabel('Signal'),xlabel('Time [ms]'),xlim([0 t(end)]),ylim([0 1.5]); hold off;
+function actualizeTemporalGraph(handles)
+    axes(handles.flickerSignalGraph);
+    periode = 1000.0/handles.flicker.fps;
+    t = 0:periode/100.0:periode;
+    signal = t < handles.flicker.dutyCicle*t(end)/100.0; 
+    area(t,signal); hold on;
+    plot(t(round(handles.flicker.dutyCicle)+1),1,'ks','MarkerFaceColor',[0 1 0],'MarkerSize',3);
+    if handles.flicker.dutyCicle>50
+        text(t(round(handles.flicker.dutyCicle)+1)-6-1.85*periode/10.0,1.2,num2str(t(round(handles.flicker.dutyCicle)+1)),'FontSize',10.0);
+    else
+        text(t(round(handles.flicker.dutyCicle)+1)+1,1.2,num2str(t(round(handles.flicker.dutyCicle)+1)),'FontSize',10.0);
+    end
+    ylabel('Signal'),xlabel('Time [ms]'),xlim([0 t(end)]),ylim([0 1.5]); hold off;
 
 
 
@@ -3706,10 +3446,9 @@ set(handles.flickerNextImgTime,'String',rr*(round(handles.flicker.imgTime/rr)+1)
 set(handles.flickerImgTime,'String',handles.flicker.imgTime);
 if(get(handles.flickerTimeConf,'Value'))
     handles.flicker.fps = 1000 / (handles.flicker.imgTime + handles.flicker.backgroundTime);
-    handles.flicker.dutyCicle = 100 * handles.flicker.fps * handles.flicker.imgTime/1000;
-    handles.flicker.time = actualizeTemporalGraph(handles);
+    handles.flicker.dutyCicle = 100 * handles.flicker.imgTime / (handles.flicker.imgTime + handles.flicker.backgroundTime);
+    updateTime(hObject, eventdata, handles)
 end
-guidata(hObject,handles);
 
 
 % --- Executes on button press in flickerNextImgTime.
@@ -3728,10 +3467,10 @@ set(handles.flickerNextImgTime,'String',rr*(round(handles.flicker.imgTime/rr)+1)
 set(handles.flickerImgTime,'String',handles.flicker.imgTime);
 if(get(handles.flickerTimeConf,'Value'))
     handles.flicker.fps = 1000 / (handles.flicker.imgTime + handles.flicker.backgroundTime);
-    handles.flicker.dutyCicle = 100 * handles.flicker.fps * handles.flicker.imgTime/1000;
-    handles.flicker.time = actualizeTemporalGraph(handles);
+    handles.flicker.dutyCicle = 100 * handles.flicker.imgTime / (handles.flicker.imgTime + handles.flicker.backgroundTime);
+    updateTime(hObject, eventdata, handles) 
 end
-guidata(hObject,handles);
+
 
 % --- Executes on button press in flickerPreviousBgndTime.
 function flickerPreviousBgndTime_Callback(hObject, eventdata, handles)
@@ -3752,10 +3491,10 @@ set(handles.flickerNextBgndTime,'String',rr*(round(handles.flicker.backgroundTim
 set(handles.flickerBackgroundTime,'String',handles.flicker.backgroundTime);
 if(get(handles.flickerTimeConf,'Value'))
     handles.flicker.fps = 1000 / (handles.flicker.imgTime + handles.flicker.backgroundTime);
-    handles.flicker.dutyCicle = 100 * handles.flicker.fps * handles.flicker.imgTime/1000;
-    handles.flicker.time = actualizeTemporalGraph(handles);
+    handles.flicker.dutyCicle = 100 *handles.flicker.backgroundTime / (handles.flicker.imgTime + handles.flicker.backgroundTime);
+    updateTime(hObject, eventdata, handles) 
 end
-guidata(hObject,handles);
+
 
 
 % --- Executes on button press in flickerNextBgndTime.
@@ -3774,10 +3513,9 @@ set(handles.flickerNextBgndTime,'String',rr*(round(handles.flicker.backgroundTim
 set(handles.flickerBackgroundTime,'String',handles.flicker.backgroundTime);
 if(get(handles.flickerTimeConf,'Value'))
     handles.flicker.fps = 1000 / (handles.flicker.imgTime + handles.flicker.backgroundTime);
-    handles.flicker.dutyCicle = 100 * handles.flicker.fps * handles.flicker.imgTime/1000;
-    handles.flicker.time = actualizeTemporalGraph(handles);
+    handles.flicker.dutyCicle = 100 * handles.flicker.backgroundTime / (handles.flicker.imgTime + handles.flicker.backgroundTime);
+    updateTime(hObject, eventdata, handles) 
 end
-guidata(hObject,handles);
 
 
 % --- Executes on button press in imgSetPos.
@@ -3818,10 +3556,10 @@ switch handles.mode
 end
 
 
-if ismac,
+if IsOSX,
     [handles.img.deltaX,handles.img.deltaY] = moveImageMac(handles.img.deltaX,handles.img.deltaY,...
         handles.screens.selected,img);
-elseif isunix
+elseif IsLinux
     [handles.img.deltaX,handles.img.deltaY] = moveImageUnix(handles.img.deltaX,handles.img.deltaY,...
         handles.screens.selected,img);    
 else
@@ -3950,18 +3688,9 @@ else if in<0,
         end
         set(handles.whiteNoisePreviousFps,'String',1.0/((in+1)*handles.screens.refreshRate));
         set(handles.whiteNoiseFps,'String',handles.whitenoise.fps);
-        if handles.beforeStimulus.is
-            t = handles.beforeStimulus.time/1000.0;
-        else
-            t = 0;
-        end
-        handles.whitenoise.time = t + handles.whitenoise.frames...
-            * 1/handles.whitenoise.fps;
-        set(handles.whiteNoiseTime,'String',datestr(datenum(0,0,0,0,0,...
-            handles.whitenoise.time),'HH:MM:SS.FFF'));
     end
 end
-guidata(hObject,handles);
+updateTime(hObject, eventdata, handles)
 % Hints: get(hObject,'String') returns contents of whiteNoiseFps as text
 %        str2double(get(hObject,'String')) returns contents of whiteNoiseFps as a double
 
@@ -4035,11 +3764,7 @@ else
 end
 set(handles.whiteNoisePreviousFps,'String',1.0/((in+1)*handles.screens.refreshRate));
 set(handles.whiteNoiseFps,'String',handles.whitenoise.fps);
-handles.whitenoise.time = handles.whitenoise.frames...
-    * 1/handles.whitenoise.fps;
-set(handles.whiteNoiseTime,'String',datestr(datenum(0,0,0,0,0,...
-    handles.whitenoise.time),'HH:MM:SS.FFF'));
-guidata(hObject,handles);
+updateTime(hObject, eventdata, handles)
 
 % --- Executes on button press in whiteNoisePreviousFps.
 function whiteNoisePreviousFps_Callback(hObject, eventdata, handles)
@@ -4059,11 +3784,7 @@ else
 end
 set(handles.whiteNoisePreviousFps,'String',1.0/((in+1)*handles.screens.refreshRate));
 set(handles.whiteNoiseFps,'String',handles.whitenoise.fps);
-handles.whitenoise.time = handles.whitenoise.frames...
-    * 1/handles.whitenoise.fps;
-set(handles.whiteNoiseTime,'String',datestr(datenum(0,0,0,0,0,...
-    handles.whitenoise.time),'HH:MM:SS.FFF'));
-guidata(hObject,handles);
+updateTime(hObject, eventdata, handles)
 
 
 function whiteNoisePxsX_Callback(hObject, eventdata, handles)
@@ -4119,13 +3840,9 @@ else if in<=0,
   errordlg('Input must be a number and positive', 'Error')
     else
         handles.whitenoise.frames = in;
-        handles.whitenoise.time = handles.whitenoise.frames...
-            * 1/handles.whitenoise.fps;
-        set(handles.whiteNoiseTime,'String',datestr(datenum(0,0,0,0,0,...
-            handles.whitenoise.time),'HH:MM:SS.FFF'));
     end
 end
-guidata(hObject,handles);
+updateTime(hObject, eventdata, handles)
 % Hints: get(hObject,'String') returns contents of whiteNoiseFrames as text
 %        str2double(get(hObject,'String')) returns contents of whiteNoiseFrames as a double
 
@@ -4153,22 +3870,7 @@ if ~handles.modify
     return
 end
 handles.onlyStimulus.repeatBackground = get(hObject,'Value');
-if handles.beforeStimulus.is
-    t = handles.beforeStimulus.time/1000.0;
-else
-    t = 0;
-end
-if ~handles.onlyStimulus.repeatBackground,
-    handles.onlyStimulus.time = t + handles.img.files...
-        * 1/handles.onlyStimulus.fps * (handles.onlyStimulus.repetitions+1);
-else
-    handles.onlyStimulus.time = t + handles.img.files...
-        * 1/handles.onlyStimulus.fps;
-end
-set(handles.onlyStimulusTime,'String',datestr(datenum(0,0,0,0,0,...
-    handles.onlyStimulus.time),'HH:MM:SS.FFF'));
-guidata(hObject,handles);
-% Hint: get(hObject,'Value') returns toggle state of onlyStimulusRepWithBackground
+updateTime(hObject, eventdata, handles)
 
 
 % --- Executes on button press in flickerRepWithBackground.
@@ -4180,21 +3882,7 @@ if ~handles.modify
     return
 end
 handles.flicker.repeatBackground = get(hObject,'Value');
-if handles.beforeStimulus.is
-    t = handles.beforeStimulus.time/1000.0;
-else
-    t = 0;
-end
-if ~handles.flicker.repeatBackground
-    handles.flicker.time = t + handles.img.files...
-        * 1/handles.flicker.fps * (handles.flicker.repetitions+1);
-else
-    handles.flicker.time = t + handles.img.files * 1/handles.flicker.fps;
-end
-set(handles.flickerTime,'String',datestr(datenum(0,0,0,0,0,...
-    handles.flicker.time),'HH:MM:SS.FFF'));
-guidata(hObject,handles);
-% Hint: get(hObject,'Value') returns toggle state of flickerRepWithBackground
+updateTime(hObject, eventdata, handles)
 
 
 
@@ -4567,25 +4255,7 @@ else
 end
 set(handles.maskStimulusPreviousFps,'String',1.0/((in+1)*handles.screens.refreshRate));
 set(handles.maskStimulusFps,'String',handles.maskStimulus.fps);
-% updateTimeMaskStimulus(hObject, eventdata, handles)
-% if handles.beforeStimulus.is
-%     t = handles.beforeStimulus.time/1000.0;
-% else
-%     t = 0;
-% end
-% if ~get(handles.maskStimulusRepWithBackground,'Value')
-%     handles.maskStimulus.time = handles.img.files/handles.maskStimulus.fps...
-%         * (handles.maskStimulus.repetitions+1) + t;
-% else
-%     handles.maskStimulus.time = handles.img.files/handles.maskStimulus.fps + t;
-% end
-% disp('Time')
-% disp(handles.maskStimulusTime)
-% disp(handles.maskStimulus.time)
-% set(handles.maskStimulusTime,'String',datestr(datenum(0,0,0,0,0,...
-%     handles.maskStimulus.time),'HH:MM:SS.FFF'));
-updateTimeMaskStimulus(hObject, eventdata, handles);
-% guidata(hObject,handles);
+updateTime(hObject, eventdata, handles)
 
 
 function maskStimulusFps_Callback(hObject, eventdata, handles)
@@ -4611,10 +4281,9 @@ else
         end
         set(handles.maskStimulusPreviousFps,'String',1.0/((in+1)*handles.screens.refreshRate));
         set(handles.maskStimulusFps,'String',handles.maskStimulus.fps);
-%         updateTimeMaskStimulus(hObject, eventdata, handles)
     end
 end
-updateTimeMaskStimulus(hObject, eventdata, handles);
+updateTime(hObject, eventdata, handles);
 % guidata(hObject,handles);
 
 
@@ -4650,7 +4319,7 @@ else
 end
 set(handles.maskStimulusPreviousFps,'String',1.0/((in+1)*handles.screens.refreshRate));
 set(handles.maskStimulusFps,'String',handles.maskStimulus.fps);
-updateTimeMaskStimulus(hObject, eventdata, handles)
+updateTime(hObject, eventdata, handles)
 % guidata(hObject,handles);
 
 
@@ -4663,7 +4332,7 @@ if ~handles.modify
     return
 end
 handles.maskStimulus.repeatBackground = get(hObject,'Value');
-updateTimeMaskStimulus(hObject, eventdata, handles)
+updateTime(hObject, eventdata, handles)
 % Hint: get(hObject,'Value') returns toggle state of maskStimulusRepWithBackground
 
 
@@ -4739,6 +4408,7 @@ if in==1,
         set(handles.solidColorProtoMSPanel,'visible','off');
         set(handles.flickerProtoMSPanel,'visible','off');
     end
+    set(handles.otherOptionsPanel,'visible','off');
 elseif in == 2,
     handles.maskStimulus.mask.type = 'Solid color';
     handles.maskStimulus.mask.useImages = false;
@@ -4753,6 +4423,7 @@ elseif in == 2,
     set(handles.solidColorProtoMSPanel,'visible','off');
     set(handles.flickerProtoMSPanel,'visible','off');
     
+    set(handles.otherOptionsPanel,'visible','off');    
 elseif in==3,
     handles.maskStimulus.mask.type = 'Img';
     handles.maskStimulus.mask.useImages = true;
@@ -4766,6 +4437,8 @@ elseif in==3,
     set(handles.imgProtoMSPanel,'visible','off');
     set(handles.solidColorProtoMSPanel,'visible','off');
     set(handles.flickerProtoMSPanel,'visible','off');
+    
+    set(handles.otherOptionsPanel,'visible','off');
 else
     handles.maskStimulus.mask.type = 'White noise';
     handles.maskStimulus.mask.useImages = false;
@@ -4779,6 +4452,8 @@ else
     set(handles.imgProtoMSPanel,'visible','off');
     set(handles.solidColorProtoMSPanel,'visible','off');
     set(handles.flickerProtoMSPanel,'visible','off');
+    
+    set(handles.otherOptionsPanel,'visible','off');
 end
 guidata(hObject,handles);
 % Hints: contents = cellstr(get(hObject,'String')) returns typeMask contents as cell array
@@ -4824,6 +4499,8 @@ if in==1,
     set(handles.imgProtoMSPanel,'visible','off');
     set(handles.solidColorProtoMSPanel,'visible','off');
     set(handles.flickerProtoMSPanel,'visible','off');
+    
+    set(handles.otherOptionsPanel,'visible','off');
 elseif in==2,
     handles.maskStimulus.protocol.type = 'Flicker';
     
@@ -4836,7 +4513,9 @@ elseif in==2,
     set(handles.whitenoiseProtoMSPanel,'visible','off');
     set(handles.imgProtoMSPanel,'visible','off');
     set(handles.solidColorProtoMSPanel,'visible','off');
-    set(handles.flickerProtoMSPanel,'visible','on');   
+    set(handles.flickerProtoMSPanel,'visible','on'); 
+    
+    set(handles.otherOptionsPanel,'visible','off');
 elseif in==3,
     handles.maskStimulus.protocol.type = 'Images';
     
@@ -4850,6 +4529,8 @@ elseif in==3,
     set(handles.imgProtoMSPanel,'visible','on');
     set(handles.solidColorProtoMSPanel,'visible','off');
     set(handles.flickerProtoMSPanel,'visible','off');
+    
+    set(handles.otherOptionsPanel,'visible','off');
 elseif in==4,
     handles.maskStimulus.protocol.type = 'Solid color';
     set(handles.maskConfigurationMSPanel,'visible','off');
@@ -4862,6 +4543,8 @@ elseif in==4,
     set(handles.imgProtoMSPanel,'visible','off');
     set(handles.solidColorProtoMSPanel,'visible','on');
     set(handles.flickerProtoMSPanel,'visible','off');
+    
+    set(handles.otherOptionsPanel,'visible','off');
 elseif in ==5;
     handles.maskStimulus.protocol.type = 'White noise';
     set(handles.maskConfigurationMSPanel,'visible','off');
@@ -4874,8 +4557,10 @@ elseif in ==5;
     set(handles.imgProtoMSPanel,'visible','off');
     set(handles.solidColorProtoMSPanel,'visible','off');
     set(handles.flickerProtoMSPanel,'visible','off');
+    
+    set(handles.otherOptionsPanel,'visible','off');
 end
-updateTimeMaskStimulus(hObject, eventdata, handles);
+updateTime(hObject, eventdata, handles);
 % guidata(hObject,handles);
 % Hints: contents = cellstr(get(hObject,'String')) returns typeProtocol contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from typeProtocol
@@ -4888,76 +4573,6 @@ function typeProtocol_CreateFcn(hObject, eventdata, handles)
 % handles    empty - handles not created until after all CreateFcns called
 
 % Hint: popupmenu controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
-
-% --- Executes on button press in maskStimulusRepWithBackground.
-function checkbox73_Callback(hObject, eventdata, handles)
-% hObject    handle to maskStimulusRepWithBackground (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hint: get(hObject,'Value') returns toggle state of maskStimulusRepWithBackground
-
-
-
-% --- Executes on button press in maskStimulusNextFps.
-function pushbutton63_Callback(hObject, eventdata, handles)
-% hObject    handle to maskStimulusNextFps (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-
-% --- Executes on button press in maskStimulusPreviousFps.
-function pushbutton64_Callback(hObject, eventdata, handles)
-% hObject    handle to maskStimulusPreviousFps (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-
-
-function edit454_Callback(hObject, eventdata, handles)
-% hObject    handle to maskStimulusFps (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of maskStimulusFps as text
-%        str2double(get(hObject,'String')) returns contents of maskStimulusFps as a double
-
-
-% --- Executes during object creation, after setting all properties.
-function edit454_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to maskStimulusFps (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
-
-
-function edit458_Callback(hObject, eventdata, handles)
-% hObject    handle to edit458 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of edit458 as text
-%        str2double(get(hObject,'String')) returns contents of edit458 as a double
-
-
-% --- Executes during object creation, after setting all properties.
-function edit458_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to edit458 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
 %       See ISPC and COMPUTER.
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
@@ -5827,7 +5442,7 @@ else
         handles.maskStimulus.repetitions = in;
     end
 end
-updateTimeMaskStimulus(hObject, eventdata, handles);
+updateTime(hObject, eventdata, handles);
 
 
 
@@ -5999,21 +5614,13 @@ else
         in = in * handles.screens.refreshRate;
         handles.maskStimulus.protocol.flicker.imgTime = 1000*in;
         handles.maskStimulus.protocol.flicker.periodo = handles.maskStimulus.protocol.flicker.imgTime + handles.maskStimulus.protocol.flicker.backgroundTime;
-        handles.maskStimulus.protocol.flicker.dutyCycle = handles.maskStimulus.protocol.flicker.imgTime/handles.maskStimulus.protocol.flicker.periodo;       
+        handles.maskStimulus.protocol.flicker.dutyCycle = 100*handles.maskStimulus.protocol.flicker.imgTime/handles.maskStimulus.protocol.flicker.periodo;       
 
         set(hObject,'String',handles.maskStimulus.protocol.flicker.imgTime);
-%         updateTimeMaskStimulus(hObject, eventdata, handles);
-%         if get(handles.flickerTimeConf,'Value'),
-%             handles.flicker.fps = 1 / (in + str2double(get(handles.flickerBackgroundTime,'String'))/1000);
-%             handles.flicker.dutyCicle = 100 * handles.flicker.fps * in;
-%             handles.flicker.time = actualizeTemporalGraph(handles);
-%         end
     end
 end
-updateTimeMaskStimulus(hObject, eventdata, handles);
-% guidata(hObject,handles);
-% Hints: get(hObject,'String') returns contents of maskStimulusImgtimeFlicker as text
-%        str2double(get(hObject,'String')) returns contents of maskStimulusImgtimeFlicker as a double
+updateTime(hObject, eventdata, handles);
+
 
 
 % --- Executes during object creation, after setting all properties.
@@ -6062,15 +5669,13 @@ else
         handles.maskStimulus.protocol.flicker.backgroundTime = 1000*in;
         set(hObject,'String',handles.maskStimulus.protocol.flicker.backgroundTime);
         handles.maskStimulus.protocol.flicker.periodo = handles.maskStimulus.protocol.flicker.imgTime + handles.maskStimulus.protocol.flicker.backgroundTime;
-        handles.maskStimulus.protocol.flicker.dutyCycle = handles.maskStimulus.protocol.flicker.imgTime./handles.maskStimulus.protocol.flicker.periodo;
+        handles.maskStimulus.protocol.flicker.dutyCycle = 100*handles.maskStimulus.protocol.flicker.imgTime./handles.maskStimulus.protocol.flicker.periodo;
 
       
     end
 end
-updateTimeMaskStimulus(hObject, eventdata, handles);
-% guidata(hObject,handles);
-% Hints: get(hObject,'String') returns contents of maskStimulusBackgroundtimeFlicker as text
-%        str2double(get(hObject,'String')) returns contents of maskStimulusBackgroundtimeFlicker as a double
+updateTime(hObject, eventdata, handles);
+
 
 
 % --- Executes during object creation, after setting all properties.
@@ -6105,15 +5710,10 @@ set(handles.maskStimulusFlickerNextImgTime,'String',rr*(round(handles.maskStimul
 set(handles.maskStimulusImgtimeFlicker,'String',handles.maskStimulus.protocol.flicker.imgTime);
 
 handles.maskStimulus.protocol.flicker.periodo = handles.maskStimulus.protocol.flicker.imgTime + handles.maskStimulus.protocol.flicker.backgroundTime;
-handles.maskStimulus.protocol.flicker.dutyCycle = handles.maskStimulus.protocol.flicker.imgTime/handles.maskStimulus.protocol.flicker.periodo;
+handles.maskStimulus.protocol.flicker.dutyCycle = 100*handles.maskStimulus.protocol.flicker.imgTime/handles.maskStimulus.protocol.flicker.periodo;
 
-updateTimeMaskStimulus(hObject, eventdata, handles);
-% if(get(handles.flickerTimeConf,'Value'))
-%     handles.flicker.fps = 1000 / (handles.flicker.imgTime + handles.flicker.backgroundTime);
-%     handles.flicker.dutyCicle = 100 * handles.flicker.fps * handles.flicker.imgTime/1000;
-%     handles.flicker.time = actualizeTemporalGraph(handles);
-% end
-% guidata(hObject,handles);
+updateTime(hObject, eventdata, handles);
+
 
 % --- Executes on button press in maskStimulusFlickerNextImgTime.
 function maskStimulusFlickerNextImgTime_Callback(hObject, eventdata, handles)
@@ -6130,14 +5730,9 @@ set(handles.maskStimulusFlickerPreviousImgTime,'String',rr*(round(handles.maskSt
 set(handles.maskStimulusFlickerNextImgTime,'String',rr*(round(handles.maskStimulus.protocol.flicker.imgTime/rr)+1));
 set(handles.maskStimulusImgtimeFlicker,'String',handles.maskStimulus.protocol.flicker.imgTime);
 handles.maskStimulus.protocol.flicker.periodo = handles.maskStimulus.protocol.flicker.imgTime + handles.maskStimulus.protocol.flicker.backgroundTime;
-handles.maskStimulus.protocol.flicker.dutyCycle = handles.maskStimulus.protocol.flicker.imgTime/handles.maskStimulus.protocol.flicker.periodo;
-updateTimeMaskStimulus(hObject, eventdata, handles);
-% if(get(handles.flickerTimeConf,'Value'))
-%     handles.flicker.fps = 1000 / (handles.flicker.imgTime + handles.flicker.backgroundTime);
-%     handles.flicker.dutyCicle = 100 * handles.flicker.fps * handles.flicker.imgTime/1000;
-%     handles.flicker.time = actualizeTemporalGraph(handles);
-% end
-% guidata(hObject,handles);
+handles.maskStimulus.protocol.flicker.dutyCycle = 100*handles.maskStimulus.protocol.flicker.imgTime/handles.maskStimulus.protocol.flicker.periodo;
+updateTime(hObject, eventdata, handles);
+
 
 % --- Executes on button press in maskStimulusFlickerPreviousBgTime.
 function maskStimulusFlickerPreviousBgTime_Callback(hObject, eventdata, handles)
@@ -6157,14 +5752,9 @@ end
 set(handles.maskStimulusFlickerNextBgTime,'String',rr*(round(handles.maskStimulus.protocol.flicker.backgroundTime/rr)+1));
 set(handles.maskStimulusBackgroundtimeFlicker,'String',handles.maskStimulus.protocol.flicker.backgroundTime);
 handles.maskStimulus.protocol.flicker.periodo = handles.maskStimulus.protocol.flicker.imgTime + handles.maskStimulus.protocol.flicker.backgroundTime;
-handles.maskStimulus.protocol.flicker.dutyCycle = handles.maskStimulus.protocol.flicker.imgTime/handles.maskStimulus.protocol.flicker.periodo;
-updateTimeMaskStimulus(hObject, eventdata, handles);
-% if(get(handles.flickerTimeConf,'Value'))
-%     handles.flicker.fps = 1000 / (handles.flicker.imgTime + handles.flicker.backgroundTime);
-%     handles.flicker.dutyCicle = 100 * handles.flicker.fps * handles.flicker.imgTime/1000;
-%     handles.flicker.time = actualizeTemporalGraph(handles);
-% end
-% guidata(hObject,handles);
+handles.maskStimulus.protocol.flicker.dutyCycle = 100*handles.maskStimulus.protocol.flicker.imgTime/handles.maskStimulus.protocol.flicker.periodo;
+updateTime(hObject, eventdata, handles);
+
 
 % --- Executes on button press in maskStimulusFlickerNextBgTime.
 function maskStimulusFlickerNextBgTime_Callback(hObject, eventdata, handles)
@@ -6181,14 +5771,9 @@ set(handles.maskStimulusFlickerPreviousBgTime,'String',rr*(round(handles.maskSti
 set(handles.maskStimulusFlickerNextBgTime,'String',rr*(round(handles.maskStimulus.protocol.flicker.backgroundTime/rr)+1));
 set(handles.maskStimulusBackgroundtimeFlicker,'String',handles.maskStimulus.protocol.flicker.backgroundTime);
 handles.maskStimulus.protocol.flicker.periodo = handles.maskStimulus.protocol.flicker.imgTime + handles.maskStimulus.protocol.flicker.backgroundTime;
-handles.maskStimulus.protocol.flicker.dutyCycle = handles.maskStimulus.protocol.flicker.imgTime/handles.maskStimulus.protocol.flicker.periodo;
-updateTimeMaskStimulus(hObject, eventdata, handles);
-% if(get(handles.flickerTimeConf,'Value'))
-%     handles.flicker.fps = 1000 / (handles.flicker.imgTime + handles.flicker.backgroundTime);
-%     handles.flicker.dutyCicle = 100 * handles.flicker.fps * handles.flicker.imgTime/1000;
-%     handles.flicker.time = actualizeTemporalGraph(handles);
-% end
-% guidata(hObject,handles);
+handles.maskStimulus.protocol.flicker.dutyCycle = 100*handles.maskStimulus.protocol.flicker.imgTime/handles.maskStimulus.protocol.flicker.periodo;
+updateTime(hObject, eventdata, handles);
+
 
 
 
@@ -6208,8 +5793,7 @@ else
         handles.maskStimulus.protocol.solidColor.nframes = in;
     end
 end
-updateTimeMaskStimulus(hObject, eventdata, handles);
-% guidata(hObject,handles);
+updateTime(hObject, eventdata, handles);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -6515,24 +6099,34 @@ function maskStimulusImgMaskSelect_Callback(hObject, eventdata, handles)
 if ~handles.modify
     return
 end
-in = uigetdir;
+in = uigetdir(handles.maskStimulus.mask.img.directory);
 if in~=0,
     pos = searchFirstFile(in);
     if pos,
-        handles.maskStimulus.mask.img.directory = in;
-        set(handles.imgMaskDirectory,'String',in);
+        finalposition = pos;
         filelist = dir(in);
         filelist = dir_to_Win_ls(filelist);
+        if  handles.sync.is && handles.sync.isdigital && strcmp(handles.sync.digital.mode,'On every frames');
+            if (size(filelist,1)-2) < handles.sync.digital.frequency/60
+                errordlg(['The directory must have at last ' num2str(handles.sync.digital.frequency/60) ' image files'],'Error');
+                set(handles.imgMaskDirectory,'String',handles.maskStimulus.mask.img.directory);
+                return
+            else
+                finalposition = pos+handles.sync.digital.frequency/60-1;
+            end
+        end
+        handles.maskStimulus.mask.img.directory = in;
+        set(handles.imgMaskDirectory,'String',in);
         handles.maskStimulus.mask.img.list = char('',filelist(3:size(filelist,1),:));
         set(handles.imgMaskInitial,'String',char('Initial image',handles.maskStimulus.mask.img.list(2:end,:)));
         set(handles.imgMaskFinal,'String',char('Final image',handles.maskStimulus.mask.img.list(2:end,:)));
         set(handles.imgMaskInitial,'Value',pos);
-        set(handles.imgMaskFinal,'Value',pos);
-        set(handles.imgMasknFiles,'String',1);
+        set(handles.imgMaskFinal,'Value',finalposition);
+        set(handles.imgMasknFiles,'String',finalposition - pos +1);
         handles.maskStimulus.mask.img.nInitial = handles.maskStimulus.mask.img.list(pos,:);
         handles.maskStimulus.mask.img.nInitialPos = pos;
-        handles.maskStimulus.mask.img.nFinal = handles.maskStimulus.mask.img.list(pos,:);
-        handles.maskStimulus.mask.img.nFinalPos = pos;
+        handles.maskStimulus.mask.img.nFinal = handles.maskStimulus.mask.img.list(finalposition,:);
+        handles.maskStimulus.mask.img.nFinalPos = finalposition;
         imageInfo = imfinfo(fullfile(handles.maskStimulus.mask.img.directory,handles.maskStimulus.mask.img.nInitial));
         % if handles.maskStimulus.mask.img.size.width ~=0 && handles.img.deltaX~=0 && handles.img.deltaY~=0 && ...
         %         (handles.maskStimulus.mask.img.size.width ~= imageInfo.Width || ...
@@ -6551,7 +6145,7 @@ if in~=0,
         handles.maskStimulus.mask.img.size.height = imageInfo.Height;
         set(handles.imgMaskSizeWidth,'String',handles.maskStimulus.mask.img.size.width);
         set(handles.imgMaskSizeHeight,'String',handles.maskStimulus.mask.img.size.height);
-        handles.maskStimulus.mask.img.files = 1;
+        handles.maskStimulus.mask.img.files = finalposition - pos + 1;
   
     else
         errordlg('Directory has no supported image files','Error');
@@ -6569,13 +6163,23 @@ if ~handles.modify
     return
 end
 dirlist = dir(handles.maskStimulus.mask.img.directory);
-pos = get(hObject,'Value');
-if pos~=1 && (dirlist(pos+1).isdir || ~supportedImageFormat(dirlist(pos+1).name)),
+initPos = get(hObject,'Value');
+endPos = handles.maskStimulus.mask.img.nFinalPos;
+if initPos~=1 && (dirlist(initPos+1).isdir || ~supportedImageFormat(dirlist(initPos+1).name)),
     errordlg('The selected file is not a supported image file','Error');
     set(hObject,'Value',handles.maskStimulus.mask.img.nInitialPos);
-else if pos~=1
-        handles.maskStimulus.mask.img.nInitial = handles.maskStimulus.mask.img.list(pos,:);
-        handles.maskStimulus.mask.img.nInitialPos = pos;
+else
+    if initPos~=1
+        if  handles.sync.is && handles.sync.isdigital && strcmp(handles.sync.digital.mode,'On every frames');
+            [initPos, endPos] = fitNimages(initPos,endPos, handles.sync.digital.frequency/60, size(handles.maskStimulus.mask.img.list,1));
+        end      
+        handles.maskStimulus.mask.img.nInitial = handles.maskStimulus.mask.img.list(initPos,:);
+        handles.maskStimulus.mask.img.nInitialPos = initPos;        
+        handles.maskStimulus.mask.img.nFinal = handles.maskStimulus.mask.img.list(endPos,:);
+        handles.maskStimulus.mask.img.nFinalPos = endPos;
+        set( handles.imgMaskFinal , 'Value', endPos);
+        set( handles.imgMaskInitial , 'Value', initPos);
+
         imageInfo = imfinfo(fullfile(handles.maskStimulus.mask.img.directory,handles.maskStimulus.mask.img.nInitial));
         handles.maskStimulus.mask.img.size.width = imageInfo.Width;
         handles.maskStimulus.mask.img.size.height = imageInfo.Height;
@@ -6619,6 +6223,23 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
     set(hObject,'BackgroundColor','white');
 end
 
+% size(handles.maskStimulus.mask.img.list,1)
+% handles.sync.digital.frequency/60+1
+% fitNimages(pos, )
+function [ninitPos, nendPos] = fitNimages(initPos, endPos, minimg, lenList)
+    ninitPos = initPos;
+    nendPos = endPos;
+    if initPos > lenList - minimg
+        errordlg(['The directory must have at last ' num2str(handles.sync.digital.frequency/60) ' image files'],'Error');
+        ninitPos = lenList - minimg + 1;
+        nendPos = lenList;
+    else
+        if (endPos - initPos) <= minimg 
+            nendPos = initPos+minimg-1;
+        else
+            nendPos = floor((endPos-initPos+1)/minimg)*(minimg)+initPos-1;
+        end
+    end    
 
 % --- Executes on selection change in imgMaskFinal.
 function imgMaskFinal_Callback(hObject, eventdata, handles)
@@ -6627,14 +6248,22 @@ if ~handles.modify
     return
 end
 dirlist = dir(handles.maskStimulus.mask.img.directory);
-pos = get(hObject,'Value');
-if pos~=1 && (dirlist(pos+1).isdir || ~supportedImageFormat(dirlist(pos+1).name)),
+endPos = get(hObject,'Value');
+initPos = handles.maskStimulus.mask.img.nInitialPos;
+if endPos~=1 && (dirlist(endPos+1).isdir || ~supportedImageFormat(dirlist(endPos+1).name)),
     errordlg('The selected file is not a supported image file','Error');
     set(hObject,'Value',handles.maskStimulus.mask.img.nFinalPos);
 else
-    if pos~=1,
-        handles.maskStimulus.mask.img.nFinal = handles.maskStimulus.mask.img.list(pos,:);
-        handles.maskStimulus.mask.img.nFinalPos = pos;
+    if endPos~=1,
+        if  handles.sync.is && handles.sync.isdigital && strcmp(handles.sync.digital.mode,'On every frames');
+            [initPos, endPos] = fitNimages(initPos,endPos, handles.sync.digital.frequency/60, size(handles.maskStimulus.mask.img.list,1));
+        end      
+        handles.maskStimulus.mask.img.nInitial = handles.maskStimulus.mask.img.list(initPos,:);
+        handles.maskStimulus.mask.img.nInitialPos = initPos;        
+        handles.maskStimulus.mask.img.nFinal = handles.maskStimulus.mask.img.list(endPos,:);
+        handles.maskStimulus.mask.img.nFinalPos = endPos;
+        set( handles.imgMaskFinal , 'Value', endPos);
+        set( handles.imgMaskInitial , 'Value', initPos);
         difference=find((handles.maskStimulus.mask.img.nInitial==handles.maskStimulus.mask.img.nFinal)==0);
         if ~isempty(difference),
             nExt = find(handles.maskStimulus.mask.img.nInitial=='.');
@@ -6658,7 +6287,7 @@ else
         handles.maskStimulus.mask.img.files = 0;
     end
 end
-updateTimeMaskStimulus(hObject, eventdata, handles);
+updateTime(hObject, eventdata, handles);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -6680,14 +6309,18 @@ function imgMaskSelectAll_Callback(hObject, eventdata, handles)
 if ~handles.modify %|| (handles.maskStimulus.mask.img.nInitial == 1)
     return
 end
-pos = searchFirstFile(handles.maskStimulus.mask.img.directory);
-set(handles.imgMaskInitial,'Value',pos);
-handles.maskStimulus.mask.img.nInitial = handles.maskStimulus.mask.img.list(pos,:);
-handles.maskStimulus.mask.img.nInitialPos = pos;
-pos = searchLastFile(handles.maskStimulus.mask.img.directory);
-set(handles.imgMaskFinal,'Value',pos);
-handles.maskStimulus.mask.img.nFinalPos = pos;
-handles.maskStimulus.mask.img.nFinal = handles.maskStimulus.mask.img.list(pos,:);
+initPos = searchFirstFile(handles.maskStimulus.mask.img.directory);
+endPos = searchLastFile(handles.maskStimulus.mask.img.directory);
+if  handles.sync.is && handles.sync.isdigital && strcmp(handles.sync.digital.mode,'On every frames');
+    [initPos, endPos] = fitNimages(initPos,endPos, handles.sync.digital.frequency/60, size(handles.maskStimulus.mask.img.list,1));
+end      
+handles.maskStimulus.mask.img.nInitial = handles.maskStimulus.mask.img.list(initPos,:);
+handles.maskStimulus.mask.img.nInitialPos = initPos;        
+handles.maskStimulus.mask.img.nFinal = handles.maskStimulus.mask.img.list(endPos,:);
+handles.maskStimulus.mask.img.nFinalPos = endPos;
+set( handles.imgMaskFinal , 'Value', endPos);
+set( handles.imgMaskInitial , 'Value', initPos);
+
 difference=find((handles.maskStimulus.mask.img.nInitial==handles.maskStimulus.mask.img.nFinal)==0);
 
 if ~isempty(difference),
@@ -6723,7 +6356,7 @@ else
         handles.maskStimulus.protocol.wn.frames = in;
     end
 end
-updateTimeMaskStimulus(hObject, eventdata, handles)
+updateTime(hObject, eventdata, handles)
 
 
 % --- Executes during object creation, after setting all properties.
@@ -7116,8 +6749,7 @@ switch type,
 end
 axes(handles.bottomBarGraph);
 imshow(handles.sync.analog.graph); 
-
-guidata(hObject,handles);
+updateTime(hObject, eventdata, handles);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -7139,7 +6771,29 @@ if ~handles.modify
     set(hObject,'Value',1.0);
     return
 end
-handles.sync.digital.mode = get(hObject,'String');
+
+mode = get(hObject,'value');
+modeList = get(hObject,'String');
+
+if mode == 1, % on every frames
+    handles.sync.digital.mode = modeList(mode);
+    set(handles.frequencylistDigitalSync,'Visible','On');
+    switch handles.sync.digital.frequency,
+        case 120,
+            set(handles.frequencylistDigitalSync,'value',1);
+        case 240,
+            set(handles.frequencylistDigitalSync,'value',2);
+        case 480,
+            set(handles.frequencylistDigitalSync,'value',3);
+    end
+    set(handles.frequencyDigitalSync,'Visible','On');
+else
+    set(handles.frequencylistDigitalSync,'Visible','off');
+    set(handles.frequencyDigitalSync,'Visible','off');
+    handles.sync.digital.mode = modeList(mode);
+end
+updateTime(hObject, eventdata, handles);
+
 
 % --- Executes during object creation, after setting all properties.
 function digitalSyncMode_CreateFcn(hObject, eventdata, handles)
@@ -7169,3 +6823,382 @@ inputHandles = getInformation('Default Configuration.dsi');
 handles = replaceHandles(handles,inputHandles);
 setAllGUIParameters(handles);
 guidata(hObject,handles);
+
+
+% --- Executes on selection change in frequencylistDigitalSync.
+function frequencylistDigitalSync_Callback(hObject, eventdata, handles)
+% hObject    handle to frequencylistDigitalSync (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+frequencyList = str2double(get(hObject,'String'));
+handles.sync.digital.frequency = frequencyList(get(hObject,'Value'));
+updateTime(hObject, eventdata, handles);
+
+
+
+% Hints: contents = cellstr(get(hObject,'String')) returns frequencylistDigitalSync contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from frequencylistDigitalSync
+
+
+% --- Executes during object creation, after setting all properties.
+function frequencylistDigitalSync_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to frequencylistDigitalSync (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on selection change in otheroptionList.
+function otheroptionList_Callback(hObject, eventdata, handles)
+if ~handles.modify
+    set(hObject,'Value',1.0);
+    return
+end
+
+in = get(hObject,'Value');
+if in==1,
+    if isempty(handles.maskStimulus.mask.type),
+        set(handles.maskConfigurationMSPanel,'visible','off');
+        set(handles.solidcolorMaskMSPanel,'visible','off');
+        set(handles.whitenoiseMaskMSPanel,'visible','off'); 
+        set(handles.imgMaskMSPanel,'visible','off');
+    end
+    if isempty(handles.maskStimulus.protocol.type),
+        set(handles.protocolConfigurationMSPanel,'visible','off');
+        set(handles.whitenoiseProtoMSPanel,'visible','off');
+        set(handles.imgProtoMSPanel,'visible','off');
+        set(handles.solidColorProtoMSPanel,'visible','off');
+        set(handles.flickerProtoMSPanel,'visible','off');
+    end
+    
+    set(handles.otherOptionsPanel,'visible','off');
+    set(handles.gridmaskPanel,'visible','off');
+    set(handles.initialpositionmaskPanel,'visible','off');
+    set(handles.autoshiftmaskPanel,'visible','off');
+elseif in==2,
+    set(handles.maskConfigurationMSPanel,'visible','off');
+    set(handles.solidcolorMaskMSPanel,'visible','off');
+    set(handles.whitenoiseMaskMSPanel,'visible','off'); 
+    set(handles.imgMaskMSPanel,'visible','off');
+    
+    set(handles.protocolConfigurationMSPanel,'visible','off');
+    set(handles.whitenoiseProtoMSPanel,'visible','off');
+    set(handles.imgProtoMSPanel,'visible','off');
+    set(handles.solidColorProtoMSPanel,'visible','off');
+    set(handles.flickerProtoMSPanel,'visible','off'); 
+    
+    set(handles.otherOptionsPanel,'visible','on');
+    set(handles.autoshiftmaskPanel,'visible','on');    
+    set(handles.gridmaskPanel,'visible','off');
+    set(handles.initialpositionmaskPanel,'visible','off');
+
+elseif in==3,
+    set(handles.maskConfigurationMSPanel,'visible','off');
+    set(handles.solidcolorMaskMSPanel,'visible','off');
+    set(handles.whitenoiseMaskMSPanel,'visible','off'); 
+    set(handles.imgMaskMSPanel,'visible','off');
+    
+    set(handles.protocolConfigurationMSPanel,'visible','off');
+    set(handles.whitenoiseProtoMSPanel,'visible','off');
+    set(handles.imgProtoMSPanel,'visible','off');
+    set(handles.solidColorProtoMSPanel,'visible','off');
+    set(handles.flickerProtoMSPanel,'visible','off');
+    
+    set(handles.otherOptionsPanel,'visible','on');
+    set(handles.autoshiftmaskPanel,'visible','off');    
+    set(handles.gridmaskPanel,'visible','on');
+    set(handles.initialpositionmaskPanel,'visible','off');
+elseif in==4,
+    set(handles.maskConfigurationMSPanel,'visible','off');
+    set(handles.solidcolorMaskMSPanel,'visible','off');
+    set(handles.whitenoiseMaskMSPanel,'visible','off'); 
+    set(handles.imgMaskMSPanel,'visible','off');
+    
+    set(handles.protocolConfigurationMSPanel,'visible','off');
+    set(handles.whitenoiseProtoMSPanel,'visible','off');
+    set(handles.imgProtoMSPanel,'visible','off');
+    set(handles.solidColorProtoMSPanel,'visible','off');
+    set(handles.flickerProtoMSPanel,'visible','off');
+    
+    set(handles.otherOptionsPanel,'visible','on');
+    set(handles.autoshiftmaskPanel,'visible','off');    
+    set(handles.gridmaskPanel,'visible','off');
+    set(handles.initialpositionmaskPanel,'visible','on');
+end
+
+
+% --- Executes during object creation, after setting all properties.
+function otheroptionList_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to otheroptionList (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function xspacing_Callback(hObject, eventdata, handles)
+% hObject    handle to xspacing (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+if ~handles.modify
+    return
+end
+spacing = str2double(get(hObject,'String'));
+if isnan(spacing)
+  set(hObject,'String',handles.maskStimulus.mask.xspacing);
+  errordlg('Input must be a integer number', 'Error')
+else
+    if spacing < 0,
+        set(hObject,'String',handles.maskStimulus.mask.xspacing);
+        errordlg('Input do not must be a number less than 0', 'Error')
+    else
+        handles.maskStimulus.mask.spacing.x = spacing;
+        xrep = handles.maskStimulus.mask.spacing.xrep;
+        yrep = handles.maskStimulus.mask.spacing.yrep;
+        x = handles.maskStimulus.mask.spacing.x;
+        y = handles.maskStimulus.mask.spacing.y;
+        israndom = handles.maskStimulus.mask.spacing.israndom;
+        [handles.maskStimulus.mask.spacing.xposition , handles.maskStimulus.mask.spacing.yposition] = ...
+                    positionmask(xrep,yrep,x,y,israndom);
+    end
+end
+disp(handles.maskStimulus.mask.spacing.xposition)
+guidata(hObject,handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function xspacing_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to xspacing (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function xspacingrep_Callback(hObject, eventdata, handles)
+if ~handles.modify
+    return
+end
+spacinrep = str2double(get(hObject,'String'));
+if isnan(spacinrep)
+  set(hObject,'String',handles.maskStimulus.mask.spacing.xrep);
+  errordlg('Input must be a integer number', 'Error')
+else
+    if spacinrep < 0,
+        set(hObject,'String',handles.maskStimulus.mask.spacing.xrep);
+        errordlg('Input do not must be a number less than 0', 'Error')
+    else
+        handles.maskStimulus.mask.spacing.xrep = spacinrep;
+        xrep = handles.maskStimulus.mask.spacing.xrep;
+        yrep = handles.maskStimulus.mask.spacing.yrep;
+        x = handles.maskStimulus.mask.spacing.x;
+        y = handles.maskStimulus.mask.spacing.y;
+        israndom = handles.maskStimulus.mask.spacing.israndom;
+        [handles.maskStimulus.mask.spacing.xposition , handles.maskStimulus.mask.spacing.yposition] = ...
+                    positionmask(xrep,yrep,x,y,israndom);        
+    end
+end
+guidata(hObject,handles);
+
+% --- Executes during object creation, after setting all properties.
+function xspacingrep_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to xspacing (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+function yspacing_Callback(hObject, eventdata, handles)
+% hObject    handle to xspacing (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+if ~handles.modify
+    return
+end
+spacing = str2double(get(hObject,'String'));
+if isnan(spacing)
+  set(hObject,'String',handles.maskStimulus.mask.spacing.y);
+  errordlg('Input must be a integer number', 'Error')
+else
+    if spacing < 0,
+        set(hObject,'String',handles.maskStimulus.mask.spacing.y);
+        errordlg('Input do not must be a number less than 0', 'Error')
+    else
+        handles.maskStimulus.mask.spacing.y = spacing;
+        xrep = handles.maskStimulus.mask.spacing.xrep;
+        yrep = handles.maskStimulus.mask.spacing.yrep;
+        x = handles.maskStimulus.mask.spacing.x;
+        y = handles.maskStimulus.mask.spacing.y;
+        israndom = handles.maskStimulus.mask.spacing.israndom;
+        [handles.maskStimulus.mask.spacing.xposition , handles.maskStimulus.mask.spacing.yposition] = ...
+                    positionmask(xrep,yrep,x,y,israndom);        
+    end
+end
+guidata(hObject,handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function yspacing_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to xspacing (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function yspacingrep_Callback(hObject, eventdata, handles)
+if ~handles.modify
+    return
+end
+rep = str2double(get(hObject,'String'));
+if isnan(rep)
+  set(hObject,'String',handles.maskStimulus.mask.spacing.yrep);
+  errordlg('Input must be a integer number', 'Error')
+else
+    if rep < 0,
+        set(hObject,'String',handles.maskStimulus.mask.spacing.yrep);
+        errordlg('Input do not must be a number less than 0', 'Error')
+    else
+        handles.maskStimulus.mask.spacing.yrep = rep;
+        xrep = handles.maskStimulus.mask.spacing.xrep;
+        yrep = handles.maskStimulus.mask.spacing.yrep;
+        x = handles.maskStimulus.mask.spacing.x;
+        y = handles.maskStimulus.mask.spacing.y;
+        israndom = handles.maskStimulus.mask.spacing.israndom;
+        [handles.maskStimulus.mask.spacing.xposition , handles.maskStimulus.mask.spacing.yposition] = ...
+                    positionmask(xrep,yrep,x,y,israndom);        
+    end
+end
+guidata(hObject,handles);
+
+% --- Executes during object creation, after setting all properties.
+function yspacingrep_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to xspacing (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on button press in positionRandom.
+function positionRandom_Callback(hObject, eventdata, handles)
+if ~handles.modify
+    set(hObject,'Value',0.0);
+    return
+end
+handles.maskStimulus.mask.spacing.israndom = ~handles.maskStimulus.mask.spacing.israndom;
+xrep = handles.maskStimulus.mask.spacing.xrep;
+yrep = handles.maskStimulus.mask.spacing.yrep;
+x = handles.maskStimulus.mask.spacing.x;
+y = handles.maskStimulus.mask.spacing.y;
+israndom = handles.maskStimulus.mask.spacing.israndom;
+[handles.maskStimulus.mask.spacing.xposition , handles.maskStimulus.mask.spacing.yposition] = ...
+            positionmask(xrep,yrep,x,y,israndom);
+guidata(hObject,handles);
+
+
+
+% --- Executes on button press in savePositionRandom.
+function savePositionRandom_Callback(hObject, eventdata, handles)
+    xrep = handles.maskStimulus.mask.spacing.xrep;
+    yrep = handles.maskStimulus.mask.spacing.yrep;
+    x = handles.maskStimulus.mask.spacing.x;
+    y = handles.maskStimulus.mask.spacing.y;
+    israndom = handles.maskStimulus.mask.spacing.israndom;
+    [handles.maskStimulus.mask.spacing.xposition , handles.maskStimulus.mask.spacing.yposition] = ...
+        positionmask(xrep,yrep,x,y,israndom);
+    xposition = handles.maskStimulus.mask.spacing.xposition;
+    yposition = handles.maskStimulus.mask.spacing.yposition;
+
+    [FileName,PathName] = uiputfile('*.mat','Save position random struct','positionrandom');
+    handles.maskStimulus.mask.spacing.pathfile = fullfile(PathName,FileName);
+    save(handles.maskStimulus.mask.spacing.pathfile,'xposition','yposition','xrep','yrep','x','y','israndom');    
+    set(handles.pathPositionRandom,'String',handles.maskStimulus.mask.spacing.pathfile);
+    
+    guidata(hObject,handles)
+
+% --- Executes on button press in loadPositionRandom.
+function loadPositionRandom_Callback(hObject, eventdata, handles)
+if ~handles.modify
+    return
+end
+
+[name,folder] = uigetfile('.mat','Select position file','positionrandom.mat');
+positionshift = load(fullfile(folder,name));
+if isstruct(positionshift) && isfield(positionshift,'x') && isfield(positionshift,'y') 
+    handles.maskStimulus.mask.spacing.xposition = positionshift.xposition;
+    handles.maskStimulus.mask.spacing.yposition = positionshift.yposition;
+    handles.maskStimulus.mask.spacing.xrep = positionshift.xrep;
+    handles.maskStimulus.mask.spacing.yrep = positionshift.yrep;
+    handles.maskStimulus.mask.spacing.x = positionshift.x;
+    handles.maskStimulus.mask.spacing.y = positionshift.y;
+    handles.maskStimulus.mask.spacing.israndom = positionshift.israndom;
+    handles.maskStimulus.mask.spacing.pathfile = fullfile(folder,name);
+else
+    errordlg('The file do not has correct format.','Error');
+end
+
+set(handles.xspacing,'String',handles.maskStimulus.mask.spacing.x);
+set(handles.yspacing,'String',handles.maskStimulus.mask.spacing.y);
+set(handles.xspacingrep,'String',handles.maskStimulus.mask.spacing.xrep);
+set(handles.yspacingrep,'String',handles.maskStimulus.mask.spacing.yrep);
+set(handles.positionRandom,'Value',handles.maskStimulus.mask.spacing.israndom);
+set(handles.pathPositionRandom,'String',handles.maskStimulus.mask.spacing.pathfile);
+guidata(hObject,handles)
+
+
+
+function pathPositionRandom_Callback(hObject, eventdata, handles)
+% hObject    handle to pathPositionRandom (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of pathPositionRandom as text
+%        str2double(get(hObject,'String')) returns contents of pathPositionRandom as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function pathPositionRandom_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to pathPositionRandom (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on button press in inverstedMask.
+function inverstedMask_Callback(hObject, eventdata, handles)
+handles.maskStimulus.mask.inverse = get(hObject,'Value');
+guidata(hObject,handles)

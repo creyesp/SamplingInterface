@@ -25,6 +25,9 @@ function [ width, height ] = getProtocolSize( handles )
                 case 'White noise',
                     width = handles.maskStimulus.mask.wn.blocks*handles.maskStimulus.mask.wn.pxX;
                     height = handles.maskStimulus.mask.wn.blocks*handles.maskStimulus.mask.wn.pxY;
+                otherwise
+                    width = 0;
+                    height = 0;
             end
     end
 end

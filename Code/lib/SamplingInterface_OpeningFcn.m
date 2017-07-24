@@ -10,7 +10,7 @@ delete *.si;
 handles.mode = 'Flicker';
 
 % Set the parameters of <<<General options Panel>>
-handles.img.directory='...';
+handles.img.directory = '...';
 filelist = dir_to_Win_ls(dir(handles.img.directory));
 handles.list = char('',filelist(3:size(filelist,1),:));
 pos = searchFirstFile(handles.img.directory);
@@ -59,25 +59,13 @@ Screen('Preference', 'VisualDebugLevel', oldLevel);
 
 
 % Set the parameters of <<<Sample format Panel subsection Digital Signal>>
-% handles.bottomBar.is = false;
-% handles.bottomBar.useTrigger = false;
-% handles.bottomBar.r = 255;
-% handles.bottomBar.baseR = 125;
-% handles.bottomBar.g = 0;
-% handles.bottomBar.baseG = 0;
-% handles.bottomBar.b = 0;
-% handles.bottomBar.baseB = 0;
-% handles.bottomBar.posLeft = 1;
-% handles.bottomBar.posTop = 85;
-% handles.bottomBar.posRight = 100;
-% handles.bottomBar.posBottom = 100;
-% handles.bottomBar.division = 4;
-% handles.bottomBar.graph = zeros(100,100,3);
 
 handles.sync.is = false;
 handles.sync.isdigital = false;
 handles.sync.isSerial = false;
 handles.sync.digital.mode = 'On every frames'; % use trigger -> 'Start and end' 'On every frames'
+handles.sync.digital.frequency = 120;
+handles.sync.digital.compressbit = 2;
 handles.sync.analog.r = 255;
 handles.sync.analog.baseR = 125;
 handles.sync.analog.g = 0;
@@ -177,6 +165,22 @@ handles.maskStimulus.repeatBackground = false;
 handles.maskStimulus.mask.useImages = false;
 handles.maskStimulus.mask.width = 0;
 handles.maskStimulus.mask.height = 0;
+handles.maskStimulus.mask.inverse = false;
+handles.maskStimulus.mask.hole.width = 20;
+handles.maskStimulus.mask.hole.height = 20;
+handles.maskStimulus.mask.hole.angle = 0;
+handles.maskStimulus.mask.hole.xcenter = 0;
+handles.maskStimulus.mask.hole.ycenter = 0;
+handles.maskStimulus.mask.hole.shape = 'oval';
+handles.maskStimulus.mask.spacing.x = 0;
+handles.maskStimulus.mask.spacing.y = 0;
+handles.maskStimulus.mask.spacing.xrep = 0;
+handles.maskStimulus.mask.spacing.yrep = 0;
+handles.maskStimulus.mask.spacing.israndom = false;
+handles.maskStimulus.mask.spacing.xposition = 0;
+handles.maskStimulus.mask.spacing.yposition = 0;
+handles.maskStimulus.mask.spacing.yrep = 0;
+handles.maskStimulus.mask.spacing.pathfile = '';
 handles.maskStimulus.mask.type = 'background';%('White noise' 'Img' 'Solid color')
 handles.maskStimulus.mask.wn.blocks = 100;
 handles.maskStimulus.mask.wn.pxY = 5;

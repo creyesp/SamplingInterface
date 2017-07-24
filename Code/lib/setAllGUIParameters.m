@@ -78,10 +78,24 @@ if handles.sync.is,
         set(handles.TypeSynchronization,'value',3)
         set(handles.AnalogsyncPanel,'visible','off')
         set(handles.DigitalsyncPanel,'visible','on')        
-        if strcmp(handles.sync.digital.mode,'Start and end')
+        if strcmp(handles.sync.digital.mode,'On every frames')
             set(handles.digitalSyncMode,'value',1);
-        else % 'On every frames'
+            set(handles.frequencylistDigitalSync,'Visible',true);
+            set(handles.frequencyDigitalSync,'Visible',true);
+            switch handles.sync.digital.frequency,
+                case 120,
+                    set(handles.frequencylistDigitalSync,'value',1);
+                case 240,
+                    set(handles.frequencylistDigitalSync,'value',2);
+                case 480
+                    set(handles.frequencylistDigitalSync,'value',3);
+            end
+        else % 
             set(handles.digitalSyncMode,'value',2);
+            set(handles.frequencylistDigitalSync,'Visible',false);
+            set(handles.frequencyDigitalSync,'Visible',false);
+            set(handles.frequencylistDigitalSync,'Visible',false);
+            set(handles.frequencyDigitalSync,'Visible',false);
         end
         handles.sync.analog.graph = zeros(100,100,3);
     elseif handles.sync.isSerial,
@@ -311,6 +325,10 @@ if handles.maskStimulus.repeatBackground
 else
     set(handles.maskStimulusRepWithBackground,'Value',0.0);
 end
+set(handles.xspacing,'string',handles.maskStimulus.mask.spacing.x)
+set(handles.yspacing,'string',handles.maskStimulus.mask.spacing.y)
+set(handles.xspacingrep,'string',handles.maskStimulus.mask.spacing.x)
+set(handles.yspacingrep,'string',handles.maskStimulus.mask.spacing.y)
 
 set( handles.imgMaskDirectory , 'String', handles.maskStimulus.mask.img.directory);
 set( handles.imgMaskInitial , 'Value', handles.maskStimulus.mask.img.nInitialPos);
