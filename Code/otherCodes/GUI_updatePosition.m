@@ -22,7 +22,7 @@ function varargout = GUI_updatePosition(varargin)
 
 % Edit the above text to modify the response to help GUI_updatePosition
 
-% Last Modified by GUIDE v2.5 24-Jul-2017 09:18:32
+% Last Modified by GUIDE v2.5 25-Jul-2017 15:13:00
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -96,7 +96,7 @@ if exist(filename,'file')
     guidata(hObject,handles)
 else
     errordlg('File does not exist', 'Error')
-    set(handles.originalpath,'String',fullfile(phandles.infile.folder,handles.infile.name));
+    set(handles.originalpath,'String',fullfile(handles.infile.folder,handles.infile.name));
 end
 
 
@@ -150,6 +150,24 @@ function loadButtom_Callback(hObject, eventdata, handles)
 handles.infile.name = name;
 handles.infile.folder = folder;
 set(handles.originalpath,'String',fullfile(folder,name));
+
+infileFile = fullfile(handles.infile.folder,handles.infile.name);
+mkdir tmp2
+delete ./tmp2/*.si
+system(['unzip ' strrep(infileFile,' ','\ ') ' -d ./tmp2']);
+fileName = '/tmp2/Final Configuration.si';
+if exist(fullfile(pwd,fileName),'file')
+    data = getInformation(fullfile(pwd,fileName));
+    
+    handles.ndx = data.img.deltaX;
+    handles.ndy = data.img.deltaY;
+    set(handles.Dx,'String',handles.ndx);
+    set(handles.Dy,'String',handles.ndy);
+else
+    disp('ERROR: Can''t open configuration file "Final Configuration.si" of the screen data zip');
+end	
+rmdir('tmp2','s');
+
 guidata(hObject,handles)
 
 
@@ -182,12 +200,13 @@ fileName = '/tmp2/Final Configuration.si';
 if exist(fullfile(pwd,fileName),'file')
     data = getInformation(fullfile(pwd,fileName));
     img = ones(data.protocol.height,data.protocol.width)*255;
-	% imageInfo = imfinfo(fullfile(data.img.directory,data.list(end,:)));
-	% w = imageInfo.Width;
-	% h = imageInfo.Height;
-	% img = ones(h,w)*255;
-
-    [ndx,ndy] = moveImageUnix(data.img.deltaX,data.img.deltaY,data.screens.selected,img);
+    if IsOSX,
+        [ndx,ndy] = moveImageMac(data.img.deltaX,data.img.deltaY, data.screens.selected,img);
+    elseif IsLinux
+        [ndx,ndy] = moveImageUnix(data.img.deltaX,data.img.deltaY, data.screens.selected,img);    
+    else
+        [ndx,ndy] = moveImageWin(data.img.deltaX,data.img.deltaY, data.screens.selected,img);
+    end 
     disp(['PROTOCOLS centered to x:',num2str(ndx),' px y: ',num2str(ndy), 'px.'])
     handles.ndx = ndx;
     handles.ndy = ndy;
@@ -231,3 +250,43 @@ if exist(fullfile(pwd,fileName),'file')
 else
     disp('ERROR: Can''t open configuration file "Final Configuration.si" of the screen data zip');
 end	 
+
+
+
+function Dx_Callback(hObject, eventdata, handles)
+    dx = str2double(get(hObject,'String'));
+    handles.ndx = round(dx);
+    guidata(hObject,handles)
+
+
+% --- Executes during object creation, after setting all properties.
+function Dx_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to Dx (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function Dy_Callback(hObject, eventdata, handles)
+    dy = str2double(get(hObject,'String'));
+    handles.ndy = round(dy);
+    guidata(hObject,handles)
+
+
+% --- Executes during object creation, after setting all properties.
+function Dy_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to Dy (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
