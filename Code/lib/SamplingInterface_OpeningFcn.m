@@ -43,6 +43,7 @@ handles.img.background.graph = zeros(1,1,3);
 handles.experiments.number = 0;
 handles.experiments.selected = 1;
 handles.experiments.file = 0;
+handles.experiments.repet_bkg = 0;
 handles.experiments.list = 'List of experimets to execute';
 handles.time = 0;
 

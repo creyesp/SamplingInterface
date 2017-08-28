@@ -22,7 +22,7 @@ function varargout = SamplingInterface(varargin)
 
 % Edit the above text to modify the response to help SamplingInterface
 
-% Last Modified by GUIDE v2.5 07-Jun-2017 17:10:02
+% Last Modified by GUIDE v2.5 28-Aug-2017 15:41:26
 
 % Begin initialization code - DO NOT EDIT
 addpath('lib');
@@ -2059,6 +2059,7 @@ if handles.img.files~=0 ...
                 if strcmp(inf.mode,'Presentation')
                     handles.time = handles.time + (inf.presentation.time/1000)*handles.flicker.repetitions +...
                         handles.flicker.time*(handles.flicker.repetitions+1);
+                    handles.experiments.repet_bkg  = [handles.experiments.repet_bkg 1];
                 else
                     errordlg('You are trying to add an experiment with prev. background but you not added a previous background stimulus','Error');
                     return
@@ -2069,6 +2070,7 @@ if handles.img.files~=0 ...
             end             
          else
             handles.time = handles.time + handles.flicker.time;
+            handles.experiments.repet_bkg  = [handles.experiments.repet_bkg 0];
          end
     elseif strcmp(handles.mode,'Only stimulus (fps)'),
         newExp = ['OS - ' get(handles.nFiles,'String') ' file(s) - ' ...
@@ -2080,6 +2082,7 @@ if handles.img.files~=0 ...
                 if strcmp(inf.mode,'Presentation')
                     handles.time = handles.time + (inf.presentation.time/1000)*handles.onlyStimulus.repetitions +...
                         handles.onlyStimulus.time*(handles.onlyStimulus.repetitions+1);
+                    handles.experiments.repet_bkg  = [handles.experiments.repet_bkg 1];
                 else
                     errordlg('You are trying to add an experiment with prev. background but you not added a previous background stimulus','Error');
                     return            
@@ -2090,6 +2093,7 @@ if handles.img.files~=0 ...
             end            
          else
             handles.time = handles.time + handles.onlyStimulus.time;
+            handles.experiments.repet_bkg  = [handles.experiments.repet_bkg 0];
          end
     elseif strcmp(handles.mode,'Mask stimulus')
         switch handles.maskStimulus.protocol.type,
@@ -2142,6 +2146,7 @@ if handles.img.files~=0 ...
                       handles.maskStimulus.repetitions+...
                       (handles.maskStimulus.repetitions+1)*...
                       handles.maskStimulus.time; 
+                    handles.experiments.repet_bkg  = [handles.experiments.repet_bkg 1];
                 else
                     errordlg('You are trying to add an experiment with prev. background but you not added a previous background stimulus','Error');
                     return
@@ -2152,6 +2157,7 @@ if handles.img.files~=0 ...
             end
         else
             handles.time = handles.time + handles.maskStimulus.time;
+            handles.experiments.repet_bkg  = [handles.experiments.repet_bkg 0];
         end
     else
         newExp = ['WN - ' num2str(handles.whitenoise.frames) ' frame(s) - ' ...
@@ -2167,6 +2173,8 @@ if handles.img.files~=0 ...
     set(handles.totalTime,'String',datestr(datenum(0,0,0,0,0,handles.time),...
         'HH:MM:SS.FFF'));
     guidata(hObject,handles);
+    disp('add list repeat')
+    disp(handles.experiments.repet_bkg)
 else
     errordlg('You are trying to add an imageless experiment','Error');
 end
@@ -2263,6 +2271,11 @@ if ~handles.modify
     return
 end
 in = get(hObject,'Value');
+disp('position list')
+disp(in)
+disp(handles.experiments.file(in))
+disp(handles.experiments.file)
+disp(handles.experiments.list(in,:))
 if in == handles.experiments.selected && in ~=1,
     inputH = ['Exp' sprintf('%03d',handles.experiments.file(in)) '.si'];
     inputHprev = ['Exp' sprintf('%03d',handles.experiments.file(in-1)) '.si'];
@@ -2340,10 +2353,13 @@ if in == handles.experiments.selected && in ~=1,
         if in==size(handles.experiments.list,1),
             handles.experiments.list = handles.experiments.list(1:in-1,:);
             handles.experiments.file = handles.experiments.file(1:in-1);
+            handles.experiments.repet_bkg = handles.experiments.repet_bkg(1:in-1);
         else
             handles.experiments.list = char(handles.experiments.list(1:in-1,:),handles.experiments.list(in+1:end,:));
             handles.experiments.file = [handles.experiments.file(1:in-1)...
                  handles.experiments.file(in+1:end)];
+            handles.experiments.repet_bkg = [handles.experiments.repet_bkg(1:in-1)...
+                 handles.experiments.repet_bkg(in+1:end)];
         end
         set(hObject,'String',handles.experiments.list);
         set(hObject,'Value',in-1);
@@ -2437,9 +2453,12 @@ if handles.presentation.time ~= 0
     
     handles.protocol.width = handles.screens.width;
     handles.protocol.height = handles.screens.height;
+    
+    handles.experiments.repet_bkg  = [handles.experiments.repet_bkg 0];
 else
     errordlg('You are trying to add a timeless background','Error');
 end
+guidata(hObject,handles);
 
 
 function presentationTime_Callback(hObject, eventdata, handles)
@@ -7201,4 +7220,40 @@ end
 % --- Executes on button press in inverstedMask.
 function inverstedMask_Callback(hObject, eventdata, handles)
 handles.maskStimulus.mask.inverse = get(hObject,'Value');
+guidata(hObject,handles)
+
+
+function randomList_Callback(hObject, eventdata, handles)
+% randomize the playlist of protocols
+par_list = 0;
+new_file = 0;
+new_list = handles.experiments.list(1,:);
+for k=2:length(handles.experiments.repet_bkg)
+    if handles.experiments.repet_bkg(k)
+        par_list = [par_list par_list(end)];
+    else
+        par_list = [par_list par_list(end)+1];
+    end
+end
+
+len_list = handles.experiments.number - sum(handles.experiments.repet_bkg);
+randomlist = randperm(len_list);
+for k = 1:len_list
+    range = find(par_list == randomlist(k) );
+    new_file = [new_file handles.experiments.file(range)];
+%     new_list = [new_list; handles.experiments.file(range,:)];
+end
+for k=new_file(2:end)
+    new_list = [new_list; handles.experiments.list(k+1,:)];
+end
+handles.experiments.list = new_list;
+handles.experiments.file = new_file;
+set(handles.experimentList,'String',handles.experiments.list);
+
+disp('new file')
+disp(new_file)
+disp('file')
+disp(handles.experiments.file)
+
+disp(handles.experiments.list)
 guidata(hObject,handles)

@@ -38,7 +38,9 @@ nonVisual = ischar(compressData);
 % Non-visual
 if nonVisual
     delete *.si
-    dirName = sprintf('../Log/Exp__%04d_%02d_%02d-%02d.%02d.%02d',round(clock));
+    protocolname = strsplit(compressData,'.zip');
+    [pathPro,namePro,extPro] = fileparts(compressData);
+    dirName = sprintf('../Log/Exp__%04d_%02d_%02d-%02d.%02d.%02d-%s',round(clock),namePro);
     mkdir(dirName)
     system(['unzip ' strrep(compressData,' ','\ ') ' -d ' dirName]);
     siFileName = 'Final Configuration.si';
@@ -2525,7 +2527,7 @@ if ~siFilesNotCharged && ~indexColorFrame && nonVisual
         disp(experiment(kexp).maskStimulus.mask.spacing.xposition)
         disp(experiment(kexp).maskStimulus.mask.spacing.yposition)
         dat = experiment(kexp);
-        save([dirName '/Exp' sprintf('%03d',experiment(kexp).experiments.file(kexp+1)) '.si'],'-struct','dat');
+%         save([dirName '/Exp' sprintf('%03d',experiment(kexp).experiments.file(kexp+1)) '.si'],'-struct','dat');
     end
     saveLogFile(data,Time,dirName);
 %     if useProjector && ~exist(fullfile(dirName,siFileName),'file'),
