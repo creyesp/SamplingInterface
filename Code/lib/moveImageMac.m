@@ -1,4 +1,4 @@
-function [dx,dy] = moveImage(dx,dy,screen,img)
+function [dx,dy] = moveImageMac(dx,dy,screen,img)
 % Return the new center position to show protocol 
 % This function is for run in a Mac OS
 % [dx,dy] = moveImage(dx,dy,screen,img)
@@ -14,6 +14,9 @@ enter = 40;
 esc = 41;
 control = 224;
 key = 0;
+
+oldLevel = Screen('Preference', 'VisualDebugLevel', 0);
+oldSkip = Screen('Preference', 'SkipSyncTests',0);
 
 win = Screen('OpenWindow',screen,0);
 [w,h]=Screen('WindowSize',win);
@@ -101,6 +104,8 @@ while key ~= esc,
                 dy = position(2) - (h-s_img(1))/2;
                 break;
             case esc
+                dx = position(1) - (w-s_img(2))/2;
+                dy = position(2) - (h-s_img(1))/2;                
                 break;
             otherwise
         end 
@@ -111,3 +116,7 @@ while key ~= esc,
 end
 Screen('BlendFunction', win, sourceFactorOld, destinationFactorOld, colorMaskOld);
 Screen('CloseAll');
+
+Screen('Preference', 'SkipSyncTests',oldSkip);
+Screen('Preference', 'VisualDebugLevel', oldLevel);
+end

@@ -8,7 +8,8 @@ function [dx,dy] = moveImageUnix(dx,dy,screenNumber,img)
 black = BlackIndex(screenNumber);
 
 % Open an on screen window
-Screen('Preference', 'VisualDebugLevel', 1);
+oldLevel = Screen('Preference', 'VisualDebugLevel', 0);
+oldSkip = Screen('Preference', 'SkipSyncTests',0);
 
 [window, windowRect] = Screen('OpenWindow', screenNumber, black);
 
@@ -113,4 +114,9 @@ dy = squareY - yCenter;
 % Clear the screen
 sca;
 
+Screen('Preference', 'SkipSyncTests',oldSkip);
+Screen('Preference', 'VisualDebugLevel', oldLevel);
+
 end
+
+
