@@ -40,7 +40,7 @@ handles.img.background.imgName = '...';
 handles.img.background.graph = zeros(1,1,3);
 
 % Set the parameters of <<<Reproduction list Panel>>
-handles.experiments.number = 0;
+handles.experiments.number = 0; % numero del ultimo protocolos agregado a la lista
 handles.experiments.selected = 1;
 handles.experiments.file = 0;
 handles.experiments.repet_bkg = 0;

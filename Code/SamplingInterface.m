@@ -2377,7 +2377,6 @@ guidata(hObject,handles);
 %        contents{get(hObject,'Value')} returns selected item from handles.experimentList
 
 
-% --- Executes on button press in downExp.
 function downExp_Callback(hObject, eventdata, handles)
 % hObject    handle to downExp (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -2387,15 +2386,86 @@ if ~handles.modify
 end
 pos = get(handles.experimentList,'Value');
 if pos~=size(handles.experiments.list,1) && pos~=1
-    tmp = handles.experiments.list(pos,:);
-    handles.experiments.list(pos,:) = handles.experiments.list(pos+1,:);
-    handles.experiments.list(pos+1,:) = tmp;
-    set(handles.experimentList,'String',handles.experiments.list);
-    set(handles.experimentList,'Value',pos+1);
-    handles.experiments.selected = pos+1;
-    tmp = handles.experiments.file(pos);
-    handles.experiments.file(pos) = handles.experiments.file(pos+1);
-    handles.experiments.file(pos+1) = tmp;
+    if handles.experiments.repet_bkg(pos) == 1; %protocolo en bloque 
+        disp('down: rep protocol')
+        tmp = handles.experiments.list(pos-1:pos,:);
+        handles.experiments.list(pos-1,:) = handles.experiments.list(pos+1,:);
+        handles.experiments.list(pos:pos+1,:) = tmp;
+        set(handles.experimentList,'String',handles.experiments.list);
+        set(handles.experimentList,'Value',pos+1);
+        handles.experiments.selected = pos+1;
+        tmp = handles.experiments.file(pos-1:pos);
+        handles.experiments.file(pos-1) = handles.experiments.file(pos+1);
+        handles.experiments.file(pos:pos+1) = tmp;   
+        tmp = handles.experiments.repet_bkg(pos-1:pos);
+        handles.experiments.repet_bkg(pos-1) = handles.experiments.repet_bkg(pos+1);
+        handles.experiments.repet_bkg(pos:pos+1) = tmp;  
+    elseif handles.experiments.repet_bkg(pos) == 0 && length(handles.experiments.repet_bkg)-1 > pos;
+        if handles.experiments.repet_bkg(pos+1) == 1; %protocolo en bloque
+            disp('down: rep bkng')
+            tmp = handles.experiments.list(pos:pos+1,:);
+            handles.experiments.list(pos,:) = handles.experiments.list(pos+2,:);
+            handles.experiments.list(pos+1:pos+2,:) = tmp;
+            set(handles.experimentList,'String',handles.experiments.list);
+            set(handles.experimentList,'Value',pos+1);
+            handles.experiments.selected = pos+1;
+            tmp = handles.experiments.file(pos:pos+1);
+            handles.experiments.file(pos) = handles.experiments.file(pos+2);
+            handles.experiments.file(pos+1:pos+2) = tmp;  
+            tmp = handles.experiments.repet_bkg(pos:pos+1);
+            handles.experiments.repet_bkg(pos) = handles.experiments.repet_bkg(pos+2);
+            handles.experiments.repet_bkg(pos+1:pos+2) = tmp; 
+        elseif handles.experiments.repet_bkg(pos+2) == 1;
+                disp('down: pre block')
+                tmp = handles.experiments.list(pos+1:pos+2,:);
+                handles.experiments.list(pos+2,:) = handles.experiments.list(pos,:);
+                handles.experiments.list(pos:pos+1,:) = tmp;
+                set(handles.experimentList,'String',handles.experiments.list);
+                set(handles.experimentList,'Value',pos+2);
+                handles.experiments.selected = pos+2;
+                tmp = handles.experiments.file(pos+1:pos+2);
+                handles.experiments.file(pos+2) = handles.experiments.file(pos);
+                handles.experiments.file(pos:pos+1) = tmp;  
+                tmp = handles.experiments.repet_bkg(pos+1:pos+2);
+                handles.experiments.repet_bkg(pos+2) = handles.experiments.repet_bkg(pos);
+                handles.experiments.repet_bkg(pos:pos+1) = tmp;
+        else %protocolo normal
+            disp('down: normal1')
+            tmp = handles.experiments.list(pos,:);
+            handles.experiments.list(pos,:) = handles.experiments.list(pos+1,:);
+            handles.experiments.list(pos+1,:) = tmp;
+            set(handles.experimentList,'String',handles.experiments.list);
+            set(handles.experimentList,'Value',pos+1);
+            handles.experiments.selected = pos+1;
+            tmp = handles.experiments.file(pos);
+            handles.experiments.file(pos) = handles.experiments.file(pos+1);
+            handles.experiments.file(pos+1) = tmp;    
+            tmp = handles.experiments.repet_bkg(pos);
+            handles.experiments.repet_bkg(pos) = handles.experiments.repet_bkg(pos+1);
+            handles.experiments.repet_bkg(pos+1) = tmp;                         
+        end
+    else %protocolo normal
+        if length(handles.experiments.repet_bkg) > pos;
+            if handles.experiments.repet_bkg(pos+1) == 0;
+                disp('down: normal2')
+                tmp = handles.experiments.list(pos,:);
+                handles.experiments.list(pos,:) = handles.experiments.list(pos+1,:);
+                handles.experiments.list(pos+1,:) = tmp;
+                set(handles.experimentList,'String',handles.experiments.list);
+                set(handles.experimentList,'Value',pos+1);
+                handles.experiments.selected = pos+1;
+                tmp = handles.experiments.file(pos);
+                handles.experiments.file(pos) = handles.experiments.file(pos+1);
+                handles.experiments.file(pos+1) = tmp;    
+                tmp = handles.experiments.repet_bkg(pos);
+                handles.experiments.repet_bkg(pos) = handles.experiments.repet_bkg(pos+1);
+                handles.experiments.repet_bkg(pos+1) = tmp;                             
+            end
+        end 
+    end
+disp(handles.experiments.selected)
+disp(handles.experiments.repet_bkg)
+disp(handles.experiments.file)
 end
 guidata(hObject,handles);
 
@@ -2409,18 +2479,86 @@ if ~handles.modify
 end
 pos = get(handles.experimentList,'Value');
 if pos>2
-    tmp = handles.experiments.list(pos,:);
-    handles.experiments.list(pos,:) = handles.experiments.list(pos-1,:);
-    handles.experiments.list(pos-1,:) = tmp;
-    set(handles.experimentList,'String',handles.experiments.list);
-    set(handles.experimentList,'Value',pos-1);
-    handles.experiments.selected = pos-1;
-    tmp = handles.experiments.file(pos);
-    handles.experiments.file(pos) = handles.experiments.file(pos-1);
-    handles.experiments.file(pos-1) = tmp;
+    if handles.experiments.repet_bkg(pos-1) == 1 && pos>3; %protocolo anterior en bloque
+        disp('post bloque')
+        tmp = handles.experiments.list(pos-2:pos-1,:);
+        handles.experiments.list(pos-2,:) = handles.experiments.list(pos,:);
+        handles.experiments.list(pos-1:pos,:) = tmp;
+        set(handles.experimentList,'String',handles.experiments.list);
+        set(handles.experimentList,'Value',pos-2);
+        handles.experiments.selected = pos-2;
+        tmp = handles.experiments.file(pos-2:pos-1);
+        handles.experiments.file(pos-2) = handles.experiments.file(pos);
+        handles.experiments.file(pos-1:pos) = tmp;  
+        tmp = handles.experiments.repet_bkg(pos-2:pos-1);
+        handles.experiments.repet_bkg(pos-2) = handles.experiments.repet_bkg(pos);
+        handles.experiments.repet_bkg(pos-1:pos) = tmp;                 
+    elseif handles.experiments.repet_bkg(pos) == 1 && pos>3; %protocolo en bloque 
+        disp('rep protocol')
+        tmp = handles.experiments.list(pos-1:pos,:);
+        handles.experiments.list(pos,:) = handles.experiments.list(pos-2,:);
+        handles.experiments.list(pos-2:pos-1,:) = tmp;
+        set(handles.experimentList,'String',handles.experiments.list);
+        set(handles.experimentList,'Value',pos-1);
+        handles.experiments.selected = pos-1;
+        tmp = handles.experiments.file(pos-1:pos);
+        handles.experiments.file(pos) = handles.experiments.file(pos-2);
+        handles.experiments.file(pos-2:pos-1) = tmp;   
+        tmp = handles.experiments.repet_bkg(pos-1:pos);
+        handles.experiments.repet_bkg(pos) = handles.experiments.repet_bkg(pos-2);
+        handles.experiments.repet_bkg(pos-2:pos-1) = tmp;  
+    elseif handles.experiments.repet_bkg(pos) == 0 && length(handles.experiments.repet_bkg) > pos 
+        if handles.experiments.repet_bkg(pos+1) == 1; %protocolo en bloque
+            disp('rep bkgn')
+            tmp = handles.experiments.list(pos:pos+1,:);
+            handles.experiments.list(pos+1,:) = handles.experiments.list(pos-1,:);
+            handles.experiments.list(pos-1:pos,:) = tmp;
+            set(handles.experimentList,'String',handles.experiments.list);
+            set(handles.experimentList,'Value',pos-1);
+            handles.experiments.selected = pos-1;
+            tmp = handles.experiments.file(pos:pos+1);
+            handles.experiments.file(pos+1) = handles.experiments.file(pos-1);
+            handles.experiments.file(pos-1:pos) = tmp;  
+            tmp = handles.experiments.repet_bkg(pos:pos+1);
+            handles.experiments.repet_bkg(pos+1) = handles.experiments.repet_bkg(pos-1);
+            handles.experiments.repet_bkg(pos-1:pos) = tmp; 
+        else %protocolo normal
+            disp('normal1')
+            tmp = handles.experiments.list(pos,:);
+            handles.experiments.list(pos,:) = handles.experiments.list(pos-1,:);
+            handles.experiments.list(pos-1,:) = tmp;
+            set(handles.experimentList,'String',handles.experiments.list);
+            set(handles.experimentList,'Value',pos-1);
+            handles.experiments.selected = pos-1;
+            tmp = handles.experiments.file(pos);
+            handles.experiments.file(pos) = handles.experiments.file(pos-1);
+            handles.experiments.file(pos-1) = tmp;  
+            tmp = handles.experiments.repet_bkg(pos);
+            handles.experiments.repet_bkg(pos) = handles.experiments.repet_bkg(pos-1);
+            handles.experiments.repet_bkg(pos-1) = tmp;             
+        end
+    else %protocolo normal
+        if handles.experiments.repet_bkg(pos) == 0 && pos>2;
+            disp('normal2')
+            tmp = handles.experiments.list(pos,:);
+            handles.experiments.list(pos,:) = handles.experiments.list(pos-1,:);
+            handles.experiments.list(pos-1,:) = tmp;
+            set(handles.experimentList,'String',handles.experiments.list);
+            set(handles.experimentList,'Value',pos-1);
+            handles.experiments.selected = pos-1;
+            tmp = handles.experiments.file(pos);
+            handles.experiments.file(pos) = handles.experiments.file(pos-1);
+            handles.experiments.file(pos-1) = tmp;        
+            tmp = handles.experiments.repet_bkg(pos);
+            handles.experiments.repet_bkg(pos) = handles.experiments.repet_bkg(pos-1);
+            handles.experiments.repet_bkg(pos-1) = tmp;                         
+        end
+    end
+disp(handles.experiments.selected)
+disp(handles.experiments.repet_bkg)
+disp(handles.experiments.file)
 end
 guidata(hObject,handles);
-
 
 % --- Executes on button press in addPresentation.
 function addPresentation_Callback(hObject, eventdata, handles)
@@ -7227,6 +7365,7 @@ function randomList_Callback(hObject, eventdata, handles)
 % randomize the playlist of protocols
 par_list = 0;
 new_file = 0;
+new_rep_bkg = 0;
 new_list = handles.experiments.list(1,:);
 for k=2:length(handles.experiments.repet_bkg)
     if handles.experiments.repet_bkg(k)
@@ -7236,18 +7375,18 @@ for k=2:length(handles.experiments.repet_bkg)
     end
 end
 
-len_list = handles.experiments.number - sum(handles.experiments.repet_bkg);
+len_list = (length(handles.experiments.repet_bkg)-1) - sum(handles.experiments.repet_bkg);
 randomlist = randperm(len_list);
 for k = 1:len_list
     range = find(par_list == randomlist(k) );
     new_file = [new_file handles.experiments.file(range)];
-%     new_list = [new_list; handles.experiments.file(range,:)];
+    new_rep_bkg = [new_rep_bkg handles.experiments.repet_bkg(range)];
+    new_list = [new_list; handles.experiments.list(range,:)];
 end
-for k=new_file(2:end)
-    new_list = [new_list; handles.experiments.list(k+1,:)];
-end
+
 handles.experiments.list = new_list;
 handles.experiments.file = new_file;
+handles.experiments.repet_bkg = new_rep_bkg;
 set(handles.experimentList,'String',handles.experiments.list);
 
 disp('new file')
@@ -7256,4 +7395,8 @@ disp('file')
 disp(handles.experiments.file)
 
 disp(handles.experiments.list)
+
+disp(handles.experiments.selected)
+disp(handles.experiments.repet_bkg)
+disp(handles.experiments.file)
 guidata(hObject,handles)
