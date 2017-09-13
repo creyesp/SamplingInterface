@@ -1819,6 +1819,7 @@ if ~handles.modify
 end
 in = uigetdir(handles.img.directory);
 if in~=0,
+    in = relativepath(in);
     pos = searchFirstFile(in);
     if pos,
         handles.img.directory = in;
@@ -3028,12 +3029,13 @@ if get(hObject,'Value')==1.0
             ';*.pbm;*.pcx;*.pgm;*.png;*.pnm;*.ppm;*.ras;*.tiff;*.xwd;*.cur;*.fits;*.ico'],...
             ['Image files (*.bmp,*.gif,*.hdf,*.jpeg,*.jpg,*.jp2,*.jpf,*.jpx,*.j2c,*.j2k'...
             ',*.pbm,*.pcx,*.pgm,*.png,*.pnm,*.ppm,*.ras,*.tiff,*.xwd,*.cur,*.fits,*.ico)']};
-        [fileName,fileDirection] = uigetfile(imgFiles,'Select image to use as background');
+        [fileName,fileDirection] = uigetfile(imgFiles,'Select image to use as background',handles.flicker.img.name);
         if fileName == 0
             set(hObject,'Value',0.0);
             handles.flicker.img.is = false;
+            set(handles.flickerUseImg,'String',handles.flicker.img.is);
         else
-            handles.flicker.img.name = fullfile(fileDirection,fileName);
+            handles.flicker.img.name = fullfile(relativepath(fileDirection),fileName);
             set(handles.flickerImgDirection,'String',handles.flicker.img.name);
         end
     end
@@ -3089,8 +3091,9 @@ imgFiles = {['*.bmp;*.gif;*.hdf;*.jpeg;*.jpg;*.jp2;*.jpf;*.jpx;*.j2c;*.j2k'...
     ';*.pbm;*.pcx;*.pgm;*.png;*.pnm;*.ppm;*.ras;*.tiff;*.xwd;*.cur;*.fits;*.ico'],...
     ['Image files (*.bmp,*.gif,*.hdf,*.jpeg,*.jpg,*.jp2,*.jpf,*.jpx,*.j2c,*.j2k'...
     ',*.pbm,*.pcx,*.pgm,*.png,*.pnm,*.ppm,*.ras,*.tiff,*.xwd,*.cur,*.fits,*.ico)']};
-[fileName,fileDirection] = uigetfile(imgFiles,'Select image to use as background');
+[fileName,fileDirection] = uigetfile(imgFiles,'Select image to use as background',handles.flicker.img.name);
 if fileName ~= 0
+    fileDirection = relativepath(fileDirection);
     handles.flicker.img.name = fullfile(fileDirection,fileName);
     set(handles.flickerImgDirection,'String',handles.flicker.img.name);
 end
@@ -3233,13 +3236,14 @@ if ~handles.img.background.isImg,
             ';*.pbm;*.pcx;*.pgm;*.png;*.pnm;*.ppm;*.ras;*.tiff;*.xwd;*.cur;*.fits;*.ico'],...
             ['Image files (*.bmp,*.gif,*.hdf,*.jpeg,*.jpg,*.jp2,*.jpf,*.jpx,*.j2c,*.j2k'...
             ',*.pbm,*.pcx,*.pgm,*.png,*.pnm,*.ppm,*.ras,*.tiff,*.xwd,*.cur,*.fits,*.ico)']};
-        [fileName,fileDirection] = uigetfile(imgFiles,'Select image to use as background');
+        [fileName,fileDirection] = uigetfile(imgFiles,'Select image to use as background',handles.img.background.imgName);
         if fileName == 0
             set(hObject,'Value',0.0);
             set(handles.backgroundColor,'Value',1.0);
             handles.img.background.isImg = false;
+            set(handles.backgroundImg,'Value',0.0);
         else
-            handles.img.background.imgName = fullfile(fileDirection,fileName);
+            handles.img.background.imgName = fullfile(relativepath(fileDirection),fileName);
             set(handles.backgroundImgDirection,'String',handles.img.background.imgName);
         end
     end
@@ -3403,8 +3407,9 @@ imgFiles = {['*.bmp;*.gif;*.hdf;*.jpeg;*.jpg;*.jp2;*.jpf;*.jpx;*.j2c;*.j2k'...
     ';*.pbm;*.pcx;*.pgm;*.png;*.pnm;*.ppm;*.ras;*.tiff;*.xwd;*.cur;*.fits;*.ico'],...
     ['Image files (*.bmp,*.gif,*.hdf,*.jpeg,*.jpg,*.jp2,*.jpf,*.jpx,*.j2c,*.j2k'...
     ',*.pbm,*.pcx,*.pgm,*.png,*.pnm,*.ppm,*.ras,*.tiff,*.xwd,*.cur,*.fits,*.ico)']};
-[fileName,fileDirection] = uigetfile(imgFiles,'Select image to use as background');
+[fileName,fileDirection] = uigetfile(imgFiles,'Select image to use as background',handles.img.background.imgName);
 if fileName ~= 0
+    fileDirection = relativepath(fileDirection);
     handles.img.background.imgName = fullfile(fileDirection,fileName);
     set(handles.backgroundImgDirection,'String',handles.img.background.imgName);
 end
@@ -4087,7 +4092,19 @@ function createRandomSeed_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 rng('shuffle');
 s = rng;
-uisave('s','seed.mat');
+[pathstr,~,~] = fileparts(handles.whitenoise.seedFile);
+[FileName,PathName] = uiputfile('*.mat','Save seed',[pathstr '/*.mat']);
+if FileName ~=0
+    fileName = fullfile(relativepath(PathName),FileName);
+    handles.whitenoise.seedFile = fileName;
+    set(handles.seedFile,'String',fileName);
+    save(fileName ,'s')
+else
+    errordlg('File does not exist', 'Error')
+end
+    
+guidata(hObject,handles);
+
 
 % --- Executes on button press in useSeed.
 function useSeed_Callback(hObject, eventdata, handles)
@@ -4100,12 +4117,13 @@ if ~handles.modify
 end
 value = get(hObject,'Value');
 if value && ~isstruct(handles.whitenoise.possibleSeed),
-    [s,n,f] = searchForSeed();
+    [s,n,f] = searchForSeed(handles.whitenoise.seedFile);
     if ~isstruct(s),
         set(hObject,'Value',0.0);
     else
         handles.whitenoise.seed = s;
-        set(handles.seedFile,'String',fullfile(f,n));
+        handles.whitenoise.seedFile = fullfile(f,n);
+        set(handles.seedFile,'String', handles.whitenoise.seedFile);
     end
 else
     if value
@@ -4167,7 +4185,7 @@ function seedFileSelect_Callback(hObject, eventdata, handles)
 if ~handles.modify
     return
 end
-[s,n,f] = searchForSeed();
+[s,n,f] = searchForSeed(handles.whitenoise.seedFile);
 if isstruct(s)
     handles.whitenoise.possibleSeed = s;
     handles.whitenoise.seedFile = fullfile(f,n);
@@ -4178,16 +4196,8 @@ if isstruct(s)
 end
 guidata(hObject,handles);
 
-function [seed,name,folder]=searchForSeed()
-[name,folder] = uigetfile('.mat','Select seed file','seed.mat');
-s = load(fullfile(folder,name));
-if isstruct(s) && isfield(s,'s') && isfield(s.s,'Type') && isfield(s.s,'Seed') && isfield(s.s,'State')
-    seed = s.s;
-    rng(seed);
-else
-    seed = 0;
-    errordlg('File has no seed in the correct format. File must have a struct named as ''s'', which should be the seed.','Error');
-end
+
+
 
 
 % --- Executes on selection change in noiseMenu.
@@ -4912,8 +4922,19 @@ function maskStimulusCreateRandomSeed_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 rng('shuffle');
 s = rng;
-handles.maskStimulus.mask.wn.seed = s;
-uisave('s','seed.mat');
+[pathstr,~,~] = fileparts(handles.maskStimulus.mask.wn.seedFile);
+[FileName,PathName] = uiputfile('*.mat','Save seed',[pathstr '/seedMSmask.mat']);
+if FileName ~=0
+    fileName = fullfile(relativepath(PathName),FileName);
+    handles.maskStimulus.mask.wn.seedFile = fileName;
+    set(handles.maskStimulusSeedFile,'String',fileName);
+    save(fileName ,'s')
+    handles.maskStimulus.mask.wn.possibleSeed = s;
+else
+    errordlg('File does not exist', 'Error')
+end
+    
+guidata(hObject,handles);
 
 
 function maskStimulusSaveimgWNMask_Callback(hObject, eventdata, handles)
@@ -4963,7 +4984,7 @@ if ~handles.modify
 end
 value = get(hObject,'Value');
 if value && ~isstruct(handles.maskStimulus.mask.wn.possibleSeed),
-    [s,n,f] = searchForSeed();
+    [s,n,f] = searchForSeed(handles.maskStimulus.mask.wn.seedFile);
     if ~isstruct(s),
         set(hObject,'Value',0.0);
     else
@@ -4988,6 +5009,24 @@ function maskStimulusSeedFile_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of maskStimulusSeedFile as text
 %        str2double(get(hObject,'String')) returns contents of maskStimulusSeedFile as a double
+newpath = get(hObject,'String');
+if exist(newpath,'file')
+    s = load(newpath);
+    if isstruct(s) && isfield(s,'s') && isfield(s.s,'Type') && isfield(s.s,'Seed') && isfield(s.s,'State')
+       handles.maskStimulus.mask.wn.possibleSeed = s.s;
+        handles.maskStimulus.mask.wn.seedFile = relativepath(newpath);
+        set(handles.MSwnProtocolSeedPath,'String',handles.maskStimulus.mask.wn.seedFile);
+        if get(handles.MSwnProtocolSeedSelected,'Value')
+            handles.maskStimulus.mask.wn.seed = s;
+        end        
+    else
+        seed = 0;
+        errordlg('File has no seed in the correct format. File must have a struct named as ''s'', which should be the seed.','Error');
+    end  
+else
+    set(handles.MSwnProtocolSeedPath,'String',handles.maskStimulus.mask.wn.seedFile);
+    errordlg('File does not exist', 'Error');
+end
 
 
 % --- Executes during object creation, after setting all properties.
@@ -5011,7 +5050,8 @@ function maskStimulusSeedFileSelect_Callback(hObject, eventdata, handles)
 if ~handles.modify
     return
 end
-[s,n,f] = searchForSeed();
+[s,n,f] = searchForSeed(handles.maskStimulus.mask.wn.seedFile);
+
 if isstruct(s)
     handles.maskStimulus.mask.wn.possibleSeed = s;
     handles.maskStimulus.mask.wn.seedFile = fullfile(f,n);
@@ -5314,9 +5354,9 @@ imgFiles = {['*.bmp;*.gif;*.hdf;*.jpeg;*.jpg;*.jp2;*.jpf;*.jpx;*.j2c;*.j2k'...
     ';*.pbm;*.pcx;*.pgm;*.png;*.pnm;*.ppm;*.ras;*.tiff;*.xwd;*.cur;*.fits;*.ico'],...
     ['Image files (*.bmp,*.gif,*.hdf,*.jpeg,*.jpg,*.jp2,*.jpf,*.jpx,*.j2c,*.j2k'...
     ',*.pbm,*.pcx,*.pgm,*.png,*.pnm,*.ppm,*.ras,*.tiff,*.xwd,*.cur,*.fits,*.ico)']};
-[fileName,fileDirection] = uigetfile(imgFiles,'Select image to use as mask');
+[fileName,fileDirection] = uigetfile(imgFiles,'Select image to use as mask',handles.maskStimulus.mask.img.name);
 if fileName ~= 0
-    handles.maskStimulus.mask.img.name = fullfile(fileDirection,fileName);
+    handles.maskStimulus.mask.img.name = fullfile(relativepath(fileDirection),fileName);
     set(handles.maskStimulusImgMaskFile,'String',handles.maskStimulus.mask.img.name);
 end
 guidata(hObject,handles);
@@ -5490,8 +5530,9 @@ imgFiles = {['*.bmp;*.gif;*.hdf;*.jpeg;*.jpg;*.jp2;*.jpf;*.jpx;*.j2c;*.j2k'...
     ';*.pbm;*.pcx;*.pgm;*.png;*.pnm;*.ppm;*.ras;*.tiff;*.xwd;*.cur;*.fits;*.ico'],...
     ['Image files (*.bmp,*.gif,*.hdf,*.jpeg,*.jpg,*.jp2,*.jpf,*.jpx,*.j2c,*.j2k'...
     ',*.pbm,*.pcx,*.pgm,*.png,*.pnm,*.ppm,*.ras,*.tiff,*.xwd,*.cur,*.fits,*.ico)']};
-[fileName,fileDirection] = uigetfile(imgFiles,'Select image to use as background');
+[fileName,fileDirection] = uigetfile(imgFiles,'Select image to use as background',handles.maskStimulus.protocol.flicker.bg.name);
 if fileName ~= 0
+    fileDirection = relativepath(fileDirection);
     handles.maskStimulus.protocol.flicker.bg.name = fullfile(fileDirection,fileName);
     imageInfo = imfinfo(handles.maskStimulus.protocol.flicker.bg.name);
     handles.maskStimulus.protocol.flicker.bg.width = imageInfo.Width;
@@ -5514,7 +5555,7 @@ if exist(imgpath,'file');
       set(handles.maskStimulusFlickerImgFile,'String',handles.maskStimulus.protocol.flicker.bg.name);
       return
     end
-    handles.maskStimulus.protocol.flicker.bg.name = imgpath;
+    handles.maskStimulus.protocol.flicker.bg.name = relativepath(imgpath);
     handles.maskStimulus.protocol.flicker.bg.width = imageInfo.Width;
     handles.maskStimulus.protocol.flicker.bg.height = imageInfo.Height;    
     set(handles.maskStimulusFlickerImgFile,'String',handles.maskStimulus.protocol.flicker.bg.name);
@@ -5554,12 +5595,13 @@ if get(hObject,'Value')==1.0
             ';*.pbm;*.pcx;*.pgm;*.png;*.pnm;*.ppm;*.ras;*.tiff;*.xwd;*.cur;*.fits;*.ico'],...
             ['Image files (*.bmp,*.gif,*.hdf,*.jpeg,*.jpg,*.jp2,*.jpf,*.jpx,*.j2c,*.j2k'...
             ',*.pbm,*.pcx,*.pgm,*.png,*.pnm,*.ppm,*.ras,*.tiff,*.xwd,*.cur,*.fits,*.ico)']};
-        [fileName,fileDirection] = uigetfile(imgFiles,'Select image to use as background');
+        [fileName,fileDirection] = uigetfile(imgFiles,'Select image to use as background',handles.maskStimulus.protocol.flicker.bg.name);
         if fileName == 0
             set(hObject,'Value',0.0);
             handles.maskStimulus.protocol.flicker.bg.isImg = false;
+            set(handles.maskStimulusFlickerImg,'Value',handles.maskStimulus.protocol.flicker.bg.isImg);
         else
-            handles.maskStimulus.protocol.flicker.bg.name = fullfile(fileDirection,fileName);
+            handles.maskStimulus.protocol.flicker.bg.name = fullfile(relativepath(fileDirection),fileName);
             imageInfo = imfinfo(handles.maskStimulus.protocol.flicker.bg.name);
             handles.maskStimulus.protocol.flicker.bg.width = imageInfo.Width;
             handles.maskStimulus.protocol.flicker.bg.height = imageInfo.Height;
@@ -6109,8 +6151,9 @@ imgFiles = {['*.bmp;*.gif;*.hdf;*.jpeg;*.jpg;*.jp2;*.jpf;*.jpx;*.j2c;*.j2k'...
     ';*.pbm;*.pcx;*.pgm;*.png;*.pnm;*.ppm;*.ras;*.tiff;*.xwd;*.cur;*.fits;*.ico'],...
     ['Image files (*.bmp,*.gif,*.hdf,*.jpeg,*.jpg,*.jp2,*.jpf,*.jpx,*.j2c,*.j2k'...
     ',*.pbm,*.pcx,*.pgm,*.png,*.pnm,*.ppm,*.ras,*.tiff,*.xwd,*.cur,*.fits,*.ico)']};
-[fileName,fileDirection] = uigetfile(imgFiles,'Select image to use as background');
+[fileName,fileDirection] = uigetfile(imgFiles,'Select image to use as background',handles.presentation.img.path);
 if fileName ~= 0
+    fileDirection = relativepath(fileDirection);
     handles.presentation.img.path = fullfile(fileDirection,fileName);
     set(handles.presentationImg,'String',handles.presentation.img.path);
     imageInfo = imfinfo(handles.presentation.img.path);
@@ -6159,20 +6202,20 @@ if ~handles.modify
     set(hObject,'Value',0.0);
     return
 end
-if ~handles.presentation.img.is,
-    set(hObject,'Value',1.0);
+check = get(hObject,'Value');
+if check;
     handles.presentation.img.is = true;
     if ~supportedImageFormat(handles.presentation.img.path)
         imgFiles = {['*.bmp;*.gif;*.hdf;*.jpeg;*.jpg;*.jp2;*.jpf;*.jpx;*.j2c;*.j2k'...
             ';*.pbm;*.pcx;*.pgm;*.png;*.pnm;*.ppm;*.ras;*.tiff;*.xwd;*.cur;*.fits;*.ico'],...B-
             ['Image files (*.bmp,*.gif,*.hdf,*.jpeg,*.jpg,*.jp2,*.jpf,*.jpx,*.j2c,*.j2k'...
             ',*.pbm,*.pcx,*.pgm,*.png,*.pnm,*.ppm,*.ras,*.tiff,*.xwd,*.cur,*.fits,*.ico)']};
-        [fileName,fileDirection] = uigetfile(imgFiles,'Select image to use as background');
+        [fileName,fileDirection] = uigetfile(imgFiles,'Select image to use as background',handles.presentation.img.path);
         if fileName == 0
             set(hObject,'Value',0.0);
             handles.presentation.img.is = false;
         else
-            handles.presentation.img.path = fullfile(fileDirection,fileName);
+            handles.presentation.img.path = fullfile(relativepath(fileDirection),fileName);
             set(handles.presentationImg,'String',handles.presentation.img.path);
             imageInfo = imfinfo(handles.presentation.img.path);
             handles.presentation.img.size.width = imageInfo.Width;
@@ -6180,7 +6223,7 @@ if ~handles.presentation.img.is,
         end
     end
 else
-    set(hObject,'Value',1.0);
+    handles.presentation.img.is = false;
 end
 guidata(hObject,handles);
 
@@ -6208,6 +6251,7 @@ in = get(hObject,'String');
 if ~isempty(in),
     if exist(in,'dir'),
         pos = searchFirstFile(in);
+        in= relativepath(in);
         if pos,
             handles.maskStimulus.mask.img.directory = in;
             set(handles.imgMaskDirectory,'String',in);
@@ -6258,6 +6302,7 @@ if ~handles.modify
 end
 in = uigetdir(handles.maskStimulus.mask.img.directory);
 if in~=0,
+    in = relativepath(in);
     pos = searchFirstFile(in);
     if pos,
         finalposition = pos;
@@ -6285,19 +6330,6 @@ if in~=0,
         handles.maskStimulus.mask.img.nFinal = handles.maskStimulus.mask.img.list(finalposition,:);
         handles.maskStimulus.mask.img.nFinalPos = finalposition;
         imageInfo = imfinfo(fullfile(handles.maskStimulus.mask.img.directory,handles.maskStimulus.mask.img.nInitial));
-        % if handles.maskStimulus.mask.img.size.width ~=0 && handles.img.deltaX~=0 && handles.img.deltaY~=0 && ...
-        %         (handles.maskStimulus.mask.img.size.width ~= imageInfo.Width || ...
-        %         handles.maskStimulus.mask.img.size.height ~= imageInfo.Height),
-        %     answ = questdlg(['The stimulus of this new folder have different size. '...
-        %         'Would you like to conserve the default image position (Delta X, Delta Y)?'],...
-        %         'Conserve image position','Yes','No','No');
-        %     if ~isempty(answ) && strcmp(answ,'No'),
-        %         handles.img.deltaX = 0;
-        %         handles.img.deltaY = 0;
-        %         set(handles.imgDeltaX,'String',handles.img.deltaX);
-        %         set(handles.imgDeltaY,'String',handles.img.deltaY);
-        %     end
-        % end
         handles.maskStimulus.mask.img.size.width = imageInfo.Width;
         handles.maskStimulus.mask.img.size.height = imageInfo.Height;
         set(handles.imgMaskSizeWidth,'String',handles.maskStimulus.mask.img.size.width);
@@ -6799,12 +6831,13 @@ if ~handles.modify
 end
 value = get(hObject,'Value');
 if value && ~isstruct(handles.maskStimulus.protocol.wn.possibleSeed),
-    [s,n,f] = searchForSeed();
+    [s,n,f] = searchForSeed(handles.maskStimulus.protocol.wn.seedFile);
     if ~isstruct(s),
         set(hObject,'Value',0.0);
     else
         handles.maskStimulus.protocol.wn.seed = s;
         set(handles.MSwnProtocolSeedPath,'String',fullfile(f,n));
+        handles.maskStimulus.protocol.wn.seedFile = fullfile(f,n);
     end
 else
     if value
@@ -6822,6 +6855,25 @@ function MSwnProtocolSeedPath_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of MSwnProtocolSeedPath as text
 %        str2double(get(hObject,'String')) returns contents of MSwnProtocolSeedPath as a double
+
+newpath = get(hObject,'String');
+if exist(newpath,'file')
+    s = load(newpath);
+    if isstruct(s) && isfield(s,'s') && isfield(s.s,'Type') && isfield(s.s,'Seed') && isfield(s.s,'State')
+        handles.maskStimulus.protocol.wn.possibleSeed = s.s;
+        handles.maskStimulus.protocol.wn.seedFile = relativepath(newpath);
+        set(handles.MSwnProtocolSeedPath,'String',handles.maskStimulus.protocol.wn.seedFile);
+        if get(handles.MSwnProtocolSeedSelected,'Value')
+            handles.maskStimulus.protocol.wn.seed = s;
+        end        
+    else
+        seed = 0;
+        errordlg('File has no seed in the correct format. File must have a struct named as ''s'', which should be the seed.','Error');
+    end  
+else
+    set(handles.MSwnProtocolSeedPath,'String',handles.maskStimulus.protocol.wn.seedFile);
+    errordlg('File does not exist', 'Error');
+end
 
 
 % --- Executes during object creation, after setting all properties.
@@ -6842,7 +6894,7 @@ function MSwnProtocolSeedfileSelect_Callback(hObject, eventdata, handles)
 if ~handles.modify
     return
 end
-[s,n,f] = searchForSeed();
+[s,n,f] = searchForSeed(handles.maskStimulus.protocol.wn.seedFile);
 if isstruct(s)
     handles.maskStimulus.protocol.wn.possibleSeed = s;
     handles.maskStimulus.protocol.wn.seedFile = fullfile(f,n);
@@ -6858,7 +6910,7 @@ guidata(hObject,handles);
 function MSwnProtocolCreateSeed_Callback(hObject, eventdata, handles)
 rng('shuffle');
 s = rng;
-uisave('s','seed.mat');
+uisave('s','../Protocols/seedMSwn_protocol.mat');
 
 
 % --- Executes on selection change in TypeSynchronization.
@@ -7285,50 +7337,62 @@ guidata(hObject,handles);
 
 % --- Executes on button press in savePositionRandom.
 function savePositionRandom_Callback(hObject, eventdata, handles)
+newpath = handles.maskStimulus.mask.spacing.pathfile;
+if exist(newpath,'dir')
+    pathfile = [relativepath(newpath) '/'];
+elseif newpath ~= 0;
+    pathfile = newpath;
+else
+    pathfile = '../Protocols/';
+end
+[FileName,PathName] = uiputfile('*.mat','Save position random struct',pathfile);
+if FileName ~= 0;
+    PathName = relativepath(PathName);
+    handles.maskStimulus.mask.spacing.pathfile = fullfile(PathName,FileName);
     xrep = handles.maskStimulus.mask.spacing.xrep;
     yrep = handles.maskStimulus.mask.spacing.yrep;
     x = handles.maskStimulus.mask.spacing.x;
     y = handles.maskStimulus.mask.spacing.y;
     israndom = handles.maskStimulus.mask.spacing.israndom;
-    [handles.maskStimulus.mask.spacing.xposition , handles.maskStimulus.mask.spacing.yposition] = ...
-        positionmask(xrep,yrep,x,y,israndom);
-    xposition = handles.maskStimulus.mask.spacing.xposition;
-    yposition = handles.maskStimulus.mask.spacing.yposition;
-
-    [FileName,PathName] = uiputfile('*.mat','Save position random struct','positionrandom');
-    handles.maskStimulus.mask.spacing.pathfile = fullfile(PathName,FileName);
+    [xposition , yposition] = positionmask(xrep,yrep,x,y,israndom);
+    handles.maskStimulus.mask.spacing.xposition = xposition;
+    handles.maskStimulus.mask.spacing.yposition = yposition ;
     save(handles.maskStimulus.mask.spacing.pathfile,'xposition','yposition','xrep','yrep','x','y','israndom');    
     set(handles.pathPositionRandom,'String',handles.maskStimulus.mask.spacing.pathfile);
-    
-    guidata(hObject,handles)
+end    
+
+guidata(hObject,handles)
 
 % --- Executes on button press in loadPositionRandom.
 function loadPositionRandom_Callback(hObject, eventdata, handles)
 if ~handles.modify
     return
 end
+[path, ~,~]= fileparts(handles.maskStimulus.mask.spacing.pathfile);
+[name,folder] = uigetfile('.mat','Select position file',path);
+if name ~= 0
+    folder = relativepath(folder);
+    positionshift = load(fullfile(folder,name));
+    if isstruct(positionshift) && isfield(positionshift,'x') && isfield(positionshift,'y') 
+        handles.maskStimulus.mask.spacing.xposition = positionshift.xposition;
+        handles.maskStimulus.mask.spacing.yposition = positionshift.yposition;
+        handles.maskStimulus.mask.spacing.xrep = positionshift.xrep;
+        handles.maskStimulus.mask.spacing.yrep = positionshift.yrep;
+        handles.maskStimulus.mask.spacing.x = positionshift.x;
+        handles.maskStimulus.mask.spacing.y = positionshift.y;
+        handles.maskStimulus.mask.spacing.israndom = positionshift.israndom;
+        handles.maskStimulus.mask.spacing.pathfile = fullfile(folder,name);
+    else
+        errordlg('The file do not has correct format.','Error');
+    end
 
-[name,folder] = uigetfile('.mat','Select position file','positionrandom.mat');
-positionshift = load(fullfile(folder,name));
-if isstruct(positionshift) && isfield(positionshift,'x') && isfield(positionshift,'y') 
-    handles.maskStimulus.mask.spacing.xposition = positionshift.xposition;
-    handles.maskStimulus.mask.spacing.yposition = positionshift.yposition;
-    handles.maskStimulus.mask.spacing.xrep = positionshift.xrep;
-    handles.maskStimulus.mask.spacing.yrep = positionshift.yrep;
-    handles.maskStimulus.mask.spacing.x = positionshift.x;
-    handles.maskStimulus.mask.spacing.y = positionshift.y;
-    handles.maskStimulus.mask.spacing.israndom = positionshift.israndom;
-    handles.maskStimulus.mask.spacing.pathfile = fullfile(folder,name);
-else
-    errordlg('The file do not has correct format.','Error');
+    set(handles.xspacing,'String',handles.maskStimulus.mask.spacing.x);
+    set(handles.yspacing,'String',handles.maskStimulus.mask.spacing.y);
+    set(handles.xspacingrep,'String',handles.maskStimulus.mask.spacing.xrep);
+    set(handles.yspacingrep,'String',handles.maskStimulus.mask.spacing.yrep);
+    set(handles.positionRandom,'Value',handles.maskStimulus.mask.spacing.israndom);
+    set(handles.pathPositionRandom,'String',handles.maskStimulus.mask.spacing.pathfile);
 end
-
-set(handles.xspacing,'String',handles.maskStimulus.mask.spacing.x);
-set(handles.yspacing,'String',handles.maskStimulus.mask.spacing.y);
-set(handles.xspacingrep,'String',handles.maskStimulus.mask.spacing.xrep);
-set(handles.yspacingrep,'String',handles.maskStimulus.mask.spacing.yrep);
-set(handles.positionRandom,'Value',handles.maskStimulus.mask.spacing.israndom);
-set(handles.pathPositionRandom,'String',handles.maskStimulus.mask.spacing.pathfile);
 guidata(hObject,handles)
 
 
@@ -7340,6 +7404,12 @@ function pathPositionRandom_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of pathPositionRandom as text
 %        str2double(get(hObject,'String')) returns contents of pathPositionRandom as a double
+newpath = get(hObject,'String');  
+
+handles.maskStimulus.mask.spacing.pathfile = newpath ;
+set(handles.pathPositionRandom,'String',handles.maskStimulus.mask.spacing.pathfile);
+
+guidata(hObject,handles)
 
 
 % --- Executes during object creation, after setting all properties.

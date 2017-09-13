@@ -270,11 +270,9 @@ for kexp=1:lengthProtocols,
                 experiment(kexp).presentation.img.is = false;
             end
         end
-    end
-    
     %%% The next code has the goal to charge in memmory the function imread and
     %%% (if they are separate files) the functions to use of Screen.
-    if experiment(kexp).protocol.useImages && experiment(kexp).img.files > 0,
+    elseif experiment(kexp).protocol.useImages && experiment(kexp).img.files > 0,
         % Load the images of expetiment and fix these as a texture before of the presentation 
         % If it have images for display, get name, ext, initial number, final
         % number

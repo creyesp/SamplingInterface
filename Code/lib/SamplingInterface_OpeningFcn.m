@@ -10,7 +10,7 @@ delete *.si;
 handles.mode = 'Flicker';
 
 % Set the parameters of <<<General options Panel>>
-handles.img.directory = '...';
+handles.img.directory = '../Stim/';
 filelist = dir_to_Win_ls(dir(handles.img.directory));
 handles.list = char('',filelist(3:size(filelist,1),:));
 pos = searchFirstFile(handles.img.directory);
@@ -36,7 +36,7 @@ handles.img.background.isImg = false;
 handles.img.background.r = 0;
 handles.img.background.g = 0;
 handles.img.background.b = 0;
-handles.img.background.imgName = '...';
+handles.img.background.imgName = '../Stim/';
 handles.img.background.graph = zeros(1,1,3);
 
 % Set the parameters of <<<Reproduction list Panel>>
@@ -114,7 +114,7 @@ handles.presentation.b = 0;
 handles.presentation.time = 1000;
 handles.presentation.graph = zeros(1,1,3);
 handles.presentation.img.is = false;
-handles.presentation.img.path = '...';
+handles.presentation.img.path = '../Stim/';
 handles.presentation.img.shift = 0;
 handles.presentation.img.size.width = 0;
 handles.presentation.img.size.height = 0;
@@ -130,7 +130,7 @@ handles.flicker.repeatBackground = false;
 handles.flicker.r = 0;
 handles.flicker.g = 0;
 handles.flicker.b = 0;
-handles.flicker.img.name = '...';
+handles.flicker.img.name = '../Stim/';
 handles.flicker.img.is = false;
 handles.flicker.graph = zeros(1,1,3);
 handles.flicker.time = handles.img.files...
@@ -157,7 +157,7 @@ rng('shuffle');
 handles.whitenoise.intensity = uint8([255 255 255]);
 handles.whitenoise.seed = rng;
 handles.whitenoise.possibleSeed = 0;
-handles.whitenoise.seedFile ='...';
+handles.whitenoise.seedFile ='../Protocols/';
 handles.whitenoise.time = handles.whitenoise.frames * 1/handles.whitenoise.fps;
 
 % Set the parameters of <<<Option using Mask Stimulus Panel>>
@@ -181,7 +181,7 @@ handles.maskStimulus.mask.spacing.israndom = false;
 handles.maskStimulus.mask.spacing.xposition = 0;
 handles.maskStimulus.mask.spacing.yposition = 0;
 handles.maskStimulus.mask.spacing.yrep = 0;
-handles.maskStimulus.mask.spacing.pathfile = '';
+handles.maskStimulus.mask.spacing.pathfile = '../Protocols/';
 handles.maskStimulus.mask.type = 'background';%('White noise' 'Img' 'Solid color')
 handles.maskStimulus.mask.wn.blocks = 100;
 handles.maskStimulus.mask.wn.pxY = 5;
@@ -189,13 +189,13 @@ handles.maskStimulus.mask.wn.pxX = 5;
 handles.maskStimulus.mask.wn.type = 'BW';
 handles.maskStimulus.mask.wn.saveImages = 3;
 handles.maskStimulus.mask.wn.intensity = [ 255, 255, 255 ];
-handles.maskStimulus.mask.wn.seed = rng;
+handles.maskStimulus.mask.wn.seed = 0;
 handles.maskStimulus.mask.wn.possibleSeed = 0;
-handles.maskStimulus.mask.wn.seedFile ='...';
+handles.maskStimulus.mask.wn.seedFile ='../Protocols/';
 handles.maskStimulus.mask.wn.graph = zeros(1,1,3);
 
 % handles.maskStimulus.mask.img.name = '...';
-handles.maskStimulus.mask.img.directory = '...';
+handles.maskStimulus.mask.img.directory = '../Stim/';
 handles.maskStimulus.mask.img.list = 0;
 handles.maskStimulus.mask.img.nInitial = 0;
 handles.maskStimulus.mask.img.nInitialPos = 1;
@@ -219,13 +219,13 @@ handles.maskStimulus.protocol.wn.saveImages = 3;
 handles.maskStimulus.protocol.wn.intensity = uint8([255 255 255]);
 handles.maskStimulus.protocol.wn.seed = rng;
 handles.maskStimulus.protocol.wn.possibleSeed = 0;
-handles.maskStimulus.protocol.wn.seedFile ='...';
+handles.maskStimulus.protocol.wn.seedFile ='../Protocols/';
 handles.maskStimulus.protocol.flicker.dutyCycle = 0;
 handles.maskStimulus.protocol.flicker.periodo = 0;
 handles.maskStimulus.protocol.flicker.imgTime = handles.screens.refreshRate*1000;
 handles.maskStimulus.protocol.flicker.backgroundTime = handles.screens.refreshRate*1000;
 handles.maskStimulus.protocol.flicker.bg.isImg = false;
-handles.maskStimulus.protocol.flicker.bg.name = '...';
+handles.maskStimulus.protocol.flicker.bg.name = '../Stim/';
 handles.maskStimulus.protocol.flicker.bg.width = 0;
 handles.maskStimulus.protocol.flicker.bg.height = 0;
 handles.maskStimulus.protocol.flicker.bg.r = 0;
