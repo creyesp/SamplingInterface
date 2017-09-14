@@ -45,7 +45,7 @@ if nonVisual
     system(['unzip ' strrep(compressData,' ','\ ') ' -d ' dirName]);
     siFileName = 'Final Configuration.si';
     if exist(fullfile(dirName,siFileName),'file')
-        data = getInformation(fullfile(dirName,siFileName));
+        data = getInformation(fullfile(dirName,siFileName),compressData);
     else
         siFilesNotCharged = true;
         disp('ERROR: Can''t open configuration file "Final Configuration.si"');
@@ -125,8 +125,7 @@ for kexp=length(data.experiments.file)-1:-1:1,
     siFileName = ['Exp' sprintf('%03d',data.experiments.file(kexp+1)) '.si'];
 %     if ~siFilesNotCharged && exist(fullfile(pwd,siFileName),'file'),
     if ~siFilesNotCharged && exist(fullfile(dirName,siFileName),'file'),
-%         experiment(kexp) = getInformation(fullfile(pwd,siFileName));
-        dataExp = getInformation(fullfile(dirName,siFileName));
+        dataExp = getInformation(fullfile(dirName,siFileName),compressData);
         % Charging images
         if ~strcmp((dataExp.mode),'Presentation')
             dataExp.img.charge = zeros(1,dataExp.img.files);
@@ -2527,7 +2526,7 @@ if ~siFilesNotCharged && ~indexColorFrame && nonVisual
         dat = experiment(kexp);
 %         save([dirName '/Exp' sprintf('%03d',experiment(kexp).experiments.file(kexp+1)) '.si'],'-struct','dat');
     end
-    saveLogFile(data,Time,dirName);
+    saveLogFile(data,Time,dirName,compressData);
 %     if useProjector && ~exist(fullfile(dirName,siFileName),'file'),
 %         copyfile('*.si',dirName);
 %         saveLogFile(data,Time,dirName);

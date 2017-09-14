@@ -1712,9 +1712,9 @@ if ~handles.modify
     return
 end
 fileName=sprintf('%04d_%02d_%02d-%02d.%02d.%02d.zip',round(clock));
-in = uigetdir(pwd,'Select a directory where the file will be saved');
+in = uigetdir('../Protocols/','Select a directory where the file will be saved');
 if in~=0
-    name = strtrim(inputdlg('Insert the name of the file to be saved. Remember! the default experiment name used by stimulation scripts is "experiment.zip" and should be located at Documents/Matlab/Experiments/ folder, you are aware!','Insert file name',1,cellstr(fileName)));
+    name = strtrim(inputdlg('Insert the name of the file to be saved. Remember! the default experiment name used by stimulation scripts is "experiment.zip" and should be located at ../Protocols/ folder, you are aware!','Insert file name',1,cellstr(fileName)));
     if ~isempty(name)
         saveInformation('Final Configuration.si',handles);
         zip(fullfile(in,name{1}),'*.si');

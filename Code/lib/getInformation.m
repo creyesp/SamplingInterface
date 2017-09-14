@@ -1,4 +1,4 @@
-function [inf]=getInformation(input,use)
+function [inf]=getInformation(input,nameFile,use)
 %getInformation return information of experiment protocol
 % en two formats for user data or print information.
 %
@@ -9,14 +9,16 @@ function [inf]=getInformation(input,use)
 
 if ~exist('use','var'), use=0; end
 handles = load(input,'-mat');
+disp(nameFile)
+inf = char(['File name: ' nameFile]);
 if strcmp('print',use)
     if strcmp(handles.mode,'Presentation')
-        inf = char('Time of background: ', ' ',['Color [r,g,b]: [' ...
+        inf = char(inf, ' ','Time of background: ', ' ',['Color [r,g,b]: [' ...
             num2str(handles.presentation.r) ',' num2str(handles.presentation.g)...
             ',' num2str(handles.presentation.b) ']'],['Time expected: '...
             num2str(handles.presentation.time) ' [ms]']);
     else
-            inf = char(['Mode: ' handles.mode]);
+        inf = char(inf, ' ',['Mode: ' handles.mode]);
         if ~strcmp(handles.mode,'White noise')
             inf = char(inf,'',['Images directory: ' handles.img.directory],...
                 ['Initial file: ' handles.img.nInitial],['Final file: ' handles.img.nFinal],...

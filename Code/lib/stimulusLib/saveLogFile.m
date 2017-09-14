@@ -1,6 +1,6 @@
 
 
-function saveLogFile(inf,T,pathExp)
+function saveLogFile(inf,T,pathExp,fileName)
 division = '\n\n------------------------------------------------------------------------------------------------\n\n';
 division2 = '\n************************************************************************************************\n';
 name=sprintf('SI Log file %04d_%02d_%02d-%02d.%02d.%02d.txt',round(clock));
@@ -19,8 +19,8 @@ while(i<length(inf.experiments.file)),
     fullfileName = fullfile(pathExp,fileName);
     if exist(fullfileName,'file'),
         disp(['exp file: ' num2str(i)])
-        expData = getInformation(fullfileName);
-        exp = getInformation(fullfileName,'print');
+        expData = getInformation(fullfileName,fileName);
+        exp = getInformation(fullfileName,fileName,'print');
         text = sprintf(['%s%s\nReal time duration: %s' division],text,cell2asciiStr(exp)...
             ,datestr(datenum(0,0,0,0,0,T(time).finish-T(time).start+0.5*inf.refresh),...
             'HH:MM:SS.FFF'));
