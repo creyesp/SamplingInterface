@@ -8,6 +8,7 @@ function [inf]=getInformation(input,nameFile,use)
 
 
 if ~exist('use','var'), use=0; end
+if ~exist('nameFile','var'), use=''; end
 handles = load(input,'-mat');
 disp(nameFile)
 inf = char(['File name: ' nameFile]);

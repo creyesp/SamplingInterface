@@ -30,3 +30,7 @@ Code/overmask\.mat
 Stim/CodeBar_stim_270
 
 *.mat
+
+Stim/
+
+Protocols/

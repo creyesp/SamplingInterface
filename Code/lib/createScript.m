@@ -1,16 +1,17 @@
 
 function createScript(file)
-[folder,name] = fileparts(file);
+[folder,name,ext] = fileparts(file);
+folder = relativepath(folder);
 codepath = pwd;
 
 if ~ismac,
     matlab = ['ptb3-matlab'];
     text = sprintf(['#!/bin/sh\n\n' matlab ' -nojvm -nodisplay -r "cd ''' codepath '''; stimulation('''...
-            file ''')" 2>&1 | grep -v "exclude an item from Time Machine"']);
+            [folder name ext] ''')" 2>&1 | grep -v "exclude an item from Time Machine"']);
 else
     matlab = [matlabroot '/bin/matlab'];
     text = sprintf(['#!/bin/sh\n\n' matlab ' -nojvm -nodisplay -r "cd ''' codepath '''; stimulation('''...
-            file ''')" 2>&1 | grep -v "exclude an item from Time Machine"']);
+            [folder name ext] ''')" 2>&1 | grep -v "exclude an item from Time Machine"']);
 end
     
 fid = fopen(fullfile(folder,[name '.command']),'wt');

@@ -960,7 +960,6 @@ else
     if (in>255 || in<handles.sync.analog.baseG),
         set(hObject,'String',handles.sync.analog.g);
         errordlg(['Input must be a number between ' num2str(handles.sync.analog.baseG) ' (base level) and 255'], 'Error')
-        disp([in handles.sync.analog.g])
     else
         handles.sync.analog.graph(floor(handles.sync.analog.posTop): ...
             floor(handles.sync.analog.posBottom),...
@@ -1654,7 +1653,7 @@ if ~handles.modify
     return
 end
 delete *.si;
-inputHandles = getInformation('Default Configuration.dsi');
+inputHandles = getInformation('Default Configuration.dsi','');
 handles = replaceHandles(handles,inputHandles);
 setAllGUIParameters(handles);
 guidata(hObject,handles);
@@ -1681,7 +1680,7 @@ if name~=0,
     mkdir (temp);
     fileattrib(temp,'+w','a','s');
     unzip(fullfile(direction,name),temp);
-    inputHandles = getInformation([temp separate 'Final Configuration.si'],0);
+    inputHandles = getInformation([temp separate 'Final Configuration.si'],'');
     delete([temp separate 'Final Configuration.si']);
     if inputHandles.screens.refreshRate ~= handles.screens.refreshRate
         msg = sprintf(['The refresh rate of the selected file doesn''t match '...
@@ -1822,6 +1821,7 @@ if in~=0,
     in = relativepath(in);
     pos = searchFirstFile(in);
     if pos,
+        
         handles.img.directory = in;
         set(handles.imgDirectory,'String',in);
         filelist = dir(in);
@@ -2056,7 +2056,7 @@ if handles.img.files~=0 ...
              num2str(handles.flicker.time,4) ' [s]' ];
          if get(handles.flickerRepWithBackground,'Value') && length(handles.experiments.file)>1
             if exist(['Exp' sprintf('%03d',handles.experiments.file(end-1)) '.si'],'file'),
-                inf = getInformation(['Exp' sprintf('%03d',handles.experiments.file(end-1)) '.si']);
+                inf = getInformation(['Exp' sprintf('%03d',handles.experiments.file(end-1)) '.si'],'');
                 if strcmp(inf.mode,'Presentation')
                     handles.time = handles.time + (inf.presentation.time/1000)*handles.flicker.repetitions +...
                         handles.flicker.time*(handles.flicker.repetitions+1);
@@ -2079,7 +2079,7 @@ if handles.img.files~=0 ...
              newExp = [newExp num2str(handles.onlyStimulus.time,4) ' [s]' ];
          if get(handles.onlyStimulusRepWithBackground,'Value') && length(handles.experiments.file)>1
             if exist(['Exp' sprintf('%03d',handles.experiments.file(end-1)) '.si'],'file'),
-                inf = getInformation(['Exp' sprintf('%03d',handles.experiments.file(end-1)) '.si']);
+                inf = getInformation(['Exp' sprintf('%03d',handles.experiments.file(end-1)) '.si'],'');
                 if strcmp(inf.mode,'Presentation')
                     handles.time = handles.time + (inf.presentation.time/1000)*handles.onlyStimulus.repetitions +...
                         handles.onlyStimulus.time*(handles.onlyStimulus.repetitions+1);
@@ -2141,7 +2141,7 @@ if handles.img.files~=0 ...
 
         if get(handles.maskStimulusRepWithBackground,'Value') && length(handles.experiments.file)>1
             if exist(['Exp' sprintf('%03d',handles.experiments.file(end-1)) '.si'],'file'),
-                inf = getInformation(['Exp' sprintf('%03d',handles.experiments.file(end-1)) '.si']);
+                inf = getInformation(['Exp' sprintf('%03d',handles.experiments.file(end-1)) '.si'],'');
                 if strcmp(inf.mode,'Presentation')
                     handles.time = handles.time + (inf.presentation.time/1000)*...
                       handles.maskStimulus.repetitions+...
@@ -2174,8 +2174,6 @@ if handles.img.files~=0 ...
     set(handles.totalTime,'String',datestr(datenum(0,0,0,0,0,handles.time),...
         'HH:MM:SS.FFF'));
     guidata(hObject,handles);
-    disp('add list repeat')
-    disp(handles.experiments.repet_bkg)
 else
     errordlg('You are trying to add an imageless experiment','Error');
 end
@@ -2272,16 +2270,11 @@ if ~handles.modify
     return
 end
 in = get(hObject,'Value');
-disp('position list')
-disp(in)
-disp(handles.experiments.file(in))
-disp(handles.experiments.file)
-disp(handles.experiments.list(in,:))
 if in == handles.experiments.selected && in ~=1,
     inputH = ['Exp' sprintf('%03d',handles.experiments.file(in)) '.si'];
     inputHprev = ['Exp' sprintf('%03d',handles.experiments.file(in-1)) '.si'];
     if exist(inputHprev,'file'),
-        hprev = getInformation(inputHprev);
+        hprev = getInformation(inputHprev,'');
         if strcmp(hprev.mode,'Presentation'),
             tprev = hprev.presentation.time/1000.0;
         end
@@ -2289,7 +2282,7 @@ if in == handles.experiments.selected && in ~=1,
     if length(handles.experiments.file)>= in+1,
         inputHnext = ['Exp' sprintf('%03d',handles.experiments.file(in+1)) '.si'];
         if exist(inputHnext,'file'),
-            hnext = getInformation(inputHnext);
+            hnext = getInformation(inputHnext,'');
             switch hnext.mode
                 case 'Flicker'
                     rephnext = hnext.flicker.repeatBackground;
@@ -2309,9 +2302,9 @@ if in == handles.experiments.selected && in ~=1,
     else
         rephnext = false;
     end
-    expInformation = getInformation(inputH,'print');
+    expInformation = getInformation(inputH,'','print');
    
-    h = getInformation(inputH);
+    h = getInformation(inputH,'');
     title = ['Experiment ' num2str(in-1) ' information (' inputH ')'];
     q = questdlg(expInformation,title,'Ok','Delete','Ok');
     if ~isempty(q) && strcmp(q,'Delete'),
@@ -2388,7 +2381,6 @@ end
 pos = get(handles.experimentList,'Value');
 if pos~=size(handles.experiments.list,1) && pos~=1
     if handles.experiments.repet_bkg(pos) == 1; %protocolo en bloque 
-        disp('down: rep protocol')
         tmp = handles.experiments.list(pos-1:pos,:);
         handles.experiments.list(pos-1,:) = handles.experiments.list(pos+1,:);
         handles.experiments.list(pos:pos+1,:) = tmp;
@@ -2403,7 +2395,6 @@ if pos~=size(handles.experiments.list,1) && pos~=1
         handles.experiments.repet_bkg(pos:pos+1) = tmp;  
     elseif handles.experiments.repet_bkg(pos) == 0 && length(handles.experiments.repet_bkg)-1 > pos;
         if handles.experiments.repet_bkg(pos+1) == 1; %protocolo en bloque
-            disp('down: rep bkng')
             tmp = handles.experiments.list(pos:pos+1,:);
             handles.experiments.list(pos,:) = handles.experiments.list(pos+2,:);
             handles.experiments.list(pos+1:pos+2,:) = tmp;
@@ -2417,7 +2408,6 @@ if pos~=size(handles.experiments.list,1) && pos~=1
             handles.experiments.repet_bkg(pos) = handles.experiments.repet_bkg(pos+2);
             handles.experiments.repet_bkg(pos+1:pos+2) = tmp; 
         elseif handles.experiments.repet_bkg(pos+2) == 1;
-                disp('down: pre block')
                 tmp = handles.experiments.list(pos+1:pos+2,:);
                 handles.experiments.list(pos+2,:) = handles.experiments.list(pos,:);
                 handles.experiments.list(pos:pos+1,:) = tmp;
@@ -2431,7 +2421,6 @@ if pos~=size(handles.experiments.list,1) && pos~=1
                 handles.experiments.repet_bkg(pos+2) = handles.experiments.repet_bkg(pos);
                 handles.experiments.repet_bkg(pos:pos+1) = tmp;
         else %protocolo normal
-            disp('down: normal1')
             tmp = handles.experiments.list(pos,:);
             handles.experiments.list(pos,:) = handles.experiments.list(pos+1,:);
             handles.experiments.list(pos+1,:) = tmp;
@@ -2448,7 +2437,6 @@ if pos~=size(handles.experiments.list,1) && pos~=1
     else %protocolo normal
         if length(handles.experiments.repet_bkg) > pos;
             if handles.experiments.repet_bkg(pos+1) == 0;
-                disp('down: normal2')
                 tmp = handles.experiments.list(pos,:);
                 handles.experiments.list(pos,:) = handles.experiments.list(pos+1,:);
                 handles.experiments.list(pos+1,:) = tmp;
@@ -2464,9 +2452,7 @@ if pos~=size(handles.experiments.list,1) && pos~=1
             end
         end 
     end
-disp(handles.experiments.selected)
-disp(handles.experiments.repet_bkg)
-disp(handles.experiments.file)
+
 end
 guidata(hObject,handles);
 
@@ -2481,7 +2467,6 @@ end
 pos = get(handles.experimentList,'Value');
 if pos>2
     if handles.experiments.repet_bkg(pos-1) == 1 && pos>3; %protocolo anterior en bloque
-        disp('post bloque')
         tmp = handles.experiments.list(pos-2:pos-1,:);
         handles.experiments.list(pos-2,:) = handles.experiments.list(pos,:);
         handles.experiments.list(pos-1:pos,:) = tmp;
@@ -2495,7 +2480,6 @@ if pos>2
         handles.experiments.repet_bkg(pos-2) = handles.experiments.repet_bkg(pos);
         handles.experiments.repet_bkg(pos-1:pos) = tmp;                 
     elseif handles.experiments.repet_bkg(pos) == 1 && pos>3; %protocolo en bloque 
-        disp('rep protocol')
         tmp = handles.experiments.list(pos-1:pos,:);
         handles.experiments.list(pos,:) = handles.experiments.list(pos-2,:);
         handles.experiments.list(pos-2:pos-1,:) = tmp;
@@ -2510,7 +2494,6 @@ if pos>2
         handles.experiments.repet_bkg(pos-2:pos-1) = tmp;  
     elseif handles.experiments.repet_bkg(pos) == 0 && length(handles.experiments.repet_bkg) > pos 
         if handles.experiments.repet_bkg(pos+1) == 1; %protocolo en bloque
-            disp('rep bkgn')
             tmp = handles.experiments.list(pos:pos+1,:);
             handles.experiments.list(pos+1,:) = handles.experiments.list(pos-1,:);
             handles.experiments.list(pos-1:pos,:) = tmp;
@@ -2524,7 +2507,6 @@ if pos>2
             handles.experiments.repet_bkg(pos+1) = handles.experiments.repet_bkg(pos-1);
             handles.experiments.repet_bkg(pos-1:pos) = tmp; 
         else %protocolo normal
-            disp('normal1')
             tmp = handles.experiments.list(pos,:);
             handles.experiments.list(pos,:) = handles.experiments.list(pos-1,:);
             handles.experiments.list(pos-1,:) = tmp;
@@ -2540,7 +2522,6 @@ if pos>2
         end
     else %protocolo normal
         if handles.experiments.repet_bkg(pos) == 0 && pos>2;
-            disp('normal2')
             tmp = handles.experiments.list(pos,:);
             handles.experiments.list(pos,:) = handles.experiments.list(pos-1,:);
             handles.experiments.list(pos-1,:) = tmp;
@@ -2555,9 +2536,6 @@ if pos>2
             handles.experiments.repet_bkg(pos-1) = tmp;                         
         end
     end
-disp(handles.experiments.selected)
-disp(handles.experiments.repet_bkg)
-disp(handles.experiments.file)
 end
 guidata(hObject,handles);
 
@@ -2734,7 +2712,7 @@ if (handles.screens.selected+1)~=in
         Screen('Preference', 'SkipSyncTests',oldSkip);
         Screen('Preference', 'VisualDebugLevel', oldLevel);
         delete *.si;
-        inputHandles = getInformation('Default Configuration.dsi');
+        inputHandles = getInformation('Default Configuration.dsi','');
         handles.experiments = inputHandles.experiments;
         handles.flicker.fps = 1.0/(2.0*handles.screens.refreshRate);
         handles.onlyStimulus.fps = 1.0/(2.0*handles.screens.refreshRate);
@@ -3430,8 +3408,6 @@ else
     set(handles.flickerFreqConf,'value',0);
     imgtime = str2double(get(handles.flickerImgTime,'String'));
     bkgtime = str2double(get(handles.flickerBackgroundTime,'String'));
-    disp([imgtime, bkgtime])
-    disp([get(handles.flickerImgTime,'String') get(handles.flickerBackgroundTime,'String')])
     handles.flicker.fps = 1000/(imgtime + bkgtime);
     handles.flicker.dutyCicle = 100*imgtime/(imgtime + bkgtime);
     handles.flicker.imgTime = imgtime;
@@ -7028,7 +7004,7 @@ if ~handles.modify
     return
 end
 delete *.si;
-inputHandles = getInformation('Default Configuration.dsi');
+inputHandles = getInformation('Default Configuration.dsi','');
 handles = replaceHandles(handles,inputHandles);
 setAllGUIParameters(handles);
 guidata(hObject,handles);
@@ -7181,7 +7157,6 @@ else
                     positionmask(xrep,yrep,x,y,israndom);
     end
 end
-disp(handles.maskStimulus.mask.spacing.xposition)
 guidata(hObject,handles);
 
 
@@ -7459,14 +7434,5 @@ handles.experiments.file = new_file;
 handles.experiments.repet_bkg = new_rep_bkg;
 set(handles.experimentList,'String',handles.experiments.list);
 
-disp('new file')
-disp(new_file)
-disp('file')
-disp(handles.experiments.file)
 
-disp(handles.experiments.list)
-
-disp(handles.experiments.selected)
-disp(handles.experiments.repet_bkg)
-disp(handles.experiments.file)
 guidata(hObject,handles)

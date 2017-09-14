@@ -38,20 +38,20 @@ nonVisual = ischar(compressData);
 % Non-visual
 if nonVisual
     delete *.si
-    protocolname = strsplit(compressData,'.zip');
     [pathPro,namePro,extPro] = fileparts(compressData);
     dirName = sprintf('../Log/Exp__%04d_%02d_%02d-%02d.%02d.%02d-%s',round(clock),namePro);
     mkdir(dirName)
     system(['unzip ' strrep(compressData,' ','\ ') ' -d ' dirName]);
     siFileName = 'Final Configuration.si';
     if exist(fullfile(dirName,siFileName),'file')
-        data = getInformation(fullfile(dirName,siFileName),compressData);
+        data = getInformation(fullfile(dirName,siFileName),namePro);
     else
         siFilesNotCharged = true;
         disp('ERROR: Can''t open configuration file "Final Configuration.si"');
     end
 else % VISUAL
     data = compressData;
+    namePro = '';
     dirName =  pwd;
 end
 
@@ -125,7 +125,7 @@ for kexp=length(data.experiments.file)-1:-1:1,
     siFileName = ['Exp' sprintf('%03d',data.experiments.file(kexp+1)) '.si'];
 %     if ~siFilesNotCharged && exist(fullfile(pwd,siFileName),'file'),
     if ~siFilesNotCharged && exist(fullfile(dirName,siFileName),'file'),
-        dataExp = getInformation(fullfile(dirName,siFileName),compressData);
+        dataExp = getInformation(fullfile(dirName,siFileName),namePro);
         % Charging images
         if ~strcmp((dataExp.mode),'Presentation')
             dataExp.img.charge = zeros(1,dataExp.img.files);
