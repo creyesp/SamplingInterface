@@ -14,7 +14,7 @@ extra/Protocol_Builder/*.png
 ehthumbs.db
 Thumbs.db
 
-Code/protocols/
+Protocols/test/*
 
 Code/SI_Performance\.mat
 
