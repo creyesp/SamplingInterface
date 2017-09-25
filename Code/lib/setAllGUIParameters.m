@@ -302,7 +302,7 @@ set(handles.whiteNoisePxsX,'String',handles.whitenoise.pxX);
 set(handles.whiteNoisePxsY,'String',handles.whitenoise.pxY);
 set(handles.noiseMenu,'Value',1.0);
 set(handles.whiteNoiseSaveImages,'String',handles.whitenoise.saveImages);
-if exist(handles.whitenoise.seedFile,'file')
+if isstruct(handles.whitenoise.seed)
     set(handles.useSeed,'Value',1.0);
 else
     set(handles.useSeed,'Value',0.0);

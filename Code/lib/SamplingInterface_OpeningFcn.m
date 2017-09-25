@@ -155,7 +155,7 @@ handles.whitenoise.frames = 1000;
 handles.whitenoise.saveImages = 3;
 rng('shuffle');
 handles.whitenoise.intensity = uint8([255 255 255]);
-handles.whitenoise.seed = rng;
+handles.whitenoise.seed = 0;
 handles.whitenoise.possibleSeed = 0;
 handles.whitenoise.seedFile ='../Protocols/';
 handles.whitenoise.time = handles.whitenoise.frames * 1/handles.whitenoise.fps;
