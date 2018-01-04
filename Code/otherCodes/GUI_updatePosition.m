@@ -51,7 +51,7 @@ function GUI_updatePosition_OpeningFcn(hObject, eventdata, handles, varargin)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 % varargin   command line arguments to GUI_updatePosition (see VARARGIN)
-addpath('../lib/')
+addpath('../lib/','../lib/stimulusLib')
 handles.infile.folder = '';
 handles.infile.name = '';
 handles.ofile.folder = '';
@@ -157,7 +157,7 @@ delete ./tmp2/*.si
 system(['unzip ' strrep(infileFile,' ','\ ') ' -d ./tmp2']);
 fileName = '/tmp2/Final Configuration.si';
 if exist(fullfile(pwd,fileName),'file')
-    data = getInformation(fullfile(pwd,fileName));
+    data = getInformation(fullfile(pwd,fileName),'');
     
     handles.ndx = data.img.deltaX;
     handles.ndy = data.img.deltaY;
@@ -198,7 +198,7 @@ delete ./tmp2/*.si
 system(['unzip ' strrep(infileFile,' ','\ ') ' -d ./tmp2']);
 fileName = '/tmp2/Final Configuration.si';
 if exist(fullfile(pwd,fileName),'file')
-    data = getInformation(fullfile(pwd,fileName));
+    data = getInformation(fullfile(pwd,fileName),'');
     img = ones(data.protocol.height,data.protocol.width)*255;
     if IsOSX,
         [ndx,ndy] = moveImageMac(data.img.deltaX,data.img.deltaY, data.screens.selected,img);
@@ -228,11 +228,11 @@ delete ./tmp2/*.si
 system(['unzip ' strrep(infileFile,' ','\ ') ' -d ./tmp2']);
 fileName = '/tmp2/Final Configuration.si';
 if exist(fullfile(pwd,fileName),'file')
-    data = getInformation(fullfile(pwd,fileName));
+    data = getInformation(fullfile(pwd,fileName),'');
     for i=length(data.experiments.file)-1:-1:1,
         fileName2 = ['./tmp2/Exp' sprintf('%03d',data.experiments.file(i+1)) '.si'];
         if exist(fullfile(pwd,fileName2),'file'),
-            experiment = getInformation(fullfile(pwd,fileName2));
+            experiment = getInformation(fullfile(pwd,fileName2),'');
             disp([experiment.img.deltaY experiment.img.deltaX handles.ndy handles.ndx])
             experiment.img.deltaY = handles.ndy;
             experiment.img.deltaX = handles.ndx;

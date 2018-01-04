@@ -500,7 +500,7 @@ while(kexp<length(data.experiments.file)),
         if length(experiment) > kexp && ...
            experiment(kexp+1).beforeStimulus.is && ...
            experiment(kexp+1).beforeStimulus.rest,
-            Time(kexp).finish = WaitSecs((experiment(kexp).presentation.time - ...
+           Time(kexp).finish = WaitSecs((experiment(kexp).presentation.time - ...
                 experiment(kexp+1).beforeStimulus.time)/1000.0 - 0.5*refresh);
         else
             Time(kexp).finish = WaitSecs(experiment(kexp).presentation.time/1000.0 - 0.5*refresh);
@@ -979,7 +979,7 @@ while(kexp<length(data.experiments.file)),
                         IOPort('Write', serialCom, change);
                         b_serial = b_serial + 1;
                     end
-                    timeend(2,k) = toc;
+                    timeend(2,k+1) = toc;
                     if nRefreshImg == 1,
                         vbl = Screen('Flip', win, vbl);
                     else
@@ -2526,6 +2526,9 @@ if ~siFilesNotCharged && ~indexColorFrame && nonVisual
         dat = experiment(kexp);
 %         save([dirName '/Exp' sprintf('%03d',experiment(kexp).experiments.file(kexp+1)) '.si'],'-struct','dat');
     end
+    disp('TIME :::::::::: ')
+    disp(Time(1))
+    disp(Time(2))
     saveLogFile(data,Time,dirName,compressData);
 %     if useProjector && ~exist(fullfile(dirName,siFileName),'file'),
 %         copyfile('*.si',dirName);
@@ -2536,7 +2539,6 @@ if ~siFilesNotCharged && ~indexColorFrame && nonVisual
 %     end    
 
 end
-
 if nonVisual
     delete *.si
     exit
@@ -2544,7 +2546,6 @@ else
     cd(initialFolder);
     return
 end   
-
 end
 
 

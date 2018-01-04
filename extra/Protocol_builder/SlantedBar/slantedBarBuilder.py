@@ -5,8 +5,8 @@ Created on Wed Apr 26 08:25:54 2017
 
 @author: cesar
 """
-
-import Image, ImageDraw
+from PIL import Image, ImageDraw
+#import Image, ImageDraw
 import numpy as np
 import os
 import argparse        #argument parsing
@@ -75,7 +75,9 @@ for kdelta,kindex in zip(step,range(len(step))):
     del draw
     
     # write to stdout
-    im = im.rotate(rotation)
-    im.save(outputFolder+'stim'+'{:05d}'.format(kindex)+'.png')
+    im = im.rotate(rotation,expand=True)
+    # im = im.crop((211,211,631,631))
+    # print outputFolder+'stim'+'{:05d}'.format(kindex)+'.png'
+    im.save(outputFolder+'stim'+'{:05d}'.format(kindex)+'.png',format='PNG')
     
     

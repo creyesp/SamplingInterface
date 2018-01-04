@@ -3,8 +3,8 @@ function [inf]=getInformation(input,nameFile,use)
 % en two formats for user data or print information.
 %
 % Example: 
-%       getInformation(input) return struct with variable of experiment
-%       getInformation(input,'print') return string with information for print
+%       getInformation(input,nameFile) return struct with variable of experiment
+%       getInformation(input,'print',nameFile) return string with information for print
 
 
 if ~exist('use','var'), use=0; end

@@ -1,7 +1,5 @@
 --help
 adding
-Log/
-Code/protocols/*.zip
 *~
 extra/Protocol_Builder/*.png
 # OS generated files #
@@ -14,8 +12,6 @@ extra/Protocol_Builder/*.png
 ehthumbs.db
 Thumbs.db
 
-Protocols/test/*
-
 Code/SI_Performance\.mat
 
 Code/Default Configuration\.dsi
@@ -27,10 +23,5 @@ Code/positionrandom.mat
 
 Code/overmask\.mat
 
-Stim/CodeBar_stim_270
-
 *.mat
 
-Stim/
-
-Protocols/

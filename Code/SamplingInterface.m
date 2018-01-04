@@ -25,7 +25,7 @@ function varargout = SamplingInterface(varargin)
 % Last Modified by GUIDE v2.5 28-Aug-2017 15:41:26
 
 % Begin initialization code - DO NOT EDIT
-addpath('lib');
+addpath('lib','lib/stimulusLib');
 gui_Singleton = 1;
 % SamplingInterface_OpeningFcn is the function that set all initial
 % GUI parameters when it's opened

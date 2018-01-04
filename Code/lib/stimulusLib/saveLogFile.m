@@ -15,28 +15,31 @@ time = 0;
 repeated = 0;
 while(i<length(inf.experiments.file)),
     time  = time + 1;
+    disp(['ESTOY EN EL EXP ' num2str(time) ' ' num2str(i)])
     fileName = ['Exp' sprintf('%03d',inf.experiments.file(i+1)) '.si'];
     fullfileName = fullfile(pathExp,fileName);
     if exist(fullfileName,'file'),
         disp(['exp file: ' num2str(i)])
         expData = getInformation(fullfileName,ExpName);
         exp = getInformation(fullfileName,ExpName,'print');
+
         text = sprintf(['%s%s\nReal time duration: %s' division],text,cell2asciiStr(exp)...
             ,datestr(datenum(0,0,0,0,0,T(time).finish-T(time).start+0.5*inf.refresh),...
             'HH:MM:SS.FFF'));
-        
-        if i>1 && strcmp(expDataPrev.mode,'Presentation') &&...
-            ( (strcmp(expData.mode,'Flicker') && expData.flicker.repeatBackground) || ...
-            (strcmp(expData.mode,'Only stimulus (fps)') && expData.onlyStimulus.repeatBackground) ),
-            if ((strcmp(expData.mode,'Flicker') && repeated<expData.flicker.repetitions) || (strcmp(expData.mode,'Only stimulus (fps)') && repeated<expData.onlyStimulus.repetitions))
-                i = i-2;
-                repeated = repeated+1;
-            else
-                repeated = 0;
-            end
-        else
-            expDataPrev = expData;
-        end
+
+%         if i>1 && strcmp(expDataPrev.mode,'Presentation') &&...
+%             ( (strcmp(expData.mode,'Flicker') && expData.flicker.repeatBackground) || ...
+%             (strcmp(expData.mode,'Only stimulus (fps)') && expData.onlyStimulus.repeatBackground) ),
+%             if ((strcmp(expData.mode,'Flicker') && repeated<expData.flicker.repetitions) || ...
+%                 (strcmp(expData.mode,'Only stimulus (fps)') && repeated<expData.onlyStimulus.repetitions)),
+%                 i = i-2;
+%                 repeated = repeated+1;
+%             else
+%                 repeated = 0;
+%             end
+%         else
+%             expDataPrev = expData;
+%         end
     end
     i = i+1;
 end
