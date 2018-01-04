@@ -1,0 +1,62 @@
+		Sampling Interface log file
+
+Started date: 	2017/12/20 18:41:23  
+Finished date: 	2017/12/20 18:45:26 
+
+Refresh set at screen selection: 	16.7340395 [ms] - 59.75843 [Hz]
+Refresh used in stimulation: 		16.7369921 [ms] - 59.74789 [Hz]
+
+Screen selected: 0
+Screen width: 	1280
+Screen height:	800
+
+
+************************************************************************************************
+		List of sampled modes
+************************************************************************************************
+
+
+------------------------------------------------------------------------------------------------
+
+File name: ../Protocols/natural images/imagen_natural_420x420
+                                                             
+Time of background:                                          
+                                                             
+Color [r,g,b]: [0,0,0]                                       
+Time expected: 1000 [ms]                                     
+Real time duration: 00:00:01.000
+
+------------------------------------------------------------------------------------------------
+
+File name: ../Protocols/natural images/imagen_natural_420x420        
+                                                                     
+Mode: Only stimulus (fps)                                            
+                                                                     
+Images directory: ../Stim/Imagenes_naturales/nat_im_original_420x420/
+Initial file: 0090.jpg                                               
+Final file: 0690.jpg                                                 
+Number of files: 601                                                 
+Frame background [r,g,b]: [0,0,0]                                    
+Analog Sync: Using output analog signal on every presented frame     
+                                                                     
+Only Stimulus properties:                                            
+Frames per second: 59.7584                                           
+Image repetition: 20, include the previous background protocol       
+                                                                     
+Total time expected: 00:00:10.057                                    
+Real time duration: 00:00:10.049
+
+------------------------------------------------------------------------------------------------
+
+File name: ../Protocols/natural images/imagen_natural_420x420
+                                                             
+Time of background:                                          
+                                                             
+Color [r,g,b]: [0,0,0]                                       
+Time expected: 1000 [ms]                                     
+Real time duration: 00:00:01.000
+
+------------------------------------------------------------------------------------------------
+
+
+************************************************************************************************
