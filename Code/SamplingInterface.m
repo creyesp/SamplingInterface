@@ -2165,6 +2165,7 @@ if handles.img.files~=0 ...
             num2str(handles.whitenoise.fps,3) ' [fps] - '];
         newExp = [newExp num2str(handles.whitenoise.time,4) ' [s]' ];
         handles.time = handles.time + handles.whitenoise.time;
+        handles.experiments.repet_bkg  = [handles.experiments.repet_bkg 0];
     end
     handles.experiments.list = char(handles.experiments.list, newExp);
     handles.img.totalFiles = handles.img.totalFiles + handles.img.files;

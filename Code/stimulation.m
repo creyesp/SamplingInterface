@@ -123,16 +123,20 @@ deintensityKey = KbName('w');
 
 for kexp=length(data.experiments.file)-1:-1:1,
     siFileName = ['Exp' sprintf('%03d',data.experiments.file(kexp+1)) '.si'];
-%     if ~siFilesNotCharged && exist(fullfile(pwd,siFileName),'file'),
     if ~siFilesNotCharged && exist(fullfile(dirName,siFileName),'file'),
         dataExp = getInformation(fullfile(dirName,siFileName),namePro);
         % Charging images
+        dataExp.position  = [0,0,wScreen,hScreen];
+        dataExp.positionMask = [0,0,wScreen,hScreen];
+        dataExp.img.charge = zeros(1,1);
+        dataExp.img.repeated = 0;
+        dataExp.maskStimulus.mask.spacing.xrepeated = 0;
+        dataExp.maskStimulus.mask.spacing.yrepeated = 0;
+        [dataExp.noise, dataExp.whitenoise.imgToComp,... 
+                dataExp.noiseimg] = setWNimg(dataExp.whitenoise);            
+        dataExp.maskStimulus.protocol.flicker.bg.position = [0 0 0 0];
         if ~strcmp((dataExp.mode),'Presentation')
             dataExp.img.charge = zeros(1,dataExp.img.files);
-            dataExp.img.repeated = 0;
-            dataExp.maskStimulus.mask.spacing.xrepeated = 0;
-            dataExp.maskStimulus.mask.spacing.yrepeated = 0;
-           
             % Adjustment Bar variables
             if dataExp.sync.is && ~dataExp.sync.isdigital                     
                 dataExp.sync.analog.posLeft = (dataExp.sync.analog.posLeft-1)*wScreen/99.0;
@@ -174,9 +178,9 @@ for kexp=length(data.experiments.file)-1:-1:1,
             else
                 dataExp.maskStimulus.protocol.flicker.bg.position = [0 0 0 0];
             end
-        else
-            dataExp.position  = [0,0,wScreen,hScreen];
-            dataExp.positionMask = [0,0,wScreen,hScreen];
+%         else
+
+
         end
         experiment(kexp) = dataExp;
         if experiment(kexp).sync.is && experiment(kexp).sync.isdigital
@@ -2526,23 +2530,15 @@ if ~siFilesNotCharged && ~indexColorFrame && nonVisual
         dat = experiment(kexp);
 %         save([dirName '/Exp' sprintf('%03d',experiment(kexp).experiments.file(kexp+1)) '.si'],'-struct','dat');
     end
-    disp('TIME :::::::::: ')
-    disp(Time(1))
-    disp(Time(2))
     saveLogFile(data,Time,dirName,compressData);
-%     if useProjector && ~exist(fullfile(dirName,siFileName),'file'),
-%         copyfile('*.si',dirName);
-%         saveLogFile(data,Time,dirName);
-%         delete *.si
-%     else
-%         saveLogFile(data,Time,dirName);
-%     end    
-
+    save('exeData.mat');
 end
+
 if nonVisual
-    delete *.si
+    delete *.si;
     exit
 else
+    delete *.si;
     cd(initialFolder);
     return
 end   
