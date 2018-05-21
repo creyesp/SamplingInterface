@@ -49,7 +49,7 @@ This example describe the procedure to create a light flash protocol with the fo
 So, open the SamplingInterface and following this steps:
 
 
-<img style="float: right;" src="Doc/img/wiki/whatever.jpg" width="200">
+<img style="float: right;" src="Doc/img/wiki/flicker.jpg" width="200">
   - **In panel 6**, set the time and the color for the adaptation stimulus, so you put Time: 1000 and Color: [255,0,0]. After, for you add this to the playlist (panel 8) you must do click in add button of panel 6.     
   - **In panel 3** choose the *Protocol: Flicker* option.     
   - **In panel 4** in the option Images directory , choose the folder where you find an image with cyan colour, maximum intensity and select it in the list from, to.     
