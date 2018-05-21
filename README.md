@@ -37,81 +37,83 @@ in this case '../protocols/WN.zip' is the path of the protocols. Only in this ca
 For more information you can see the manual in [PDF](https:*github.com/creyesp/SamplingInterface/raw/master/Doc/Manual_de_usuario_para_SamplingInterface_v2.pdf), here you will find specific information about parameters of configuration in each protocol type.
 ## Examples 
 <img style="float: right;" src="Doc/img/wiki/samplinginterface.png" width="200">
+
 ### Light Flash
 This example describe the procedure to create a light flash protocol with the following properties:
 
-   * 400 [ms] of light in cyan colour and maximum intensity (On period)    
-   * 1000 [ms] of darkness (Off period)     
-   * Use 20 repetitions     
-   * Use a adaptation period for 1000 [ms] and red colour at the begin and end of protocol.     
-   * Use analog synchronize      
+* 400 [ms] of light in cyan colour and maximum intensity (On period)    
+* 1000 [ms] of darkness (Off period)     
+* Use 20 repetitions     
+* Use a adaptation period for 1000 [ms] and red colour at the begin and end of protocol.     
+* Use analog synchronize      
 
 So, open the SamplingInterface and following this steps:
 
 
 <img style="float: right;" src="Doc/img/wiki/flicker.jpg" width="200">
-  - **In panel 6**, set the time and the color for the adaptation stimulus, so you put Time: 1000 and Color: [255,0,0]. After, for you add this to the playlist (panel 8) you must do click in add button of panel 6.     
-  - **In panel 3** choose the *Protocol: Flicker* option.     
-  - **In panel 4** in the option Images directory , choose the folder where you find an image with cyan colour, maximum intensity and select it in the list from, to.     
-  - **In panel 4** choose Synchronization: Analog option and set the default parameters.     
-  - **In panel 4** click in *Move images on screen* and set the images position in the screen.     
-  - **In panel 7**  choose the *configuration used* checkbox option in Timming configuration and set *image time: 400* and *Background time: 1000*.     
-  - **In panel 7** set *repeat: 19* (show the first presentation and repeat it 19 times)     
-  - **In panel 7** set the *background color: [0,0,0]* to make the Off period black.     
-  - **In panel 8** click on the add button to put the protocol in the playlist in the same panel.    
-  - **In panel 6** set the time and the color for the adaptation stimulus, so you put Time: 1000 and Color: [255,0,0]. After, for you add this to the playlist (panel 8) you must do click in add button of panel 6.     
+
+- **In panel 6**, set the time and the color for the adaptation stimulus, so you put Time: 1000 and Color: [255,0,0]. After, for you add this to the playlist (panel 8) you must do click in add button of panel 6.     
+- **In panel 3** choose the *Protocol: Flicker* option.     
+- **In panel 4** in the option Images directory , choose the folder where you find an image with cyan colour, maximum intensity and select it in the list from, to.     
+- **In panel 4** choose Synchronization: Analog option and set the default parameters.     
+- **In panel 4** click in *Move images on screen* and set the images position in the screen.     
+- **In panel 7**  choose the *configuration used* checkbox option in Timming configuration and set *image time: 400* and *Background time: 1000*.     
+- **In panel 7** set *repeat: 19* (show the first presentation and repeat it 19 times)     
+- **In panel 7** set the *background color: [0,0,0]* to make the Off period black.     
+- **In panel 8** click on the add button to put the protocol in the playlist in the same panel.    
+- **In panel 6** set the time and the color for the adaptation stimulus, so you put Time: 1000 and Color: [255,0,0]. After, for you add this to the playlist (panel 8) you must do click in add button of panel 6.     
   - **In panel 10** to save the protocol you need do click in the save icon and choose the directory and the file name. The SamplingInterface ask you if you want to create a script, you agree and close the software.     
   - To finish you look the directory where you save the protocol and run the .command file.     
 
 ### White noise 
 This example describe the procedure to create a White Noise protocol with the following properties: 
 
-  * Use Cyan/black colours with maximum intensity     
-  * Use 12x12 pixels/block    
-  * Use 35 blocks     
-  * Create a new seed for the Pseudorandom patern.    
-  * Use 60 frame per second (fps)    
-  * 20 min of duration    
-  * Use analog synchronize    
+* Use Cyan/black colours with maximum intensity     
+* Use 12x12 pixels/block    
+* Use 35 blocks     
+* Create a new seed for the Pseudorandom patern.    
+* Use 60 frame per second (fps)    
+* 20 min of duration    
+* Use analog synchronize    
 
 First, open the SamplingInterface and following this step:
 
 <img style="float: right;" src="Doc/img/wiki/whitenoise.png" width="200">
-  - **In panel 3** choose the option *Protocol: White noise*.    
-  - **In panel 4** choose the option *Synchronization: Analog* and set the default properties.    
-  - **In panel 7** set *Frame per second: 60 *.     
-  - **In panel 7** set *Frames: 72000* (20min*60seg*60fps)     
-  - **In panel 7** set *Number of block: 35*.     
-  - **In panel 7** set *Pixels per block x:12 y:12*     
-  - **In panel 7** choose the option *type:Black and cyan*.     
-  - **In panel 7** set *Intensities R:0 G:255 B:255*     
-  - **In panel 7** click in *Create Seed* button and choose the directory where you save the seed. It's recommended to choose the "protocols/White Noise/" folder.    
-  - **In panel 8**  click on the add button to put the protocol in the playlist in the same panel.    
-  - **In panel 10** to save the protocol, you must click on the save icon and choose the directory and file name. The SamplingInterface asks if you want to create a script, accept and close the software.     
-  - To finish, look for the directory where the protocol was saved and run the .command file.     
+- **In panel 3** choose the option *Protocol: White noise*.    
+- **In panel 4** choose the option *Synchronization: Analog* and set the default properties.    
+- **In panel 7** set *Frame per second: 60 *.     
+- **In panel 7** set *Frames: 72000* (20min*60seg*60fps)     
+- **In panel 7** set *Number of block: 35*.     
+- **In panel 7** set *Pixels per block x:12 y:12*     
+- **In panel 7** choose the option *type:Black and cyan*.     
+- **In panel 7** set *Intensities R:0 G:255 B:255*     
+- **In panel 7** click in *Create Seed* button and choose the directory where you save the seed. It's recommended to choose the "protocols/White Noise/" folder.    
+- **In panel 8**  click on the add button to put the protocol in the playlist in the same panel.    
+- **In panel 10** to save the protocol, you must click on the save icon and choose the directory and file name. The SamplingInterface asks if you want to create a script, accept and close the software.     
+- To finish, look for the directory where the protocol was saved and run the .command file.     
 
 ### Images sequence (ex. Imagen natural)
 This example describe the procedure to create a Natural images sequence protocol with the following properties: 
 
-   * Use the first 240 images in the directory     
-   * Use 60 frame per second (fps) in the screen     
-   * Repeat 20 times the images sequence     
-   * Use a red adaptation period of 500 [ms] at the beginning of each repetition     
-   * Use analog synchronize    
+* Use the first 240 images in the directory     
+* Use 60 frame per second (fps) in the screen     
+* Repeat 20 times the images sequence     
+* Use a red adaptation period of 500 [ms] at the beginning of each repetition     
+* Use analog synchronize    
 
 <img style="float: right;" src="Doc/img/wiki/nat_img.png" width="200">
 So, open the SamplingInterface and following this step:
 
-  - **In panel 6** set the time and the color for the adaptation stimulus, so you put Time: 1000 and Color: [255,0,0]. After, for you add this to the play list (panel 8) you must do click in add button of panel 6.     
-  - **In panel 3** choose the option *Protocol: Only stimulus* .    
-  - **In panel 4** in the option Images directory , choose the folder where you find the natural images and select the first until the last images (240) in the list * from: img000.jpg*, *to:img239.jpg*.    
-  - **In panel 4** choose the option *Synchronization: Analog* and set the default parameters.    
-  - **In panel 7** set *Frame per second: 60 *.    
-  - **In panel 7** set *Repeat: 19 *.    
-  - **In panel 7** choose the checkbox *include prev. background *. This ability to add the adaptation period at beginning of each repetitions.    
-  - **In panel 8**  click on the add button to put the protocol in the playlist in the same panel.    
-  - **In panel 10** to save the protocol, you must click on the save icon and choose the directory and file name. The SamplingInterface asks if you want to create a script, accept and close the software.    
-  - To finish, look for the directory where the protocol was saved and run the .command file.    
+- **In panel 6** set the time and the color for the adaptation stimulus, so you put Time: 1000 and Color: [255,0,0]. After, for you add this to the play list (panel 8) you must do click in add button of panel 6.     
+- **In panel 3** choose the option *Protocol: Only stimulus* .    
+- **In panel 4** in the option Images directory , choose the folder where you find the natural images and select the first until the last images (240) in the list * from: img000.jpg*, *to:img239.jpg*.    
+- **In panel 4** choose the option *Synchronization: Analog* and set the default parameters.    
+- **In panel 7** set *Frame per second: 60 *.    
+- **In panel 7** set *Repeat: 19 *.    
+- **In panel 7** choose the checkbox *include prev. background *. This ability to add the adaptation period at beginning of each repetitions.    
+- **In panel 8**  click on the add button to put the protocol in the playlist in the same panel.    
+- **In panel 10** to save the protocol, you must click on the save icon and choose the directory and file name. The SamplingInterface asks if you want to create a script, accept and close the software.    
+- To finish, look for the directory where the protocol was saved and run the .command file.    
 
 ### Masked Stimulus
 This example describes the procedure to create a protocol where you mask a stimulation zone, using the previous protocols.
@@ -119,11 +121,11 @@ The masked stimulus has 2 steps, the first step adjusts the area of interest in 
 
 For this example the following configurations must be used:
 
-   * Use the cyan light flash protocol, maximum intensity, 1 [s] of light and 1 [s] of darkness for 20 repetitions.    
-   * Use a adaptation period for 500 [ms] and black colour at the begin of protocol.    
-   * Use analog synchronize    
-   * Use 60 fps    
-   * Use a White noise mask, 35 blocks of 12x12 pixels in black and cian.    
+* Use the cyan light flash protocol, maximum intensity, 1 [s] of light and 1 [s] of darkness for 20 repetitions.    
+* Use a adaptation period for 500 [ms] and black colour at the begin of protocol.    
+* Use analog synchronize    
+* Use 60 fps    
+* Use a White noise mask, 35 blocks of 12x12 pixels in black and cian.    
 
 
 <img style="float: right;" src="Doc/img/wiki/mask_wiki.png" width="200">
@@ -173,10 +175,10 @@ Move protocol is a graphic interface to change the current center position of a 
 <img style="float: right;" src="Doc/img/wiki/moveprotocol.png" width="200">
 So, open Matlab and enter the [SamplingInterface/Code/otherCodes/](https:*github.com/creyesp/SamplingInterface/tree/master/Code/otherCodes) folder and run in the terminal GUI_updatePosition that open the graphic interface.
 
-  * Click in load path button and search the protocol file    
-  * click in START button and fit the position with the arrow keys, when you finish it press Esc key.    
-  * Click in save path button and search the path where you want save it.    
-  * Click in SAVE and the new position in the new protocol file.    
+* Click in load path button and search the protocol file    
+* click in START button and fit the position with the arrow keys, when you finish it press Esc key.    
+* Click in save path button and search the path where you want save it.    
+* Click in SAVE and the new position in the new protocol file.    
 
 You also can change in the textbox all parameter with your keyboard.
 ### Images sequence maker 
