@@ -16,9 +16,214 @@
    id="svg10075"
    version="1.1"
    inkscape:version="0.91 r13725"
-   sodipodi:docname="analog_signal.svg">
+   sodipodi:docname="analog_signal.svg"
+   inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_repeated.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
   <defs
      id="defs10077">
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="marker5054"
+       style="overflow:visible;"
+       inkscape:isstock="true">
+      <path
+         id="path5056"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         style="fill-rule:evenodd;stroke:#f00000;stroke-width:1pt;stroke-opacity:1;fill:#f00000;fill-opacity:1"
+         transform="scale(0.8) rotate(180) translate(12.5,0)" />
+    </marker>
+    <marker
+       inkscape:isstock="true"
+       style="overflow:visible;"
+       id="marker5050"
+       refX="0.0"
+       refY="0.0"
+       orient="auto"
+       inkscape:stockid="Arrow1Lend">
+      <path
+         transform="scale(0.8) rotate(180) translate(12.5,0)"
+         style="fill-rule:evenodd;stroke:#0075ff;stroke-width:1pt;stroke-opacity:1;fill:#0075ff;fill-opacity:1"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         id="path5052" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="marker5046"
+       style="overflow:visible;"
+       inkscape:isstock="true">
+      <path
+         id="path5048"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         style="fill-rule:evenodd;stroke:#0075ff;stroke-width:1pt;stroke-opacity:1;fill:#0075ff;fill-opacity:1"
+         transform="scale(0.8) rotate(180) translate(12.5,0)" />
+    </marker>
+    <marker
+       inkscape:isstock="true"
+       style="overflow:visible;"
+       id="marker5042"
+       refX="0.0"
+       refY="0.0"
+       orient="auto"
+       inkscape:stockid="Arrow1Lend">
+      <path
+         transform="scale(0.8) rotate(180) translate(12.5,0)"
+         style="fill-rule:evenodd;stroke:#0075ff;stroke-width:1pt;stroke-opacity:1;fill:#0075ff;fill-opacity:1"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         id="path5044" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="marker5038"
+       style="overflow:visible;"
+       inkscape:isstock="true">
+      <path
+         id="path5040"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         style="fill-rule:evenodd;stroke:#0075ff;stroke-width:1pt;stroke-opacity:1;fill:#0075ff;fill-opacity:1"
+         transform="scale(0.8) rotate(180) translate(12.5,0)" />
+    </marker>
+    <marker
+       inkscape:isstock="true"
+       style="overflow:visible;"
+       id="marker5034"
+       refX="0.0"
+       refY="0.0"
+       orient="auto"
+       inkscape:stockid="Arrow1Lend">
+      <path
+         transform="scale(0.8) rotate(180) translate(12.5,0)"
+         style="fill-rule:evenodd;stroke:#0075ff;stroke-width:1pt;stroke-opacity:1;fill:#0075ff;fill-opacity:1"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         id="path5036" />
+    </marker>
+    <marker
+       inkscape:isstock="true"
+       style="overflow:visible;"
+       id="marker4798"
+       refX="0.0"
+       refY="0.0"
+       orient="auto"
+       inkscape:stockid="Arrow1Lend"
+       inkscape:collect="always">
+      <path
+         transform="scale(0.8) rotate(180) translate(12.5,0)"
+         style="fill-rule:evenodd;stroke:#f00000;stroke-width:1pt;stroke-opacity:1;fill:#f00000;fill-opacity:1"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         id="path4800" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="marker4792"
+       style="overflow:visible;"
+       inkscape:isstock="true"
+       inkscape:collect="always">
+      <path
+         id="path4794"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         style="fill-rule:evenodd;stroke:#0075ff;stroke-width:1pt;stroke-opacity:1;fill:#0075ff;fill-opacity:1"
+         transform="scale(0.8) rotate(180) translate(12.5,0)" />
+    </marker>
+    <marker
+       inkscape:isstock="true"
+       style="overflow:visible;"
+       id="marker4786"
+       refX="0.0"
+       refY="0.0"
+       orient="auto"
+       inkscape:stockid="Arrow1Lend"
+       inkscape:collect="always">
+      <path
+         transform="scale(0.8) rotate(180) translate(12.5,0)"
+         style="fill-rule:evenodd;stroke:#0075ff;stroke-width:1pt;stroke-opacity:1;fill:#0075ff;fill-opacity:1"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         id="path4788" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="marker4780"
+       style="overflow:visible;"
+       inkscape:isstock="true"
+       inkscape:collect="always">
+      <path
+         id="path4782"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         style="fill-rule:evenodd;stroke:#0075ff;stroke-width:1pt;stroke-opacity:1;fill:#0075ff;fill-opacity:1"
+         transform="scale(0.8) rotate(180) translate(12.5,0)" />
+    </marker>
+    <marker
+       inkscape:isstock="true"
+       style="overflow:visible;"
+       id="marker4774"
+       refX="0.0"
+       refY="0.0"
+       orient="auto"
+       inkscape:stockid="Arrow1Lend"
+       inkscape:collect="always">
+      <path
+         transform="scale(0.8) rotate(180) translate(12.5,0)"
+         style="fill-rule:evenodd;stroke:#0075ff;stroke-width:1pt;stroke-opacity:1;fill:#0075ff;fill-opacity:1"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         id="path4776" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow1Lend"
+       style="overflow:visible;"
+       inkscape:isstock="true"
+       inkscape:collect="always">
+      <path
+         id="path4511"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         style="fill-rule:evenodd;stroke:#0075ff;stroke-width:1pt;stroke-opacity:1;fill:#0075ff;fill-opacity:1"
+         transform="scale(0.8) rotate(180) translate(12.5,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lstart"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="marker4766"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         id="path4768"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1;fill:#000000;fill-opacity:1"
+         transform="scale(0.8) translate(12.5,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lstart"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow1Lstart"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         id="path4508"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1;fill:#000000;fill-opacity:1"
+         transform="scale(0.8) translate(12.5,0)" />
+    </marker>
     <marker
        inkscape:stockid="Arrow2Lend"
        orient="auto"
@@ -102,13 +307,13 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.70710678"
-     inkscape:cx="389.98292"
-     inkscape:cy="581.16815"
+     inkscape:zoom="1"
+     inkscape:cx="123.01046"
+     inkscape:cy="1560.5222"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
-     showguides="false"
+     showguides="true"
      inkscape:guide-bbox="true"
      inkscape:window-width="1855"
      inkscape:window-height="1056"
@@ -154,8 +359,8 @@
        orientation="1,0"
        id="guide11045" />
     <sodipodi:guide
-       position="-404,772.00001"
-       orientation="-0.30901699,0.95105652"
+       position="547.25,1480.5"
+       orientation="-0.25881905,0.96592583"
        id="guide11049"
        inkscape:label=""
        inkscape:color="rgb(0,0,255)" />
@@ -879,41 +1084,41 @@
        d="m 349.47684,354.16667 0,-14.61031 -73.15119,19.67338 -0.13296,14.68273 73.28415,-19.7458 z"
        id="path11060"
        inkscape:connector-curvature="0"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300"
-       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/analog_signal_last_frame.png" />
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png" />
     <path
        style="opacity:1;fill:#a80000;fill-opacity:1;stroke:none;stroke-width:9;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        d="m 422.75629,334.42194 0,-14.57337 -73.27945,19.70779 0,14.61031 73.27945,-19.74473 z"
        id="path11058"
        inkscape:connector-curvature="0"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300"
-       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/analog_signal_last_frame.png" />
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png" />
     <path
        style="opacity:1;fill:#d20000;fill-opacity:1;stroke:none;stroke-width:9;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        d="m 495.72284,314.76165 0,-14.53682 -36.86362,9.91417 -36.10293,9.70957 0,14.57337 72.96655,-19.66029 z"
        id="path11067"
        inkscape:connector-curvature="0"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300"
-       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/analog_signal_last_frame.png" />
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png" />
     <path
        style="opacity:1;fill:#ff2a2a;fill-opacity:1;stroke:none;stroke-width:9;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        d="m 569.46917,294.8912 0,-14.49968 -73.74633,19.83331 0,14.53682 73.74633,-19.87045 z"
        id="path11065"
        inkscape:connector-curvature="0"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300"
-       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/analog_signal_last_frame.png" />
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png" />
     <path
        style="opacity:1;fill:#7d0000;fill-opacity:1;stroke:none;stroke-width:9;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        d="m 641.39255,261.04827 -71.92338,19.34325 0,14.49968 71.92186,-19.37896 0,-14.46397 z"
        id="rect11030"
        inkscape:connector-curvature="0"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300"
-       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/analog_signal_last_frame.png" />
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png" />
     <rect
        y="-1524.0842"
        x="1305.1138"
@@ -921,14 +1126,14 @@
        width="1295.9395"
        id="rect11053"
        style="opacity:0.53086416;fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter4078)"
-       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/analog_signal_last_frame.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"
        transform="matrix(0.13295301,0,0,0.11004286,357.18574,263.59077)" />
     <rect
-       inkscape:export-ydpi="300"
-       inkscape:export-xdpi="300"
-       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/analog_signal_last_frame.png"
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
        style="opacity:0.53086416;fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter4078)"
        id="rect11051"
        width="1295.9395"
@@ -943,13 +1148,13 @@
        width="172.29906"
        id="rect10870"
        style="fill:#1a1a1a;fill-opacity:1;stroke:#9f9f9f;stroke-width:0.12095673;stroke-opacity:1"
-       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/analog_signal_last_frame.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300" />
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
     <rect
-       inkscape:export-ydpi="300"
-       inkscape:export-xdpi="300"
-       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/analog_signal_last_frame.png"
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
        style="fill:#1a1a1a;fill-opacity:1;stroke:#9f9f9f;stroke-width:0.12095673;stroke-opacity:1"
        id="rect10868"
        width="172.29906"
@@ -963,9 +1168,9 @@
        width="1295.9395"
        id="rect4090"
        style="opacity:0.53086416;fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter4078)"
-       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/analog_signal_last_frame.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"
        transform="matrix(0.13295301,0,0,0.11004286,357.18574,263.59077)" />
     <rect
        style="fill:#808080;fill-opacity:1;stroke:none"
@@ -974,9 +1179,9 @@
        height="88.027626"
        x="396.53494"
        y="134.2977"
-       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/analog_signal_last_frame.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300" />
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
     <rect
        y="205.81891"
        x="396.53494"
@@ -984,9 +1189,9 @@
        width="172.29906"
        id="rect4102"
        style="fill:#7d0000;fill-opacity:1;stroke:none"
-       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/analog_signal_last_frame.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300" />
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
     <rect
        style="opacity:0.53086416;fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter4078)"
        id="rect4088"
@@ -994,9 +1199,9 @@
        height="799.93945"
        x="-233.88643"
        y="-1040.0845"
-       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/analog_signal_last_frame.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"
        transform="matrix(0.13295301,0,0,0.11004286,357.18574,263.59077)" />
     <rect
        y="151.90454"
@@ -1005,9 +1210,9 @@
        width="172.29906"
        id="rect4049"
        style="fill:#808080;fill-opacity:1;stroke:none"
-       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/analog_signal_last_frame.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300" />
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
     <rect
        style="fill:#ff2a2a;fill-opacity:1;stroke:none"
        id="rect4100"
@@ -1015,9 +1220,9 @@
        height="16.50643"
        x="322.74597"
        y="223.42572"
-       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/analog_signal_last_frame.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300" />
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
     <rect
        y="-853.41779"
        x="-782.21967"
@@ -1025,9 +1230,9 @@
        width="1295.9395"
        id="rect4086"
        style="opacity:0.53086416;fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter4078)"
-       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/analog_signal_last_frame.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"
        transform="matrix(0.13295301,0,0,0.11004286,357.18574,263.59077)" />
     <rect
        style="fill:#808080;fill-opacity:1;stroke:none"
@@ -1036,9 +1241,9 @@
        height="88.027626"
        x="249.84344"
        y="172.44583"
-       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/analog_signal_last_frame.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300" />
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
     <rect
        y="243.96707"
        x="249.84344"
@@ -1046,9 +1251,9 @@
        width="172.29906"
        id="rect4098"
        style="fill:#d20000;fill-opacity:1;stroke:none"
-       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/analog_signal_last_frame.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300" />
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
     <rect
        style="opacity:0.53086416;fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter4078)"
        id="rect4082"
@@ -1056,9 +1261,9 @@
        height="799.93945"
        x="-1330.553"
        y="-666.75104"
-       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/analog_signal_last_frame.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"
        transform="matrix(0.13295301,0,0,0.11004286,357.18574,263.59077)" />
     <rect
        y="192.98724"
@@ -1067,9 +1272,9 @@
        width="172.29906"
        id="rect4045"
        style="fill:#808080;fill-opacity:1;stroke:none"
-       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/analog_signal_last_frame.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300" />
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
     <rect
        y="-480.08432"
        x="-1878.8865"
@@ -1077,9 +1282,9 @@
        width="1295.9395"
        id="rect4064"
        style="opacity:0.53086416;fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter4078)"
-       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/analog_signal_last_frame.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"
        transform="matrix(0.13295301,0,0,0.11004286,357.18574,263.59077)" />
     <rect
        style="opacity:1;fill:#808080;fill-opacity:1;stroke:none;stroke-width:6.06054449;stroke-miterlimit:4;stroke-dasharray:48.48435477, 48.48435477;stroke-dashoffset:0;stroke-opacity:1"
@@ -1088,9 +1293,9 @@
        height="88.027626"
        x="104.03836"
        y="213.52856"
-       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/analog_signal_last_frame.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300" />
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
     <rect
        style="fill:#a80000;fill-opacity:1;stroke:none"
        id="rect4096"
@@ -1098,9 +1303,9 @@
        height="16.50643"
        x="176.9409"
        y="264.50845"
-       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/analog_signal_last_frame.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300" />
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
     <image
        y="228.09058"
        x="208.54178"
@@ -1108,9 +1313,9 @@
        xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZAAAAGQCAIAAAAP3aGbAAAAA3NCSVQICAjb4U/gAAADbElEQVR4 nO3dwY3FIBAFQXD+Oc+mgKwvsW1VRfBOfRvYa2YBFDy3BwCcEiwgQ7CADMECMgQLyBAsIEOwgAzB AjIEC8gQLCBDsIAMwQIyBAvIECwgQ7CADMECMgQLAAAAAAAAAAAAAAAAXtlr5vYGgCNuCYEMwQIy BAvIECwgQ7CADMECMgQLyBAsIEOwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACA H9tr5vYGgCPP7QEApwQLyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIyBAvIECwgQ7CADMECMgQLyBAs IEOwgAzBAjIEC8gQLCBDsIAMwQIyBAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAM wQIyBAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIyBAvIECwgQ7CADMECAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAD4gL1mbm8AOOLXHCBDsIAMwQIyBAvIECwgQ7CADMECMgQLyBAs AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA+Nf2mrm9AeDI c3sAwCnBAjIEC8gQLCBDsIAMwQIyBAvIECwgQ7AAAAAAAAAAAAAAAADgFW+6AxluCYEMwQIyBAvI ECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIyBAvIECwgQ7CADMECMgQLAAAAAAAA AAAAAAAAAAAAAAAAAAAAAADgA/aaub0B4Ihfc4AMwQIyBAvIECwgQ7CADMECMgQLyBAsIEOwAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAPmCvmdsbAI74NQfIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIE CwAAAAAAAAAAAAAAAF7xpjuQ4ZYQyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIyBAsAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPixvWZubwA48tweAHBKsIAMwQIyBAvIECwgQ7CADMEC MgQLyBAsIEOwgAzBAjL+AHy3FSOZ2ImbAAAAAElFTkSuQmCC "
        height="44.017147"
        width="53.181206"
-       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/analog_signal_last_frame.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300" />
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
     <image
        y="203.99152"
        x="280.1044"
@@ -1118,9 +1323,9 @@
        xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZAAAAGQCAIAAAAP3aGbAAAAA3NCSVQICAjb4U/gAAADbElEQVR4 nO3dwY3FIBAFQXD+Oc+mgKwvsW1VRfBOfRvYa2YBFDy3BwCcEiwgQ7CADMECMgQLAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD4sb1mbm8AOPLcHgBwSrCADMECMgQLyBAsIEOwgAzB AjIEC8gQLCBDsIAMwQIyBAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIyBAvI ECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIyBAvIECwgQ7CADMECMgQLyBAsIEOw gAzBAjIEC8gQLCBDsIAMwQIyBAvIECwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAP2Gvm9gaAI37N ATIEC8gQLCBDsIAMwQIyBAvIECwgQ7CADMECAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAACAf22vmdsbAI48twcAnBIsIEOwgAzBAjIEC8gQLCBDsIAMwQIyBAsA AAAAAAAAAAAAAABe8aY7kOGWEMgQLCBDsIAMwQIyBAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIE C8gQLCBDsIAMwQIyBAvIECwgQ7AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA+YK+Z2xsAjvg1B8gQ LCBDsIAMwQIyBAvIECwgQ7CADMECMgQLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADgA/aaub0B4Ihf c4AMwQIyBAvIECwgQ7CADMECMgQLyBAsIEOwAAAAAAAAAAAAAAAA4BVvugMZbgmBDMECMgQLyBAs IEOwgAzBAjIEC8gQLCBDsAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgB/ba+b2 BoAjz+0BAKcEC8gQLCBDsIAMwQIyBAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAM wQIyBAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLAAAAAAAAAAAAAAAAHhlr5nbGwCOuCUE MgQLyBAsIEOwgAzBAjL+AIxjFSMbVV9PAAAAAElFTkSuQmCC "
        height="44.017147"
        width="53.181206"
-       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/analog_signal_last_frame.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300" />
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
     <image
        y="183.4502"
        x="353.00693"
@@ -1128,9 +1333,9 @@
        xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZAAAAGQCAIAAAAP3aGbAAAAA3NCSVQICAjb4U/gAAADaElEQVR4 nO3dsY0DMRAEQVL557wfwDvEQQDVh6oIxmpvybUAAAAAAAAAAAAAAOCX7DVzewPAkc/tAQCnBAvI ECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIyBAvIECwgQ7CADMECMgQLyBAsIEOw gAzBAjIEC8gQLCBDsIAMwQIyBAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIy BAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAHiBvWZubwA44tccIEOwgAzBAjIEC8gQLCBDsIAMwQIyBAvIECwAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD4aXvN3N4AcORzewDAKcECMgQLyBAsIEOw gAzBAjIEC8gQLCBDsAAAAAAAAAAAAAAAAOARb7oDGW4JgQzBAjIEC8gQLCBDsIAMwQIyBAvIECwg Q7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIyBAsAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AOAF9pq5vQHgiF9zgAzBAjIEC8gQLCBDsIAMwQIyBAvIECwgQ7AAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAABeYK+Z2xsAjvg1B8gQLCBDsIAMwQIyBAvIECwgQ7CADMECMgQLAAAAAAAAAAAAAAAAHvGm O5DhlhDIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIECwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAA+LK9Zm5vADjyuT0A4JRgARmCBWQIFpAhWECGYAEZggVkCBaQIVhAhmABGYIFZAgW kCFYQIZgARmCBWQIFpAhWECGYAEZggVkCBaQIVhAhmABGYIFZAgWkCFYQIZgARmCBQAAAAAAAAAA AAAAAI/sNXN7A8ARt4RAhmABGYIFZAgWkCFYQIZgARmCBWQIFpAhWAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAA8M8fvOgTIpQ3TFAAAAAASUVORK5CYII= "
        height="44.017147"
        width="53.181206"
-       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/analog_signal_last_frame.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300" />
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
     <image
        y="162.90881"
        x="425.90945"
@@ -1138,9 +1343,9 @@
        xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZAAAAGQCAIAAAAP3aGbAAAAA3NCSVQICAjb4U/gAAADbElEQVR4 nO3dwY3FIBAFQXD+Oc+mgKwvsW1VRfBOfRvYa2YBFDy3BwCcEiwgQ7CADMECMgQLyBAsIEOwgAzB AjIEC8gQLCBDsIAMwQIyBAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIyBAvI ECwgQ7AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA+YK+Z2xsAjvg1B8gQLCBDsIAMwQIyBAvIECwg Q7CADMECMgQLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA /rW9Zm5vADjy3B4AcEqwgAzBAjIEC8gQLCBDsIAMwQIyBAvIECwAAAAAAAAAAAAAAAB4xZvuQIZb QiBDsIAMwQIyBAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIyBAvIECwgQ7CA DMECAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD4gL1mbm8AOOLXHCBDsIAMwQIyBAvIECwgQ7CADMEC MgQLyBAsAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAD9hr5vYGgCN+zQEyBAvIECwgQ7CADMECMgQL yBAsIEOwgAzBAgAAAAAAAAAAAAAAgFe86Q5kuCUEMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH5sr5nbGwCOPLcHAJwSLCBDsIAMwQIy BAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIyBAvIECwgQ7CADMECMgQLyBAs IEOwgAzBAjIEC8gQLCBDsAAAAAAAAAAAAAAAAOCVvWZubwA44pYQyBAsIEOwgAzBAjIEC8gQLCBD sIAMwQIyBAsAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPixvWZubwA48tweAHBK sIAMwQIyBAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIyBAvIECwgQ7CADMEC MgQLyBAsIEOwgAzBAjL+AOC7FSOhnBKZAAAAAElFTkSuQmCC "
        height="44.017147"
        width="53.181206"
-       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/analog_signal_last_frame.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300" />
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
     <image
        y="145.30197"
        x="499.69839"
@@ -1148,9 +1353,9 @@
        xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZAAAAGQCAIAAAAP3aGbAAAAA3NCSVQICAjb4U/gAAADaUlEQVR4 nO3dwWkEMRBFQWnyz7kdgUEMC/JbV0XwT+/W0loAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPxmr5nb GwCOPLcHAJwSLCBDsIAMwQIyBAvIECwgQ7CADMECMgQLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/rS9Zm5vADjy3B4AcEqwgAzBAjIEC8gQLCBDsIAMwQIy BAvIECwAAAAAAAAAAAAAAAB4xZvuQIZbQiBDsIAMwQIyBAvIECwgQ7CADMECMgQLyBAsIEOwgAzB AjIEC8gQLCBDsIAMwQIyBAvIECwgQ7CADMECAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD4AnvN3N4A cMSvOUCGYAEZggVkCBaQIVhAhmABGYIFZAgWkCFYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAX2Cv mdsbAI74NQfIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIECwAAAAAAAAAAAAAAAF7xpjuQ4ZYQyBAs IEOwgAzBAjIEC8gQLCBDsIAMwQIyBAsAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA APiwvWZubwA48tweAHBKsIAMwQIyBAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAM wQIyBAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIAAAAAAAAAAAAAAIBX9pq5 vQHgiFtCIEOwgAzBAjIEC8gQLCBDsIAMwQIyBAvIECwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAODD9pq5vQHgyHN7AMApwQIyBAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQ LCBDsIAMwQIyBAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIyBAvIECwgQ7CA DMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIyBAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIE C8gQLCBDsAAAAP6tH5i3EyLVMXh9AAAAAElFTkSuQmCC "
        height="44.017147"
        width="53.181206"
-       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/analog_signal_last_frame.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300" />
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
     <rect
        y="213.52856"
        x="104.03836"
@@ -1158,9 +1363,9 @@
        width="172.29906"
        id="rect4084"
        style="fill:#808080;fill-opacity:1;stroke:none"
-       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/analog_signal_last_frame.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300" />
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
     <image
        width="53.181206"
        height="44.017147"
@@ -1168,9 +1373,9 @@
        id="image4092"
        x="207.20177"
        y="224.53284"
-       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/analog_signal_last_frame.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300" />
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
     <rect
        style="fill:#7d0000;fill-opacity:1;stroke:none"
        id="rect4094"
@@ -1178,87 +1383,87 @@
        height="16.50643"
        x="104.03836"
        y="285.04971"
-       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/analog_signal_last_frame.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300" />
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
     <path
        style="fill:none;stroke:#000000;stroke-width:1.08861065;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        d="m 710.74967,236.38707 -141.56653,37.60307 -0.0769,-13.44786 -7.99309,2.40163 0.29537,13.5823 -66.29021,17.88318 -0.047,-46.26499 -7.33462,1.67221 0,46.61512 -65.60201,17.64169 -0.10996,-27.93972 -7.20501,2.18612 0.15242,27.60687 -65.69474,17.67542 -0.0535,-19.38087 -7.82427,1.9562 0.063,19.54168 -65.14282,17.38875 0.0118,-14.45511 -8.23349,2.59636 -0.0235,14.17306 -206.993859,55.7113"
        id="path4110"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cccccccccccccccccccccc"
-       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/analog_signal_last_frame.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300" />
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
     <path
        style="fill:none;stroke:#000000;stroke-width:0.60478365;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:1.81435101, 1.81435101;stroke-dashoffset:5;stroke-opacity:1"
        d="m 276.08567,302.78207 0,104.8072"
        id="path4120"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc"
-       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/analog_signal_last_frame.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300" />
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
     <path
        sodipodi:nodetypes="cc"
        inkscape:connector-curvature="0"
        id="path4122"
        d="m 349.13873,281.42198 0,104.80719"
        style="fill:none;stroke:#000000;stroke-width:0.60478365;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:1.81435101, 1.81435101;stroke-dashoffset:5;stroke-opacity:1"
-       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/analog_signal_last_frame.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300" />
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
     <path
        style="fill:none;stroke:#000000;stroke-width:0.60478365;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:1.81435101, 1.81435101;stroke-dashoffset:5;stroke-opacity:1"
        d="m 422.43181,262.46911 0,104.80724"
        id="path4124"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc"
-       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/analog_signal_last_frame.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300" />
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
     <path
        sodipodi:nodetypes="cc"
        inkscape:connector-curvature="0"
        id="path4126"
        d="m 495.36355,241.55718 0,104.80718"
        style="fill:none;stroke:#000000;stroke-width:0.60478365;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:1.81435101, 1.81435101;stroke-dashoffset:5;stroke-opacity:1"
-       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/analog_signal_last_frame.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300" />
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
     <path
        style="fill:none;stroke:#000000;stroke-width:0.60478365;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:1.81435101, 1.81435101;stroke-dashoffset:5;stroke-opacity:1"
        d="m 569.14141,222.79797 0,104.80719"
        id="path4128"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc"
-       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/analog_signal_last_frame.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300" />
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
     <path
        style="fill:none;stroke:#000000;stroke-width:0.72574037;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        d="m 326.4036,386.10944 46.88158,-12.59513"
        id="path4130"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc"
-       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/analog_signal_last_frame.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300" />
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
     <path
        inkscape:connector-curvature="0"
        id="path4132"
        d="m 275.54369,400.01905 24.43165,-6.76006"
        style="fill:none;stroke:#000000;stroke-width:0.72574037;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        sodipodi:nodetypes="cc"
-       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/analog_signal_last_frame.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300" />
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
     <g
        id="g4142"
        transform="matrix(0.46197134,-0.12664775,0.15301493,0.38236554,1572.688,-405.52834)"
-       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/analog_signal_last_frame.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300">
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
       <text
          sodipodi:linespacing="125%"
          id="text4136"
@@ -1282,27 +1487,27 @@
        id="path4074"
        d="m 399.87103,366.27589 46.69889,-12.74625"
        style="fill:none;stroke:#000000;stroke-width:0.72574037;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/analog_signal_last_frame.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300" />
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
     <path
        style="fill:none;stroke:#000000;stroke-width:0.72574037;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        d="m 473.22415,346.39449 46.63803,-12.69587"
        id="path4086"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc"
-       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/analog_signal_last_frame.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300" />
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
     <path
        sodipodi:nodetypes="cc"
        inkscape:connector-curvature="0"
        id="path4098"
        d="m 546.4051,326.44184 47.78014,-12.34507"
        style="fill:none;stroke:#000000;stroke-width:0.72574037;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/analog_signal_last_frame.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300" />
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:bold;font-size:4.83826923px;line-height:125%;font-family:Sans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
@@ -1310,9 +1515,9 @@
        y="244.57149"
        id="text4560"
        sodipodi:linespacing="125%"
-       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/analog_signal_last_frame.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"
        transform="scale(1.0991783,0.9097705)"><tspan
          sodipodi:role="line"
          id="tspan4562"
@@ -1326,9 +1531,9 @@
        x="165.19205"
        style="font-style:normal;font-weight:bold;font-size:4.83826923px;line-height:125%;font-family:Sans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
        xml:space="preserve"
-       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/analog_signal_last_frame.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"
        transform="scale(1.0991783,0.9097705)"><tspan
          style="font-size:6.77357721px;fill:#ffffff"
          y="221.99294"
@@ -1342,9 +1547,9 @@
        y="199.41429"
        id="text3331"
        sodipodi:linespacing="125%"
-       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/analog_signal_last_frame.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"
        transform="scale(1.0991783,0.9097705)"><tspan
          sodipodi:role="line"
          id="tspan3333"
@@ -1358,9 +1563,9 @@
        x="297.84125"
        style="font-style:normal;font-weight:bold;font-size:4.83826923px;line-height:125%;font-family:Sans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
        xml:space="preserve"
-       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/analog_signal_last_frame.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"
        transform="scale(1.0991783,0.9097705)"><tspan
          style="font-size:6.77357721px;fill:#ffffff"
          y="176.83571"
@@ -1374,9 +1579,9 @@
        y="157.48268"
        id="text3339"
        sodipodi:linespacing="125%"
-       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/analog_signal_last_frame.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"
        transform="scale(1.0991783,0.9097705)"><tspan
          sodipodi:role="line"
          id="tspan3341"
@@ -1391,20 +1596,20 @@
        id="text3353"
        sodipodi:linespacing="125%"
        transform="matrix(1.052365,-0.26267776,0.31736543,0.87102398,0,0)"
-       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/analog_signal_last_frame.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300"><tspan
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
          sodipodi:role="line"
          id="tspan3355"
          x="-3.4605944"
          y="442.01865"
-         style="font-size:8.70888519px;fill:#808080">Señal analoga</tspan></text>
+         style="font-size:8.70888519px;fill:#808080">Analog signal</tspan></text>
     <g
        transform="matrix(0.46197134,-0.12664775,0.15301493,0.38236554,1646.0173,-425.75948)"
        id="g3361"
-       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/analog_signal_last_frame.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300">
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
       <text
          xml:space="preserve"
          style="font-style:normal;font-weight:bold;font-size:19.6703167px;line-height:125%;font-family:Sans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
@@ -1425,9 +1630,9 @@
     <g
        id="g3369"
        transform="matrix(0.46197134,-0.12664775,0.15301493,0.38236554,1719.7227,-445.9906)"
-       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/analog_signal_last_frame.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300">
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
       <text
          sodipodi:linespacing="125%"
          id="text3371"
@@ -1448,9 +1653,9 @@
     <g
        transform="matrix(0.46197134,-0.12664775,0.15301493,0.38236554,1791.1718,-464.9768)"
        id="g3377"
-       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/analog_signal_last_frame.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300">
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
       <text
          xml:space="preserve"
          style="font-style:normal;font-weight:bold;font-size:19.6703167px;line-height:125%;font-family:Sans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
@@ -1471,9 +1676,9 @@
     <g
        id="g11096"
        transform="translate(-2,73.499997)"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300"
-       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/analog_signal_last_frame.png">
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png">
       <text
          inkscape:export-ydpi="30"
          inkscape:export-xdpi="30"
@@ -1516,9 +1721,9 @@
     </g>
     <rect
        transform="matrix(0.13295301,0,0,0.11004286,-139.31426,398.09077)"
-       inkscape:export-ydpi="300"
-       inkscape:export-xdpi="300"
-       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/analog_signal_last_frame.png"
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
        style="opacity:0.53086416;fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter4078)"
        id="rect11134"
        width="1295.9395"
@@ -1532,31 +1737,31 @@
        width="172.29906"
        id="rect4084-3"
        style="fill:#1a1a1a;fill-opacity:1;stroke:none"
-       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/analog_signal_last_frame.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300" />
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
     <path
-       inkscape:export-ydpi="300"
-       inkscape:export-xdpi="300"
-       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/analog_signal_last_frame.png"
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
        style="fill:none;stroke:#000000;stroke-width:0.60478365;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:1.81435101, 1.81435101;stroke-dashoffset:5;stroke-opacity:1"
        d="m 641.08007,203.48231 0,104.80724"
        id="path11047"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc" />
     <path
-       inkscape:export-ydpi="300"
-       inkscape:export-xdpi="300"
-       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/analog_signal_last_frame.png"
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
        style="fill:none;stroke:#000000;stroke-width:0.72574037;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        d="m 617.0301,308.69184 23.90514,-6.34507"
        id="path11086"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc" />
     <g
-       inkscape:export-ydpi="300"
-       inkscape:export-xdpi="300"
-       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/analog_signal_last_frame.png"
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
        id="g11088"
        transform="matrix(0.46197134,-0.12664775,0.15301493,0.38236554,1864.4218,-484.1018)">
       <text
@@ -2328,32 +2533,1541 @@
          id="tspan11548"
          x="455.25"
          y="615.61218" /></text>
+    <rect
+       transform="matrix(0.13295301,0,0,0.11004286,-484.27133,263.59077)"
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_digital.png"
+       style="opacity:0.53086416;fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter4078)"
+       id="rect7291"
+       width="1295.9395"
+       height="799.93945"
+       x="1305.1138"
+       y="-1524.0842" />
+    <rect
+       transform="matrix(0.13295301,0,0,0.11004286,-484.27133,263.59077)"
+       y="-1380.0842"
+       x="875.11383"
+       height="799.93945"
+       width="1295.9395"
+       id="rect7293"
+       style="opacity:0.53086416;fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter4078)"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_digital.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <rect
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_digital.png"
+       style="fill:#1a1a1a;fill-opacity:1;stroke:#9f9f9f;stroke-width:0.12095673;stroke-opacity:1"
+       id="rect7295"
+       width="172.29906"
+       height="88.027626"
+       x="-317.53262"
+       y="100.45959" />
+    <rect
+       y="115.14243"
+       x="-372.65112"
+       height="88.027626"
+       width="172.29906"
+       id="rect7297"
+       style="fill:#1a1a1a;fill-opacity:1;stroke:#9f9f9f;stroke-width:0.12095673;stroke-opacity:1"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_digital.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <rect
+       transform="matrix(0.13295301,0,0,0.11004286,-484.27133,263.59077)"
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_digital.png"
+       style="opacity:0.53086416;fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter4078)"
+       id="rect7299"
+       width="1295.9395"
+       height="799.93945"
+       x="321.11383"
+       y="-1200.0842" />
+    <rect
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_digital.png"
+       y="134.2977"
+       x="-444.92212"
+       height="88.027626"
+       width="172.29906"
+       id="rect7301"
+       style="fill:#808080;fill-opacity:1;stroke:none" />
+    <rect
+       transform="matrix(0.13295301,0,0,0.11004286,-484.27133,263.59077)"
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_digital.png"
+       y="-1040.0845"
+       x="-233.88643"
+       height="799.93945"
+       width="1295.9395"
+       id="rect7305"
+       style="opacity:0.53086416;fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter4078)" />
+    <rect
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_digital.png"
+       style="fill:#808080;fill-opacity:1;stroke:none"
+       id="rect7307"
+       width="172.29906"
+       height="88.027626"
+       x="-518.71112"
+       y="151.90454" />
+    <rect
+       transform="matrix(0.13295301,0,0,0.11004286,-484.27133,263.59077)"
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_digital.png"
+       style="opacity:0.53086416;fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter4078)"
+       id="rect7311"
+       width="1295.9395"
+       height="799.93945"
+       x="-782.21967"
+       y="-853.41779" />
+    <rect
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_digital.png"
+       y="172.44583"
+       x="-591.61365"
+       height="88.027626"
+       width="172.29906"
+       id="rect7313"
+       style="fill:#808080;fill-opacity:1;stroke:none" />
+    <rect
+       transform="matrix(0.13295301,0,0,0.11004286,-484.27133,263.59077)"
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_digital.png"
+       y="-666.75104"
+       x="-1330.553"
+       height="799.93945"
+       width="1295.9395"
+       id="rect7317"
+       style="opacity:0.53086416;fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter4078)" />
+    <rect
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_digital.png"
+       style="fill:#808080;fill-opacity:1;stroke:none"
+       id="rect7319"
+       width="172.29906"
+       height="88.027626"
+       x="-664.51617"
+       y="192.98724" />
+    <rect
+       transform="matrix(0.13295301,0,0,0.11004286,-484.27133,263.59077)"
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_digital.png"
+       style="opacity:0.53086416;fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter4078)"
+       id="rect7321"
+       width="1295.9395"
+       height="799.93945"
+       x="-1878.8865"
+       y="-480.08432" />
+    <rect
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_digital.png"
+       y="213.52856"
+       x="-737.4187"
+       height="88.027626"
+       width="172.29906"
+       id="rect7323"
+       style="opacity:1;fill:#808080;fill-opacity:1;stroke:none;stroke-width:6.06054449;stroke-miterlimit:4;stroke-dasharray:48.48435477, 48.48435477;stroke-dashoffset:0;stroke-opacity:1" />
     <image
-       y="-456.57675"
-       x="804.04285"
-       id="image4430"
-       xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEgAAABBCAIAAAD9gHXYAAAAA3NCSVQICAjb4U/gAAAAaklEQVRo ge3PAQ3AIADAMI4QzF39XVwFISWrgu351jtuNE8H7NKYpjFNY5rGNI1pGtM0pmlM05imMU1jmsY0 jWka0zSmaUzTmKYxTWOaxjSNaRrTNKZpTNOYpjFNY5rGNI1pGtM0prl27Acg4gHshAM5swAAAABJ RU5ErkJggg== "
-       preserveAspectRatio="none"
-       height="65"
-       width="72"
-       style="fill:#e91e63;fill-opacity:1" />
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_digital.png"
+       width="53.181206"
+       height="44.017147"
+       xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZAAAAGQCAIAAAAP3aGbAAAAA3NCSVQICAjb4U/gAAADbElEQVR4 nO3dwY3FIBAFQXD+Oc+mgKwvsW1VRfBOfRvYa2YBFDy3BwCcEiwgQ7CADMECMgQLyBAsIEOwgAzB AjIEC8gQLCBDsIAMwQIyBAvIECwgQ7CADMECMgQLAAAAAAAAAAAAAAAAXtlr5vYGgCNuCYEMwQIy BAvIECwgQ7CADMECMgQLyBAsIEOwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACA H9tr5vYGgCPP7QEApwQLyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIyBAvIECwgQ7CADMECMgQLyBAs IEOwgAzBAjIEC8gQLCBDsIAMwQIyBAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAM wQIyBAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIyBAvIECwgQ7CADMECAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAD4gL1mbm8AOOLXHCBDsIAMwQIyBAvIECwgQ7CADMECMgQLyBAs AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA+Nf2mrm9AeDI c3sAwCnBAjIEC8gQLCBDsIAMwQIyBAvIECwgQ7AAAAAAAAAAAAAAAADgFW+6AxluCYEMwQIyBAvI ECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIyBAvIECwgQ7CADMECMgQLAAAAAAAA AAAAAAAAAAAAAAAAAAAAAADgA/aaub0B4Ihfc4AMwQIyBAvIECwgQ7CADMECMgQLyBAsIEOwAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAPmCvmdsbAI74NQfIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIE CwAAAAAAAAAAAAAAAF7xpjuQ4ZYQyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIyBAsAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPixvWZubwA48tweAHBKsIAMwQIyBAvIECwgQ7CADMEC MgQLyBAsIEOwgAzBAjL+AHy3FSOZ2ImbAAAAAElFTkSuQmCC "
+       id="image7327"
+       x="-632.91528"
+       y="228.09058" />
     <image
-       y="-432.9996"
-       x="884.73883"
-       id="image4441"
-       xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEUAAABJCAIAAADkLXwFAAAAA3NCSVQICAjb4U/gAAAAc0lEQVRo ge3PAQ3AIADAMI4xNFzs/d0ECQ1ZFWzPer9xkXk6YLN+bP3Y+rH1Y+vH1o+tH1s/tn5s/dj6sfVj 68fWj60fWz+2fmz92Pqx9WPrx9aPrR9bP7Z+bP3Y+rH1Y+vH1o+tH1s/tn5s/dj6sd328wN0FAHX PI2RrQAAAABJRU5ErkJggg== "
-       preserveAspectRatio="none"
-       height="73"
-       width="69"
-       style="fill:#3f51b5;fill-opacity:1" />
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_digital.png"
+       width="53.181206"
+       height="44.017147"
+       xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZAAAAGQCAIAAAAP3aGbAAAAA3NCSVQICAjb4U/gAAADbElEQVR4 nO3dwY3FIBAFQXD+Oc+mgKwvsW1VRfBOfRvYa2YBFDy3BwCcEiwgQ7CADMECMgQLAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD4sb1mbm8AOPLcHgBwSrCADMECMgQLyBAsIEOwgAzB AjIEC8gQLCBDsIAMwQIyBAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIyBAvI ECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIyBAvIECwgQ7CADMECMgQLyBAsIEOw gAzBAjIEC8gQLCBDsIAMwQIyBAvIECwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAP2Gvm9gaAI37N ATIEC8gQLCBDsIAMwQIyBAvIECwgQ7CADMECAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAACAf22vmdsbAI48twcAnBIsIEOwgAzBAjIEC8gQLCBDsIAMwQIyBAsA AAAAAAAAAAAAAABe8aY7kOGWEMgQLCBDsIAMwQIyBAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIE C8gQLCBDsIAMwQIyBAvIECwgQ7AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA+YK+Z2xsAjvg1B8gQ LCBDsIAMwQIyBAvIECwgQ7CADMECMgQLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADgA/aaub0B4Ihf c4AMwQIyBAvIECwgQ7CADMECMgQLyBAsIEOwAAAAAAAAAAAAAAAA4BVvugMZbgmBDMECMgQLyBAs IEOwgAzBAjIEC8gQLCBDsAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgB/ba+b2 BoAjz+0BAKcEC8gQLCBDsIAMwQIyBAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAM wQIyBAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLAAAAAAAAAAAAAAAAHhlr5nbGwCOuCUE MgQLyBAsIEOwgAzBAjL+AIxjFSMbVV9PAAAAAElFTkSuQmCC "
+       id="image7329"
+       x="-561.35266"
+       y="203.99152" />
     <image
-       y="-455.39999"
-       x="849.28729"
-       id="image4452"
-       xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA/CAIAAAAzCjyLAAAAA3NCSVQICAjb4U/gAAAAd0lEQVRo ge3ZOw2AUBBFQT4i8F8iAgfIQQASIBRDXnJOfbOZfud1v6bRWv4GfCm0KrQqtCq0KrQqtCq0KrQq tCq0KrQqtCq0KrQqtCq0KrQqtCq0anD0sZ2P6zcbcGruY4sKrQqtCq0KrQqtCq0KrQqtCq0aEn0D RyML3cvht8UAAAAASUVORK5CYII= "
-       preserveAspectRatio="none"
-       height="63"
-       width="60"
-       style="fill:#03a9f4;fill-opacity:1" />
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_digital.png"
+       width="53.181206"
+       height="44.017147"
+       xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZAAAAGQCAIAAAAP3aGbAAAAA3NCSVQICAjb4U/gAAADaElEQVR4 nO3dsY0DMRAEQVL557wfwDvEQQDVh6oIxmpvybUAAAAAAAAAAAAAAOCX7DVzewPAkc/tAQCnBAvI ECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIyBAvIECwgQ7CADMECMgQLyBAsIEOw gAzBAjIEC8gQLCBDsIAMwQIyBAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIy BAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAHiBvWZubwA44tccIEOwgAzBAjIEC8gQLCBDsIAMwQIyBAvIECwAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD4aXvN3N4AcORzewDAKcECMgQLyBAsIEOw gAzBAjIEC8gQLCBDsAAAAAAAAAAAAAAAAOARb7oDGW4JgQzBAjIEC8gQLCBDsIAMwQIyBAvIECwg Q7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIyBAsAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AOAF9pq5vQHgiF9zgAzBAjIEC8gQLCBDsIAMwQIyBAvIECwgQ7AAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAABeYK+Z2xsAjvg1B8gQLCBDsIAMwQIyBAvIECwgQ7CADMECMgQLAAAAAAAAAAAAAAAAHvGm O5DhlhDIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIECwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAA+LK9Zm5vADjyuT0A4JRgARmCBWQIFpAhWECGYAEZggVkCBaQIVhAhmABGYIFZAgW kCFYQIZgARmCBWQIFpAhWECGYAEZggVkCBaQIVhAhmABGYIFZAgWkCFYQIZgARmCBQAAAAAAAAAA AAAAAI/sNXN7A8ARt4RAhmABGYIFZAgWkCFYQIZgARmCBWQIFpAhWAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAA8M8fvOgTIpQ3TFAAAAAASUVORK5CYII= "
+       id="image7331"
+       x="-488.45013"
+       y="183.4502" />
+    <image
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_digital.png"
+       width="53.181206"
+       height="44.017147"
+       xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZAAAAGQCAIAAAAP3aGbAAAAA3NCSVQICAjb4U/gAAADbElEQVR4 nO3dwY3FIBAFQXD+Oc+mgKwvsW1VRfBOfRvYa2YBFDy3BwCcEiwgQ7CADMECMgQLyBAsIEOwgAzB AjIEC8gQLCBDsIAMwQIyBAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIyBAvI ECwgQ7AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA+YK+Z2xsAjvg1B8gQLCBDsIAMwQIyBAvIECwg Q7CADMECMgQLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA /rW9Zm5vADjy3B4AcEqwgAzBAjIEC8gQLCBDsIAMwQIyBAvIECwAAAAAAAAAAAAAAAB4xZvuQIZb QiBDsIAMwQIyBAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIyBAvIECwgQ7CA DMECAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD4gL1mbm8AOOLXHCBDsIAMwQIyBAvIECwgQ7CADMEC MgQLyBAsAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAD9hr5vYGgCN+zQEyBAvIECwgQ7CADMECMgQL yBAsIEOwgAzBAgAAAAAAAAAAAAAAgFe86Q5kuCUEMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH5sr5nbGwCOPLcHAJwSLCBDsIAMwQIy BAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIyBAvIECwgQ7CADMECMgQLyBAs IEOwgAzBAjIEC8gQLCBDsAAAAAAAAAAAAAAAAOCVvWZubwA44pYQyBAsIEOwgAzBAjIEC8gQLCBD sIAMwQIyBAsAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPixvWZubwA48tweAHBK sIAMwQIyBAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIyBAvIECwgQ7CADMEC MgQLyBAsIEOwgAzBAjL+AOC7FSOhnBKZAAAAAElFTkSuQmCC "
+       id="image7333"
+       x="-415.54761"
+       y="162.90881" />
+    <image
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_digital.png"
+       width="53.181206"
+       height="44.017147"
+       xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZAAAAGQCAIAAAAP3aGbAAAAA3NCSVQICAjb4U/gAAADaUlEQVR4 nO3dwWkEMRBFQWnyz7kdgUEMC/JbV0XwT+/W0loAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPxmr5nb GwCOPLcHAJwSLCBDsIAMwQIyBAvIECwgQ7CADMECMgQLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/rS9Zm5vADjy3B4AcEqwgAzBAjIEC8gQLCBDsIAMwQIy BAvIECwAAAAAAAAAAAAAAAB4xZvuQIZbQiBDsIAMwQIyBAvIECwgQ7CADMECMgQLyBAsIEOwgAzB AjIEC8gQLCBDsIAMwQIyBAvIECwgQ7CADMECAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD4AnvN3N4A cMSvOUCGYAEZggVkCBaQIVhAhmABGYIFZAgWkCFYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAX2Cv mdsbAI74NQfIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIECwAAAAAAAAAAAAAAAF7xpjuQ4ZYQyBAs IEOwgAzBAjIEC8gQLCBDsIAMwQIyBAsAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA APiwvWZubwA48tweAHBKsIAMwQIyBAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAM wQIyBAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIAAAAAAAAAAAAAAIBX9pq5 vQHgiFtCIEOwgAzBAjIEC8gQLCBDsIAMwQIyBAvIECwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAODD9pq5vQHgyHN7AMApwQIyBAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQ LCBDsIAMwQIyBAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIyBAvIECwgQ7CA DMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIyBAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIE C8gQLCBDsAAAAP6tH5i3EyLVMXh9AAAAAElFTkSuQmCC "
+       id="image7335"
+       x="-341.75867"
+       y="145.30197" />
+    <rect
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_digital.png"
+       style="fill:#808080;fill-opacity:1;stroke:none"
+       id="rect7337"
+       width="172.29906"
+       height="88.027626"
+       x="-737.4187"
+       y="213.52856" />
+    <image
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_digital.png"
+       y="224.53284"
+       x="-634.25531"
+       id="image7339"
+       xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZAAAAGQCAIAAAAP3aGbAAAAA3NCSVQICAjb4U/gAAADbElEQVR4 nO3dwY3FIBAFQXD+Oc+mgKwvsW1VRfBOfRvYa2YBFDy3BwCcEiwgQ7CADMECMgQLAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD4sb1mbm8AOPLcHgBwSrCADMECMgQLyBAsIEOwgAzB AjIEC8gQLCBDsIAMwQIyBAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIyBAvI ECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIyBAvIECwgQ7CADMECMgQLyBAsIEOw gAzBAjIEC8gQLCBDsIAMwQIyBAvIECwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAP2Gvm9gaAI37N ATIEC8gQLCBDsIAMwQIyBAvIECwgQ7CADMECAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAACAf22vmdsbAI48twcAnBIsIEOwgAzBAjIEC8gQLCBDsIAMwQIyBAsA AAAAAAAAAAAAAABe8aY7kOGWEMgQLCBDsIAMwQIyBAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIE C8gQLCBDsIAMwQIyBAvIECwgQ7AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA+YK+Z2xsAjvg1B8gQ LCBDsIAMwQIyBAvIECwgQ7CADMECMgQLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADgA/aaub0B4Ihf c4AMwQIyBAvIECwgQ7CADMECMgQLyBAsIEOwAAAAAAAAAAAAAAAA4BVvugMZbgmBDMECMgQLyBAs IEOwgAzBAjIEC8gQLCBDsAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgB/ba+b2 BoAjz+0BAKcEC8gQLCBDsIAMwQIyBAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAM wQIyBAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLAAAAAAAAAAAAAAAAHhlr5nbGwCOuCUE MgQLyBAsIEOwgAzBAjL+AIxjFSMbVV9PAAAAAElFTkSuQmCC "
+       height="44.017147"
+       width="53.181206" />
+    <path
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_digital.png"
+       sodipodi:nodetypes="cccccccccccccccccccccc"
+       inkscape:connector-curvature="0"
+       id="path7343"
+       d="m -122.7074,222.38707 -141.56653,37.60307 -0.0769,-20.69786 -7.99309,2.40163 0.29537,20.8323 -66.29021,17.88318 -0.047,-20.76499 -7.33462,1.67221 0,21.11512 -65.60201,17.64169 -0.10996,-20.93972 -7.20501,2.18612 0.15242,20.60687 -65.69474,17.67542 -0.0535,-21.38087 -7.82427,1.9562 0.063,21.54168 -65.14282,17.38875 0.0118,-20.95511 -8.23349,2.59636 -0.0235,20.67306 -206.99386,55.7113"
+       style="fill:none;stroke:#000000;stroke-width:1.08861065;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_digital.png"
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path7345"
+       d="m -565.3714,302.78207 0,104.8072"
+       style="fill:none;stroke:#000000;stroke-width:0.60478365;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:1.81435101, 1.81435101;stroke-dashoffset:5;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_digital.png"
+       style="fill:none;stroke:#000000;stroke-width:0.60478365;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:1.81435101, 1.81435101;stroke-dashoffset:5;stroke-opacity:1"
+       d="m -492.31834,281.42198 0,104.80719"
+       id="path7347"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_digital.png"
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path7349"
+       d="m -419.02526,262.46911 0,104.80724"
+       style="fill:none;stroke:#000000;stroke-width:0.60478365;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:1.81435101, 1.81435101;stroke-dashoffset:5;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_digital.png"
+       style="fill:none;stroke:#000000;stroke-width:0.60478365;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:1.81435101, 1.81435101;stroke-dashoffset:5;stroke-opacity:1"
+       d="m -346.09352,241.55718 0,104.80718"
+       id="path7351"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_digital.png"
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path7353"
+       d="m -272.31566,222.79797 0,104.80719"
+       style="fill:none;stroke:#000000;stroke-width:0.60478365;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:1.81435101, 1.81435101;stroke-dashoffset:5;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_digital.png"
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path7355"
+       d="m -515.05347,386.10944 46.88158,-12.59513"
+       style="fill:none;stroke:#000000;stroke-width:0.72574037;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_digital.png"
+       sodipodi:nodetypes="cc"
+       style="fill:none;stroke:#000000;stroke-width:0.72574037;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m -565.91338,400.01905 24.43165,-6.76006"
+       id="path7357"
+       inkscape:connector-curvature="0" />
+    <g
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_digital.png"
+       transform="matrix(0.46197134,-0.12664775,0.15301493,0.38236554,731.23093,-405.52834)"
+       id="g7359">
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-weight:bold;font-size:19.6703167px;line-height:125%;font-family:Sans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+         x="-3074.7502"
+         y="1066.4976"
+         id="text7361"
+         sodipodi:linespacing="125%"><tspan
+           sodipodi:role="line"
+           id="tspan7363"
+           x="-3074.7502"
+           y="1066.4976">t</tspan></text>
+      <path
+         style="fill:none;stroke:#000000;stroke-width:1.921983;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:9;stroke-dasharray:none;stroke-opacity:1"
+         d="m -3085.4398,1054.4904 -4.9284,11.0889 10.7368,0 z"
+         id="path7365"
+         inkscape:connector-curvature="0" />
+    </g>
+    <path
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_digital.png"
+       style="fill:none;stroke:#000000;stroke-width:0.72574037;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m -441.58604,366.27589 46.69889,-12.74625"
+       id="path7367"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_digital.png"
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path7369"
+       d="m -368.23292,346.39449 46.63803,-12.69587"
+       style="fill:none;stroke:#000000;stroke-width:0.72574037;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_digital.png"
+       style="fill:none;stroke:#000000;stroke-width:0.72574037;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m -295.05197,326.44184 47.78014,-12.34507"
+       id="path7371"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <text
+       transform="scale(1.0991783,0.9097705)"
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_digital.png"
+       sodipodi:linespacing="125%"
+       id="text7373"
+       y="244.57149"
+       x="-666.66534"
+       style="font-style:normal;font-weight:bold;font-size:4.83826923px;line-height:125%;font-family:Sans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       xml:space="preserve"><tspan
+         style="font-size:6.77357721px;fill:#ffffff"
+         y="244.57149"
+         x="-666.66534"
+         id="tspan7375"
+         sodipodi:role="line">Frame=1</tspan></text>
+    <text
+       transform="scale(1.0991783,0.9097705)"
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_digital.png"
+       xml:space="preserve"
+       style="font-style:normal;font-weight:bold;font-size:4.83826923px;line-height:125%;font-family:Sans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       x="-600.34076"
+       y="221.99294"
+       id="text7377"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan7379"
+         x="-600.34076"
+         y="221.99294"
+         style="font-size:6.77357721px;fill:#ffffff">Frame=2</tspan></text>
+    <text
+       transform="scale(1.0991783,0.9097705)"
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_digital.png"
+       sodipodi:linespacing="125%"
+       id="text7381"
+       y="199.41429"
+       x="-534.01624"
+       style="font-style:normal;font-weight:bold;font-size:4.83826923px;line-height:125%;font-family:Sans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       xml:space="preserve"><tspan
+         style="font-size:6.77357721px;fill:#ffffff"
+         y="199.41429"
+         x="-534.01624"
+         id="tspan7383"
+         sodipodi:role="line">Frame=3</tspan></text>
+    <text
+       transform="scale(1.0991783,0.9097705)"
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_digital.png"
+       xml:space="preserve"
+       style="font-style:normal;font-weight:bold;font-size:4.83826923px;line-height:125%;font-family:Sans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       x="-467.69159"
+       y="176.83571"
+       id="text7385"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan7387"
+         x="-467.69159"
+         y="176.83571"
+         style="font-size:6.77357721px;fill:#ffffff">Frame=4</tspan></text>
+    <text
+       transform="scale(1.0991783,0.9097705)"
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_digital.png"
+       sodipodi:linespacing="125%"
+       id="text7389"
+       y="157.48268"
+       x="-400.56058"
+       style="font-style:normal;font-weight:bold;font-size:4.83826923px;line-height:125%;font-family:Sans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       xml:space="preserve"><tspan
+         style="font-size:6.77357721px;fill:#ffffff"
+         y="157.48268"
+         x="-400.56058"
+         id="tspan7391"
+         sodipodi:role="line">Frame=5</tspan></text>
+    <g
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_digital.png"
+       id="g7397"
+       transform="matrix(0.46197134,-0.12664775,0.15301493,0.38236554,804.56023,-425.75948)">
+      <text
+         sodipodi:linespacing="125%"
+         id="text7399"
+         y="1066.4976"
+         x="-3074.7502"
+         style="font-style:normal;font-weight:bold;font-size:19.6703167px;line-height:125%;font-family:Sans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+         xml:space="preserve"><tspan
+           y="1066.4976"
+           x="-3074.7502"
+           id="tspan7401"
+           sodipodi:role="line">t</tspan></text>
+      <path
+         inkscape:connector-curvature="0"
+         id="path7403"
+         d="m -3085.4398,1054.4904 -4.9284,11.0889 10.7368,0 z"
+         style="fill:none;stroke:#000000;stroke-width:1.921983;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:9;stroke-dasharray:none;stroke-opacity:1" />
+    </g>
+    <g
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_digital.png"
+       transform="matrix(0.46197134,-0.12664775,0.15301493,0.38236554,878.26563,-445.9906)"
+       id="g7405">
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-weight:bold;font-size:19.6703167px;line-height:125%;font-family:Sans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+         x="-3074.7502"
+         y="1066.4976"
+         id="text7407"
+         sodipodi:linespacing="125%"><tspan
+           sodipodi:role="line"
+           id="tspan7409"
+           x="-3074.7502"
+           y="1066.4976">t</tspan></text>
+      <path
+         style="fill:none;stroke:#000000;stroke-width:1.921983;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:9;stroke-dasharray:none;stroke-opacity:1"
+         d="m -3085.4398,1054.4904 -4.9284,11.0889 10.7368,0 z"
+         id="path7411"
+         inkscape:connector-curvature="0" />
+    </g>
+    <g
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_digital.png"
+       id="g7413"
+       transform="matrix(0.46197134,-0.12664775,0.15301493,0.38236554,949.71473,-464.9768)">
+      <text
+         sodipodi:linespacing="125%"
+         id="text7415"
+         y="1066.4976"
+         x="-3074.7502"
+         style="font-style:normal;font-weight:bold;font-size:19.6703167px;line-height:125%;font-family:Sans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+         xml:space="preserve"><tspan
+           y="1066.4976"
+           x="-3074.7502"
+           id="tspan7417"
+           sodipodi:role="line">t</tspan></text>
+      <path
+         inkscape:connector-curvature="0"
+         id="path7419"
+         d="m -3085.4398,1054.4904 -4.9284,11.0889 10.7368,0 z"
+         style="fill:none;stroke:#000000;stroke-width:1.921983;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:9;stroke-dasharray:none;stroke-opacity:1" />
+    </g>
+    <g
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_digital.png"
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       transform="translate(-843.45707,73.499997)"
+       id="g7421">
+      <text
+         sodipodi:linespacing="125%"
+         id="text7423"
+         y="422.44861"
+         x="24.155817"
+         style="font-style:normal;font-weight:bold;font-size:4.83826923px;line-height:125%;font-family:Sans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+         xml:space="preserve"
+         transform="matrix(1.0451229,-0.2817904,0.34045717,0.8650298,0,0)"
+         inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Code_for_projector/Doc/General_option.png"
+         inkscape:export-xdpi="30"
+         inkscape:export-ydpi="30"><tspan
+           style="font-size:8.70888519px"
+           y="422.44861"
+           x="24.155817"
+           sodipodi:role="line"
+           id="tspan7425">Refresh rate = 1/</tspan></text>
+      <g
+         inkscape:export-ydpi="30"
+         inkscape:export-xdpi="30"
+         inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Code_for_projector/Doc/General_option.png"
+         transform="matrix(0.46197134,-0.12664775,0.15301493,0.38236554,1521.7736,-463.76452)"
+         id="g7427">
+        <text
+           xml:space="preserve"
+           style="font-style:normal;font-weight:bold;font-size:19.6703167px;line-height:125%;font-family:Sans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+           x="-3074.7502"
+           y="1066.4976"
+           id="text7429"
+           sodipodi:linespacing="125%"><tspan
+             sodipodi:role="line"
+             id="tspan7431"
+             x="-3074.7502"
+             y="1066.4976">t</tspan></text>
+        <path
+           style="fill:none;stroke:#000000;stroke-width:1.921983;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:9;stroke-dasharray:none;stroke-opacity:1"
+           d="m -3085.4398,1054.4904 -4.9284,11.0889 10.7368,0 z"
+           id="path7433"
+           inkscape:connector-curvature="0" />
+      </g>
+      <text
+         inkscape:export-ydpi="30"
+         inkscape:export-xdpi="30"
+         inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Code_for_projector/Doc/General_option.png"
+         transform="matrix(1.0451229,-0.2817904,0.34045717,0.86502979,0,0)"
+         xml:space="preserve"
+         style="font-style:normal;font-weight:bold;font-size:4.83826923px;line-height:125%;font-family:Sans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+         x="-50.302593"
+         y="348.48392"
+         id="text7472"
+         sodipodi:linespacing="125%"><tspan
+           id="tspan7474"
+           sodipodi:role="line"
+           x="-50.302593"
+           y="348.48392"
+           style="font-size:8.70888519px">On every frame</tspan></text>
+      <text
+         sodipodi:linespacing="125%"
+         id="text7476"
+         y="392.37909"
+         x="-64.601791"
+         style="font-style:normal;font-weight:bold;font-size:4.83826923px;line-height:125%;font-family:Sans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+         xml:space="preserve"
+         transform="matrix(1.0451229,-0.2817904,0.34045717,0.86502979,0,0)"
+         inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Code_for_projector/Doc/General_option.png"
+         inkscape:export-xdpi="30"
+         inkscape:export-ydpi="30"><tspan
+           style="font-size:8.70888519px"
+           y="392.37909"
+           x="-64.601791"
+           sodipodi:role="line"
+           id="tspan7478">Start and end</tspan></text>
+    </g>
+    <rect
+       y="-1524.0842"
+       x="1305.1138"
+       height="799.93945"
+       width="1295.9395"
+       id="rect7435"
+       style="opacity:0.53086416;fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter4078)"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_digital.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300"
+       transform="matrix(0.13295301,0,0,0.11004286,-980.77133,398.09077)" />
+    <rect
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_digital.png"
+       style="fill:#1a1a1a;fill-opacity:1;stroke:none"
+       id="rect7437"
+       width="172.29906"
+       height="88.027626"
+       x="-811.59863"
+       y="233.2905" />
+    <path
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path7439"
+       d="m -200.377,203.48231 0,104.80724"
+       style="fill:none;stroke:#000000;stroke-width:0.60478365;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:1.81435101, 1.81435101;stroke-dashoffset:5;stroke-opacity:1"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_digital.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <path
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path7441"
+       d="m -224.42697,308.69184 23.90514,-6.34507"
+       style="fill:none;stroke:#000000;stroke-width:0.72574037;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_digital.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <g
+       transform="matrix(0.46197134,-0.12664775,0.15301493,0.38236554,1022.9647,-484.1018)"
+       id="g7443"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_digital.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300">
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-weight:bold;font-size:19.6703167px;line-height:125%;font-family:Sans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+         x="-3074.7502"
+         y="1066.4976"
+         id="text7445"
+         sodipodi:linespacing="125%"><tspan
+           sodipodi:role="line"
+           id="tspan7447"
+           x="-3074.7502"
+           y="1066.4976">t</tspan></text>
+      <path
+         style="fill:none;stroke:#000000;stroke-width:1.921983;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:9;stroke-dasharray:none;stroke-opacity:1"
+         d="m -3085.4398,1054.4904 -4.9284,11.0889 10.7368,0 z"
+         id="path7449"
+         inkscape:connector-curvature="0" />
+    </g>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1.08861065;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m -121.82352,263.27095 -34.08301,9.01475 0.11453,-20.96468 -44.82674,11.64117 0.27523,21.45266 -321.08486,85.94257 0.0118,-22.01577 -43.94238,11.4352 -0.0235,21.55694 -206.99386,55.79969"
+       id="path7453"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccccccccc"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_digital.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#0075ff;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend);stroke-miterlimit:3;stroke-dasharray:none"
+       d="m 340,443.3622 -64,-32"
+       id="path4502"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path4772"
+       d="m 414,420.3622 -64,-32"
+       style="fill:none;fill-rule:evenodd;stroke:#0075ff;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:3;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker4774)"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#0075ff;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:3;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker4780)"
+       d="m 489,398.3622 -64,-32"
+       id="path4778"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path4784"
+       d="m 564,376.3622 -64,-32"
+       style="fill:none;fill-rule:evenodd;stroke:#0075ff;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:3;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker4786)"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#0075ff;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:3;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker4792)"
+       d="m 639,358.3622 -64,-32"
+       id="path4790"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path4796"
+       d="m 709,337.3622 -64,-32"
+       style="fill:none;fill-rule:evenodd;stroke:#f00000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:3;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker4798)"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#0075ff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;"
+       x="271.2193"
+       y="554.09717"
+       id="text4802"
+       sodipodi:linespacing="125%"
+       transform="matrix(0.94503074,-0.32698149,0.32698149,0.94503074,0,0)"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         sodipodi:role="line"
+         id="tspan4804"
+         x="271.2193"
+         y="554.09717"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16.25px;line-height:125%;font-family:Sans;-inkscape-font-specification:'Sans, Normal';text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#0075ff;fill-opacity:1;">start frame</tspan></text>
+    <text
+       transform="matrix(0.94503074,-0.32698149,0.32698149,0.94503074,0,0)"
+       sodipodi:linespacing="125%"
+       id="text4806"
+       y="569.69037"
+       x="530.36572"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       xml:space="preserve"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16.25px;line-height:125%;font-family:Sans;-inkscape-font-specification:'Sans, Normal';text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#ff0000;fill-opacity:1"
+         y="569.69037"
+         x="530.36572"
+         id="tspan4808"
+         sodipodi:role="line">end frame</tspan></text>
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot4810"
+       style="fill:black;stroke:none;stroke-opacity:1;stroke-width:1px;stroke-linejoin:miter;stroke-linecap:butt;fill-opacity:1;font-family:sans-serif;font-style:normal;font-weight:normal;font-size:40px;line-height:125%;letter-spacing:0px;word-spacing:0px"><flowRegion
+         id="flowRegion4812"><rect
+           id="rect4814"
+           width="868"
+           height="508"
+           x="-41"
+           y="19.362206" /></flowRegion><flowPara
+         id="flowPara4816"></flowPara></flowRoot>    <path
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_repeated.png"
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:connector-curvature="0"
+       id="path4818"
+       d="m 192.47684,-265.83333 0,-14.61031 -73.15119,19.67338 -0.13296,14.68273 73.28415,-19.7458 z"
+       style="opacity:1;fill:#7d0000;fill-opacity:1;stroke:none;stroke-width:9;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_repeated.png"
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:connector-curvature="0"
+       id="path4820"
+       d="m 265.75629,-285.57806 0,-14.57337 -73.27945,19.70779 0,14.61031 73.27945,-19.74473 z"
+       style="opacity:1;fill:#a80000;fill-opacity:1;stroke:none;stroke-width:9;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_repeated.png"
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:connector-curvature="0"
+       id="path4822"
+       d="m 338.72284,-305.23835 0,-14.53682 -36.86362,9.91417 -36.10293,9.70957 0,14.57337 72.96655,-19.66029 z"
+       style="opacity:1;fill:#d20000;fill-opacity:1;stroke:none;stroke-width:9;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_repeated.png"
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:connector-curvature="0"
+       id="path4824"
+       d="m 412.46917,-325.1088 0,-14.49968 -73.74633,19.83331 0,14.53682 73.74633,-19.87045 z"
+       style="opacity:1;fill:#ff2a2a;fill-opacity:1;stroke:none;stroke-width:9;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_repeated.png"
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:connector-curvature="0"
+       id="path4826"
+       d="m 484.39255,-358.95173 -71.92338,19.34325 0,14.49968 71.92186,-19.37896 0,-14.46397 z"
+       style="opacity:1;fill:#ff2a2a;fill-opacity:1;stroke:none;stroke-width:9;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <rect
+       transform="matrix(0.13295301,0,0,0.11004286,200.18574,-356.40923)"
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_repeated.png"
+       style="opacity:0.53086416;fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter4078)"
+       id="rect4828"
+       width="1295.9395"
+       height="799.93945"
+       x="1305.1138"
+       y="-1524.0842" />
+    <rect
+       transform="matrix(0.13295301,0,0,0.11004286,200.18574,-356.40923)"
+       y="-1380.0842"
+       x="875.11383"
+       height="799.93945"
+       width="1295.9395"
+       id="rect4830"
+       style="opacity:0.53086416;fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter4078)"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_repeated.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <rect
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_repeated.png"
+       style="fill:#1a1a1a;fill-opacity:1;stroke:#9f9f9f;stroke-width:0.12095673;stroke-opacity:1"
+       id="rect4832"
+       width="172.29906"
+       height="88.027626"
+       x="366.92444"
+       y="-519.54041" />
+    <g
+       id="g5025"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_repeated.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300">
+      <rect
+         style="fill:#808080;fill-opacity:1;stroke:none"
+         id="rect4838"
+         width="172.29906"
+         height="88.027626"
+         x="311.65982"
+         y="-505.50128"
+         inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
+         inkscape:export-xdpi="90"
+         inkscape:export-ydpi="90" />
+      <rect
+         y="-433.98007"
+         x="311.65982"
+         height="16.50643"
+         width="172.29906"
+         id="rect4840"
+         style="fill:#7d0000;fill-opacity:1;stroke:none"
+         inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
+         inkscape:export-xdpi="90"
+         inkscape:export-ydpi="90" />
+      <image
+         y="-494.49701"
+         x="414.82327"
+         id="image4872"
+         xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZAAAAGQCAIAAAAP3aGbAAAAA3NCSVQICAjb4U/gAAADaUlEQVR4 nO3dwWkEMRBFQWnyz7kdgUEMC/JbV0XwT+/W0loAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPxmr5nb GwCOPLcHAJwSLCBDsIAMwQIyBAvIECwgQ7CADMECMgQLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/rS9Zm5vADjy3B4AcEqwgAzBAjIEC8gQLCBDsIAMwQIy BAvIECwAAAAAAAAAAAAAAAB4xZvuQIZbQiBDsIAMwQIyBAvIECwgQ7CADMECMgQLyBAsIEOwgAzB AjIEC8gQLCBDsIAMwQIyBAvIECwgQ7CADMECAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD4AnvN3N4A cMSvOUCGYAEZggVkCBaQIVhAhmABGYIFZAgWkCFYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAX2Cv mdsbAI74NQfIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIECwAAAAAAAAAAAAAAAF7xpjuQ4ZYQyBAs IEOwgAzBAjIEC8gQLCBDsIAMwQIyBAsAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA APiwvWZubwA48tweAHBKsIAMwQIyBAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAM wQIyBAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIAAAAAAAAAAAAAAIBX9pq5 vQHgiFtCIEOwgAzBAjIEC8gQLCBDsIAMwQIyBAvIECwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAODD9pq5vQHgyHN7AMApwQIyBAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQ LCBDsIAMwQIyBAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIyBAvIECwgQ7CA DMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIyBAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIE C8gQLCBDsAAAAP6tH5i3EyLVMXh9AAAAAElFTkSuQmCC "
+         height="44.017147"
+         width="53.181206"
+         inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
+         inkscape:export-xdpi="90"
+         inkscape:export-ydpi="90" />
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-weight:bold;font-size:4.83826923px;line-height:125%;font-family:Sans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+         x="287.7554"
+         y="-545.77051"
+         id="text4926"
+         sodipodi:linespacing="125%"
+         inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
+         inkscape:export-xdpi="90"
+         inkscape:export-ydpi="90"
+         transform="scale(1.0991783,0.9097705)"><tspan
+           sodipodi:role="line"
+           id="tspan4928"
+           x="287.7554"
+           y="-545.77051"
+           style="font-size:6.77357721px;fill:#ffffff">Frame=5</tspan></text>
+    </g>
+    <rect
+       transform="matrix(0.13295301,0,0,0.11004286,200.18574,-356.40923)"
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_repeated.png"
+       style="opacity:0.53086416;fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter4078)"
+       id="rect4836"
+       width="1295.9395"
+       height="799.93945"
+       x="321.11383"
+       y="-1200.0842" />
+    <g
+       id="g5018"
+       transform="translate(73.892659,-16.97056)"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_repeated.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300">
+      <rect
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
+         style="fill:#808080;fill-opacity:1;stroke:none"
+         id="rect5008"
+         width="172.29906"
+         height="88.027626"
+         x="165.74597"
+         y="-468.09546" />
+      <rect
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
+         y="-396.57428"
+         x="165.74597"
+         height="16.50643"
+         width="172.29906"
+         id="rect5010"
+         style="fill:#ff2a2a;fill-opacity:1;stroke:none" />
+      <image
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
+         width="53.181206"
+         height="44.017147"
+         xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZAAAAGQCAIAAAAP3aGbAAAAA3NCSVQICAjb4U/gAAADbElEQVR4 nO3dwY3FIBAFQXD+Oc+mgKwvsW1VRfBOfRvYa2YBFDy3BwCcEiwgQ7CADMECMgQLyBAsIEOwgAzB AjIEC8gQLCBDsIAMwQIyBAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIyBAvI ECwgQ7AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA+YK+Z2xsAjvg1B8gQLCBDsIAMwQIyBAvIECwg Q7CADMECMgQLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA /rW9Zm5vADjy3B4AcEqwgAzBAjIEC8gQLCBDsIAMwQIyBAvIECwAAAAAAAAAAAAAAAB4xZvuQIZb QiBDsIAMwQIyBAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIyBAvIECwgQ7CA DMECAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD4gL1mbm8AOOLXHCBDsIAMwQIyBAvIECwgQ7CADMEC MgQLyBAsAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAD9hr5vYGgCN+zQEyBAvIECwgQ7CADMECMgQL yBAsIEOwgAzBAgAAAAAAAAAAAAAAgFe86Q5kuCUEMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH5sr5nbGwCOPLcHAJwSLCBDsIAMwQIy BAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIyBAvIECwgQ7CADMECMgQLyBAs IEOwgAzBAjIEC8gQLCBDsAAAAAAAAAAAAAAAAOCVvWZubwA44pYQyBAsIEOwgAzBAjIEC8gQLCBD sIAMwQIyBAsAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPixvWZubwA48tweAHBK sIAMwQIyBAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIyBAvIECwgQ7CADMEC MgQLyBAsIEOwgAzBAjL+AOC7FSOhnBKZAAAAAElFTkSuQmCC "
+         id="image5012"
+         x="268.90945"
+         y="-457.09119" />
+      <text
+         transform="scale(1.0991783,0.9097705)"
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/analog_signal.png"
+         xml:space="preserve"
+         style="font-style:normal;font-weight:bold;font-size:4.83826923px;line-height:125%;font-family:Sans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+         x="155.00728"
+         y="-504.65485"
+         id="text5014"
+         sodipodi:linespacing="125%"><tspan
+           sodipodi:role="line"
+           id="tspan5016"
+           x="155.00728"
+           y="-504.65485"
+           style="font-size:6.77357721px;fill:#ffffff">Frame=4</tspan></text>
+    </g>
+    <rect
+       transform="matrix(0.13295301,0,0,0.11004286,200.18574,-356.40923)"
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_repeated.png"
+       y="-1040.0845"
+       x="-233.88643"
+       height="799.93945"
+       width="1295.9395"
+       id="rect4842"
+       style="opacity:0.53086416;fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter4078)" />
+    <rect
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_repeated.png"
+       style="fill:#808080;fill-opacity:1;stroke:none"
+       id="rect4844"
+       width="172.29906"
+       height="88.027626"
+       x="165.74597"
+       y="-468.09546" />
+    <rect
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_repeated.png"
+       y="-396.57428"
+       x="165.74597"
+       height="16.50643"
+       width="172.29906"
+       id="rect4846"
+       style="fill:#ff2a2a;fill-opacity:1;stroke:none" />
+    <rect
+       transform="matrix(0.13295301,0,0,0.11004286,200.18574,-356.40923)"
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_repeated.png"
+       style="opacity:0.53086416;fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter4078)"
+       id="rect4848"
+       width="1295.9395"
+       height="799.93945"
+       x="-782.21967"
+       y="-853.41779" />
+    <rect
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_repeated.png"
+       y="-447.55417"
+       x="92.843445"
+       height="88.027626"
+       width="172.29906"
+       id="rect4850"
+       style="fill:#808080;fill-opacity:1;stroke:none" />
+    <rect
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_repeated.png"
+       style="fill:#d20000;fill-opacity:1;stroke:none"
+       id="rect4852"
+       width="172.29906"
+       height="16.50643"
+       x="92.843445"
+       y="-376.03293" />
+    <rect
+       transform="matrix(0.13295301,0,0,0.11004286,200.18574,-356.40923)"
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_repeated.png"
+       y="-666.75104"
+       x="-1330.553"
+       height="799.93945"
+       width="1295.9395"
+       id="rect4854"
+       style="opacity:0.53086416;fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter4078)" />
+    <rect
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_repeated.png"
+       style="fill:#808080;fill-opacity:1;stroke:none"
+       id="rect4856"
+       width="172.29906"
+       height="88.027626"
+       x="19.940903"
+       y="-427.01276" />
+    <rect
+       transform="matrix(0.13295301,0,0,0.11004286,200.18574,-356.40923)"
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_repeated.png"
+       style="opacity:0.53086416;fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter4078)"
+       id="rect4858"
+       width="1295.9395"
+       height="799.93945"
+       x="-1878.8865"
+       y="-480.08432" />
+    <rect
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_repeated.png"
+       y="-406.47144"
+       x="-52.961639"
+       height="88.027626"
+       width="172.29906"
+       id="rect4860"
+       style="opacity:1;fill:#808080;fill-opacity:1;stroke:none;stroke-width:6.06054449;stroke-miterlimit:4;stroke-dasharray:48.48435477, 48.48435477;stroke-dashoffset:0;stroke-opacity:1" />
+    <rect
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_repeated.png"
+       y="-355.49155"
+       x="19.940903"
+       height="16.50643"
+       width="172.29906"
+       id="rect4862"
+       style="fill:#a80000;fill-opacity:1;stroke:none" />
+    <image
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_repeated.png"
+       width="53.181206"
+       height="44.017147"
+       xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZAAAAGQCAIAAAAP3aGbAAAAA3NCSVQICAjb4U/gAAADbElEQVR4 nO3dwY3FIBAFQXD+Oc+mgKwvsW1VRfBOfRvYa2YBFDy3BwCcEiwgQ7CADMECMgQLyBAsIEOwgAzB AjIEC8gQLCBDsIAMwQIyBAvIECwgQ7CADMECMgQLAAAAAAAAAAAAAAAAXtlr5vYGgCNuCYEMwQIy BAvIECwgQ7CADMECMgQLyBAsIEOwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACA H9tr5vYGgCPP7QEApwQLyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIyBAvIECwgQ7CADMECMgQLyBAs IEOwgAzBAjIEC8gQLCBDsIAMwQIyBAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAM wQIyBAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIyBAvIECwgQ7CADMECAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAD4gL1mbm8AOOLXHCBDsIAMwQIyBAvIECwgQ7CADMECMgQLyBAs AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA+Nf2mrm9AeDI c3sAwCnBAjIEC8gQLCBDsIAMwQIyBAvIECwgQ7AAAAAAAAAAAAAAAADgFW+6AxluCYEMwQIyBAvI ECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIyBAvIECwgQ7CADMECMgQLAAAAAAAA AAAAAAAAAAAAAAAAAAAAAADgA/aaub0B4Ihfc4AMwQIyBAvIECwgQ7CADMECMgQLyBAsIEOwAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAPmCvmdsbAI74NQfIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIE CwAAAAAAAAAAAAAAAF7xpjuQ4ZYQyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIyBAsAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPixvWZubwA48tweAHBKsIAMwQIyBAvIECwgQ7CADMEC MgQLyBAsIEOwgAzBAjL+AHy3FSOZ2ImbAAAAAElFTkSuQmCC "
+       id="image4864"
+       x="51.541779"
+       y="-391.90942" />
+    <image
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_repeated.png"
+       width="53.181206"
+       height="44.017147"
+       xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZAAAAGQCAIAAAAP3aGbAAAAA3NCSVQICAjb4U/gAAADbElEQVR4 nO3dwY3FIBAFQXD+Oc+mgKwvsW1VRfBOfRvYa2YBFDy3BwCcEiwgQ7CADMECMgQLAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD4sb1mbm8AOPLcHgBwSrCADMECMgQLyBAsIEOwgAzB AjIEC8gQLCBDsIAMwQIyBAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIyBAvI ECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIyBAvIECwgQ7CADMECMgQLyBAsIEOw gAzBAjIEC8gQLCBDsIAMwQIyBAvIECwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAP2Gvm9gaAI37N ATIEC8gQLCBDsIAMwQIyBAvIECwgQ7CADMECAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAACAf22vmdsbAI48twcAnBIsIEOwgAzBAjIEC8gQLCBDsIAMwQIyBAsA AAAAAAAAAAAAAABe8aY7kOGWEMgQLCBDsIAMwQIyBAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIE C8gQLCBDsIAMwQIyBAvIECwgQ7AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA+YK+Z2xsAjvg1B8gQ LCBDsIAMwQIyBAvIECwgQ7CADMECMgQLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADgA/aaub0B4Ihf c4AMwQIyBAvIECwgQ7CADMECMgQLyBAsIEOwAAAAAAAAAAAAAAAA4BVvugMZbgmBDMECMgQLyBAs IEOwgAzBAjIEC8gQLCBDsAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgB/ba+b2 BoAjz+0BAKcEC8gQLCBDsIAMwQIyBAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAM wQIyBAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLAAAAAAAAAAAAAAAAHhlr5nbGwCOuCUE MgQLyBAsIEOwgAzBAjL+AIxjFSMbVV9PAAAAAElFTkSuQmCC "
+       id="image4866"
+       x="123.1044"
+       y="-416.00848" />
+    <image
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_repeated.png"
+       width="53.181206"
+       height="44.017147"
+       xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZAAAAGQCAIAAAAP3aGbAAAAA3NCSVQICAjb4U/gAAADaElEQVR4 nO3dsY0DMRAEQVL557wfwDvEQQDVh6oIxmpvybUAAAAAAAAAAAAAAOCX7DVzewPAkc/tAQCnBAvI ECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIyBAvIECwgQ7CADMECMgQLyBAsIEOw gAzBAjIEC8gQLCBDsIAMwQIyBAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIy BAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAHiBvWZubwA44tccIEOwgAzBAjIEC8gQLCBDsIAMwQIyBAvIECwAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD4aXvN3N4AcORzewDAKcECMgQLyBAsIEOw gAzBAjIEC8gQLCBDsAAAAAAAAAAAAAAAAOARb7oDGW4JgQzBAjIEC8gQLCBDsIAMwQIyBAvIECwg Q7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIyBAsAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AOAF9pq5vQHgiF9zgAzBAjIEC8gQLCBDsIAMwQIyBAvIECwgQ7AAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAABeYK+Z2xsAjvg1B8gQLCBDsIAMwQIyBAvIECwgQ7CADMECMgQLAAAAAAAAAAAAAAAAHvGm O5DhlhDIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIECwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAA+LK9Zm5vADjyuT0A4JRgARmCBWQIFpAhWECGYAEZggVkCBaQIVhAhmABGYIFZAgW kCFYQIZgARmCBWQIFpAhWECGYAEZggVkCBaQIVhAhmABGYIFZAgWkCFYQIZgARmCBQAAAAAAAAAA AAAAAI/sNXN7A8ARt4RAhmABGYIFZAgWkCFYQIZgARmCBWQIFpAhWAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAA8M8fvOgTIpQ3TFAAAAAASUVORK5CYII= "
+       id="image4868"
+       x="196.00693"
+       y="-436.5498" />
+    <image
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_repeated.png"
+       width="53.181206"
+       height="44.017147"
+       xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZAAAAGQCAIAAAAP3aGbAAAAA3NCSVQICAjb4U/gAAADbElEQVR4 nO3dwY3FIBAFQXD+Oc+mgKwvsW1VRfBOfRvYa2YBFDy3BwCcEiwgQ7CADMECMgQLyBAsIEOwgAzB AjIEC8gQLCBDsIAMwQIyBAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIyBAvI ECwgQ7AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA+YK+Z2xsAjvg1B8gQLCBDsIAMwQIyBAvIECwg Q7CADMECMgQLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA /rW9Zm5vADjy3B4AcEqwgAzBAjIEC8gQLCBDsIAMwQIyBAvIECwAAAAAAAAAAAAAAAB4xZvuQIZb QiBDsIAMwQIyBAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIyBAvIECwgQ7CA DMECAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD4gL1mbm8AOOLXHCBDsIAMwQIyBAvIECwgQ7CADMEC MgQLyBAsAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAD9hr5vYGgCN+zQEyBAvIECwgQ7CADMECMgQL yBAsIEOwgAzBAgAAAAAAAAAAAAAAgFe86Q5kuCUEMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH5sr5nbGwCOPLcHAJwSLCBDsIAMwQIy BAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIyBAvIECwgQ7CADMECMgQLyBAs IEOwgAzBAjIEC8gQLCBDsAAAAAAAAAAAAAAAAOCVvWZubwA44pYQyBAsIEOwgAzBAjIEC8gQLCBD sIAMwQIyBAsAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPixvWZubwA48tweAHBK sIAMwQIyBAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIyBAvIECwgQ7CADMEC MgQLyBAsIEOwgAzBAjL+AOC7FSOhnBKZAAAAAElFTkSuQmCC "
+       id="image4870"
+       x="268.90945"
+       y="-457.09119" />
+    <rect
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_repeated.png"
+       style="fill:#808080;fill-opacity:1;stroke:none"
+       id="rect4874"
+       width="172.29906"
+       height="88.027626"
+       x="-52.961639"
+       y="-406.47144" />
+    <image
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_repeated.png"
+       y="-395.46716"
+       x="50.201767"
+       id="image4876"
+       xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZAAAAGQCAIAAAAP3aGbAAAAA3NCSVQICAjb4U/gAAADbElEQVR4 nO3dwY3FIBAFQXD+Oc+mgKwvsW1VRfBOfRvYa2YBFDy3BwCcEiwgQ7CADMECMgQLAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD4sb1mbm8AOPLcHgBwSrCADMECMgQLyBAsIEOwgAzB AjIEC8gQLCBDsIAMwQIyBAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIyBAvI ECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAMwQIyBAvIECwgQ7CADMECMgQLyBAsIEOw gAzBAjIEC8gQLCBDsIAMwQIyBAvIECwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAP2Gvm9gaAI37N ATIEC8gQLCBDsIAMwQIyBAvIECwgQ7CADMECAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAACAf22vmdsbAI48twcAnBIsIEOwgAzBAjIEC8gQLCBDsIAMwQIyBAsA AAAAAAAAAAAAAABe8aY7kOGWEMgQLCBDsIAMwQIyBAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIE C8gQLCBDsIAMwQIyBAvIECwgQ7AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA+YK+Z2xsAjvg1B8gQ LCBDsIAMwQIyBAvIECwgQ7CADMECMgQLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADgA/aaub0B4Ihf c4AMwQIyBAvIECwgQ7CADMECMgQLyBAsIEOwAAAAAAAAAAAAAAAA4BVvugMZbgmBDMECMgQLyBAs IEOwgAzBAjIEC8gQLCBDsAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgB/ba+b2 BoAjz+0BAKcEC8gQLCBDsIAMwQIyBAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLCBDsIAM wQIyBAvIECwgQ7CADMECMgQLyBAsIEOwgAzBAjIEC8gQLAAAAAAAAAAAAAAAAHhlr5nbGwCOuCUE MgQLyBAsIEOwgAzBAjL+AIxjFSMbVV9PAAAAAElFTkSuQmCC "
+       height="44.017147"
+       width="53.181206" />
+    <rect
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_repeated.png"
+       y="-334.95029"
+       x="-52.961639"
+       height="16.50643"
+       width="172.29906"
+       id="rect4878"
+       style="fill:#7d0000;fill-opacity:1;stroke:none" />
+    <path
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_repeated.png"
+       sodipodi:nodetypes="cccccccccccccccccccccccccc"
+       inkscape:connector-curvature="0"
+       id="path4880"
+       d="m 555.16388,-383.25938 -62.37057,16.74342 -0.0769,-13.44786 -7.99309,2.40163 0.29537,13.5823 -72.86669,19.04216 -0.27252,-46.29713 -8.89165,2.49962 0.44294,46.07661 -65.31246,17.06802 -0.047,-46.26499 -7.33462,1.67221 0,46.61512 -65.60201,17.64169 -0.10996,-27.93972 -7.20501,2.18612 0.15242,27.60687 -65.69474,17.67542 -0.0535,-19.38087 -7.82427,1.9562 0.063,19.54168 -65.14282,17.38875 0.0118,-14.45511 -8.23349,2.59636 -0.0235,14.17306 -206.993859,55.7113"
+       style="fill:none;stroke:#000000;stroke-width:1.08861065;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_repeated.png"
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path4882"
+       d="m 119.08567,-317.21793 0,104.8072"
+       style="fill:none;stroke:#000000;stroke-width:0.60478365;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:1.81435101, 1.81435101;stroke-dashoffset:5;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_repeated.png"
+       style="fill:none;stroke:#000000;stroke-width:0.60478365;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:1.81435101, 1.81435101;stroke-dashoffset:5;stroke-opacity:1"
+       d="m 192.13873,-338.57802 0,104.80719"
+       id="path4884"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_repeated.png"
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path4886"
+       d="m 265.43181,-357.53089 0,104.80724"
+       style="fill:none;stroke:#000000;stroke-width:0.60478365;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:1.81435101, 1.81435101;stroke-dashoffset:5;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_repeated.png"
+       style="fill:none;stroke:#000000;stroke-width:0.60478365;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:1.81435101, 1.81435101;stroke-dashoffset:5;stroke-opacity:1"
+       d="m 338.36355,-378.44282 0,104.80718"
+       id="path4888"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_repeated.png"
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path4890"
+       d="m 412.14141,-397.20203 0,104.80719"
+       style="fill:none;stroke:#000000;stroke-width:0.60478365;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:1.81435101, 1.81435101;stroke-dashoffset:5;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_repeated.png"
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path4892"
+       d="m 169.4036,-233.89056 46.88158,-12.59513"
+       style="fill:none;stroke:#000000;stroke-width:0.72574037;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_repeated.png"
+       sodipodi:nodetypes="cc"
+       style="fill:none;stroke:#000000;stroke-width:0.72574037;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 118.54369,-219.98095 24.43165,-6.76006"
+       id="path4894"
+       inkscape:connector-curvature="0" />
+    <g
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_repeated.png"
+       transform="matrix(0.46197134,-0.12664775,0.15301493,0.38236554,1415.688,-1025.5283)"
+       id="g4896">
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-weight:bold;font-size:19.6703167px;line-height:125%;font-family:Sans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+         x="-3074.7502"
+         y="1066.4976"
+         id="text4898"
+         sodipodi:linespacing="125%"><tspan
+           sodipodi:role="line"
+           id="tspan4900"
+           x="-3074.7502"
+           y="1066.4976">t</tspan></text>
+      <path
+         style="fill:none;stroke:#000000;stroke-width:1.921983;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:9;stroke-dasharray:none;stroke-opacity:1"
+         d="m -3085.4398,1054.4904 -4.9284,11.0889 10.7368,0 z"
+         id="path4902"
+         inkscape:connector-curvature="0" />
+    </g>
+    <path
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_repeated.png"
+       style="fill:none;stroke:#000000;stroke-width:0.72574037;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 242.87103,-253.72411 46.69889,-12.74625"
+       id="path4904"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_repeated.png"
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path4906"
+       d="m 316.22415,-273.60551 46.63803,-12.69587"
+       style="fill:none;stroke:#000000;stroke-width:0.72574037;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_repeated.png"
+       style="fill:none;stroke:#000000;stroke-width:0.72574037;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 389.4051,-293.55816 47.78014,-12.34507"
+       id="path4908"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <text
+       transform="scale(1.0991783,0.9097705)"
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_repeated.png"
+       sodipodi:linespacing="125%"
+       id="text4910"
+       y="-436.91907"
+       x="-43.966499"
+       style="font-style:normal;font-weight:bold;font-size:4.83826923px;line-height:125%;font-family:Sans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       xml:space="preserve"><tspan
+         style="font-size:6.77357721px;fill:#ffffff"
+         y="-436.91907"
+         x="-43.966499"
+         id="tspan4912"
+         sodipodi:role="line">Frame=1</tspan></text>
+    <text
+       transform="scale(1.0991783,0.9097705)"
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_repeated.png"
+       xml:space="preserve"
+       style="font-style:normal;font-weight:bold;font-size:4.83826923px;line-height:125%;font-family:Sans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       x="22.358078"
+       y="-459.49762"
+       id="text4914"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4916"
+         x="22.358078"
+         y="-459.49762"
+         style="font-size:6.77357721px;fill:#ffffff">Frame=2</tspan></text>
+    <text
+       transform="scale(1.0991783,0.9097705)"
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_repeated.png"
+       sodipodi:linespacing="125%"
+       id="text4918"
+       y="-482.07626"
+       x="88.682648"
+       style="font-style:normal;font-weight:bold;font-size:4.83826923px;line-height:125%;font-family:Sans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       xml:space="preserve"><tspan
+         style="font-size:6.77357721px;fill:#ffffff"
+         y="-482.07626"
+         x="88.682648"
+         id="tspan4920"
+         sodipodi:role="line">Frame=3</tspan></text>
+    <text
+       transform="scale(1.0991783,0.9097705)"
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_repeated.png"
+       xml:space="preserve"
+       style="font-style:normal;font-weight:bold;font-size:4.83826923px;line-height:125%;font-family:Sans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       x="155.00728"
+       y="-504.65485"
+       id="text4922"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4924"
+         x="155.00728"
+         y="-504.65485"
+         style="font-size:6.77357721px;fill:#ffffff">Frame=4</tspan></text>
+    <text
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_repeated.png"
+       transform="matrix(1.052365,-0.26267776,0.31736543,0.87102398,0,0)"
+       sodipodi:linespacing="125%"
+       id="text4930"
+       y="-251.68806"
+       x="56.555206"
+       style="font-style:normal;font-weight:bold;font-size:4.83826923px;line-height:125%;font-family:Sans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#808080;fill-opacity:1;stroke:none"
+       xml:space="preserve"><tspan
+         style="font-size:8.70888519px;fill:#808080"
+         y="-251.68806"
+         x="56.555206"
+         id="tspan4932"
+         sodipodi:role="line">Analog signal</tspan></text>
+    <g
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_repeated.png"
+       id="g4934"
+       transform="matrix(0.46197134,-0.12664775,0.15301493,0.38236554,1489.0173,-1045.7595)">
+      <text
+         sodipodi:linespacing="125%"
+         id="text4936"
+         y="1066.4976"
+         x="-3074.7502"
+         style="font-style:normal;font-weight:bold;font-size:19.6703167px;line-height:125%;font-family:Sans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+         xml:space="preserve"><tspan
+           y="1066.4976"
+           x="-3074.7502"
+           id="tspan4938"
+           sodipodi:role="line">t</tspan></text>
+      <path
+         inkscape:connector-curvature="0"
+         id="path4940"
+         d="m -3085.4398,1054.4904 -4.9284,11.0889 10.7368,0 z"
+         style="fill:none;stroke:#000000;stroke-width:1.921983;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:9;stroke-dasharray:none;stroke-opacity:1" />
+    </g>
+    <g
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_repeated.png"
+       transform="matrix(0.46197134,-0.12664775,0.15301493,0.38236554,1562.7227,-1065.9906)"
+       id="g4942">
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-weight:bold;font-size:19.6703167px;line-height:125%;font-family:Sans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+         x="-3074.7502"
+         y="1066.4976"
+         id="text4944"
+         sodipodi:linespacing="125%"><tspan
+           sodipodi:role="line"
+           id="tspan4946"
+           x="-3074.7502"
+           y="1066.4976">t</tspan></text>
+      <path
+         style="fill:none;stroke:#000000;stroke-width:1.921983;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:9;stroke-dasharray:none;stroke-opacity:1"
+         d="m -3085.4398,1054.4904 -4.9284,11.0889 10.7368,0 z"
+         id="path4948"
+         inkscape:connector-curvature="0" />
+    </g>
+    <g
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_repeated.png"
+       id="g4950"
+       transform="matrix(0.46197134,-0.12664775,0.15301493,0.38236554,1634.1718,-1084.9768)">
+      <text
+         sodipodi:linespacing="125%"
+         id="text4952"
+         y="1066.4976"
+         x="-3074.7502"
+         style="font-style:normal;font-weight:bold;font-size:19.6703167px;line-height:125%;font-family:Sans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+         xml:space="preserve"><tspan
+           y="1066.4976"
+           x="-3074.7502"
+           id="tspan4954"
+           sodipodi:role="line">t</tspan></text>
+      <path
+         inkscape:connector-curvature="0"
+         id="path4956"
+         d="m -3085.4398,1054.4904 -4.9284,11.0889 10.7368,0 z"
+         style="fill:none;stroke:#000000;stroke-width:1.921983;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:9;stroke-dasharray:none;stroke-opacity:1" />
+    </g>
+    <g
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_repeated.png"
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       transform="translate(-159,-546.5)"
+       id="g4958">
+      <text
+         sodipodi:linespacing="125%"
+         id="text4960"
+         y="422.44861"
+         x="24.155817"
+         style="font-style:normal;font-weight:bold;font-size:4.83826923px;line-height:125%;font-family:Sans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+         xml:space="preserve"
+         transform="matrix(1.0451229,-0.2817904,0.34045717,0.8650298,0,0)"
+         inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Code_for_projector/Doc/General_option.png"
+         inkscape:export-xdpi="30"
+         inkscape:export-ydpi="30"><tspan
+           style="font-size:8.70888519px"
+           y="422.44861"
+           x="24.155817"
+           sodipodi:role="line"
+           id="tspan4962">Refresh rate = 1/</tspan></text>
+      <g
+         inkscape:export-ydpi="30"
+         inkscape:export-xdpi="30"
+         inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Code_for_projector/Doc/General_option.png"
+         transform="matrix(0.46197134,-0.12664775,0.15301493,0.38236554,1521.7736,-463.76452)"
+         id="g4964">
+        <text
+           xml:space="preserve"
+           style="font-style:normal;font-weight:bold;font-size:19.6703167px;line-height:125%;font-family:Sans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+           x="-3074.7502"
+           y="1066.4976"
+           id="text4966"
+           sodipodi:linespacing="125%"><tspan
+             sodipodi:role="line"
+             id="tspan4968"
+             x="-3074.7502"
+             y="1066.4976">t</tspan></text>
+        <path
+           style="fill:none;stroke:#000000;stroke-width:1.921983;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:9;stroke-dasharray:none;stroke-opacity:1"
+           d="m -3085.4398,1054.4904 -4.9284,11.0889 10.7368,0 z"
+           id="path4970"
+           inkscape:connector-curvature="0" />
+      </g>
+    </g>
+    <rect
+       y="-1524.0842"
+       x="1305.1138"
+       height="799.93945"
+       width="1295.9395"
+       id="rect4972"
+       style="opacity:0.53086416;fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter4078)"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_repeated.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300"
+       transform="matrix(0.13295301,0,0,0.11004286,-296.31426,-221.90923)" />
+    <rect
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_repeated.png"
+       style="fill:#1a1a1a;fill-opacity:1;stroke:none"
+       id="rect4974"
+       width="172.29906"
+       height="88.027626"
+       x="-127.14159"
+       y="-386.7095" />
+    <path
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path4976"
+       d="m 484.08007,-416.51769 0,104.80724"
+       style="fill:none;stroke:#000000;stroke-width:0.60478365;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:1.81435101, 1.81435101;stroke-dashoffset:5;stroke-opacity:1"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_repeated.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <path
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path4978"
+       d="m 460.0301,-311.30816 23.90514,-6.34507"
+       style="fill:none;stroke:#000000;stroke-width:0.72574037;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_repeated.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <g
+       transform="matrix(0.46197134,-0.12664775,0.15301493,0.38236554,1707.4218,-1104.1018)"
+       id="g4980"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_repeated.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300">
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-weight:bold;font-size:19.6703167px;line-height:125%;font-family:Sans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+         x="-3074.7502"
+         y="1066.4976"
+         id="text4982"
+         sodipodi:linespacing="125%"><tspan
+           sodipodi:role="line"
+           id="tspan4984"
+           x="-3074.7502"
+           y="1066.4976">t</tspan></text>
+      <path
+         style="fill:none;stroke:#000000;stroke-width:1.921983;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:9;stroke-dasharray:none;stroke-opacity:1"
+         d="m -3085.4398,1054.4904 -4.9284,11.0889 10.7368,0 z"
+         id="path4986"
+         inkscape:connector-curvature="0" />
+    </g>
+    <path
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/sync_repeated.png"
+       inkscape:connector-curvature="0"
+       id="path4996"
+       d="m 174,-503.6378 52,40"
+       style="fill:none;fill-rule:evenodd;stroke:#0075ff;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:3;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker5050)"
+       sodipodi:nodetypes="cc" />
+    <path
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/sync_repeated.png"
+       style="fill:none;fill-rule:evenodd;stroke:#f00000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:3;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker5054)"
+       d="m 218,-553.6378 79,72"
+       id="path4998"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <text
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/sync_repeated.png"
+       transform="matrix(0.94503074,-0.32698149,0.32698149,0.94503074,0,0)"
+       sodipodi:linespacing="125%"
+       id="text5000"
+       y="-418.7291"
+       x="267.08841"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#0075ff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       xml:space="preserve"><tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16.25px;line-height:125%;font-family:Sans;-inkscape-font-specification:'Sans, Normal';text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#0075ff;fill-opacity:1"
+         y="-418.7291"
+         x="267.08841"
+         id="tspan5002"
+         sodipodi:role="line">normal frame</tspan></text>
+    <text
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/wiki/sync_repeated.png"
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="310.51645"
+       y="-455.55316"
+       id="text5004"
+       sodipodi:linespacing="125%"
+       transform="matrix(0.94503074,-0.32698149,0.32698149,0.94503074,0,0)"><tspan
+         sodipodi:role="line"
+         id="tspan5006"
+         x="310.51645"
+         y="-455.55316"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16.25px;line-height:125%;font-family:Sans;-inkscape-font-specification:'Sans, Normal';text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#ff0000;fill-opacity:1">repeated frame</tspan></text>
+    <path
+       style="opacity:1;fill:#7d0000;fill-opacity:1;stroke:none;stroke-width:9;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 556.31441,-378.33064 -71.92338,19.34325 0,14.49968 71.92186,-19.37896 0,-14.46397 z"
+       id="path5032"
+       inkscape:connector-curvature="0"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300"
+       inkscape:export-filename="/home/cesar/Dropbox/Experimentos/Estimulos/SamplingInterface/Doc/img/img examples/sync_repeated.png" />
   </g>
 </svg>
